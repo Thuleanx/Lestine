@@ -1,0 +1,22 @@
+{
+    "name": "Sys",
+    "rootNamespace": "",
+    "references": [
+        "GUID:7efddbf63ee4ca44295b149175f986ee",
+        "GUID:a8eaab85a05b9f546bccb0a8018d4ecc",
+        "GUID:7c3c782d70605d141b6e24a86ed3f135",
+        "GUID:8b1cb9b9dcce2f14cb6726473a554373",
+        "GUID:0c752da273b17c547ae705acf0f2adf2",
+        "GUID:d47a21295c629f14e8138339b4041112",
+        "GUID:289b73c019ad9004eba4d9a006789fc2"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

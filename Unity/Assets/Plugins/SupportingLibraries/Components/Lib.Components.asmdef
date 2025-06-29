@@ -1,0 +1,16 @@
+{
+    "name": "SupportingLibraries",
+    "rootNamespace": "",
+    "references": [
+        "GUID:a80fedb7d734bfc48b154b1276efc7c6"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

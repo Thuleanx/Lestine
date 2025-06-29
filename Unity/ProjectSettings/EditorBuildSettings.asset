@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1045 &1
+EditorBuildSettings:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/scn_official_audioLoad.unity
+    guid: bf1f6ef09a9d14f45bd524d63d12436e
+  - enabled: 1
+    path: Assets/Scenes/scn_official_main_menu.unity
+    guid: e02fc6a85eff0d444b707cc06a067900
+  - enabled: 1
+    path: Assets/Scenes/scn_grass_dev.unity
+    guid: 3637ebbb75be34746a043503509b5972
+  m_configObjects: {}

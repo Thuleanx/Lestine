@@ -1,0 +1,16 @@
+{
+    "name": "Sys.Scriptables",
+    "rootNamespace": "",
+    "references": [
+        "GUID:30baebe4294cbaa439880aac157df2b8"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

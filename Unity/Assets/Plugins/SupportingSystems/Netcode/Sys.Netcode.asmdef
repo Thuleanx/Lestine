@@ -1,0 +1,17 @@
+{
+    "name": "Sys.Netcode",
+    "rootNamespace": "",
+    "references": [
+        "GUID:b84cf0863fb105f47a726476f8d80bd8",
+        "GUID:289b73c019ad9004eba4d9a006789fc2"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

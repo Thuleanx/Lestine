@@ -1,0 +1,25 @@
+{
+    "name": "Lib",
+    "rootNamespace": "",
+    "references": [
+        "GUID:ea2f3696eb21b8147a4012cdb2690ded",
+        "GUID:f0c22d74d916567459799294886ce04c",
+        "GUID:a8257021ff5dbbd43b0c2d39f41f889b",
+        "GUID:46a7036c980a929459d842339c8e696d",
+        "GUID:8a100e955f0fe2740ab9d52ccac924fd",
+        "GUID:7faefc35d9af77e41aafdf03c4913201",
+        "GUID:289b73c019ad9004eba4d9a006789fc2",
+        "GUID:d47a21295c629f14e8138339b4041112",
+        "GUID:30baebe4294cbaa439880aac157df2b8",
+        "GUID:ae57d1e29ea40e843a743648dd9afae0"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

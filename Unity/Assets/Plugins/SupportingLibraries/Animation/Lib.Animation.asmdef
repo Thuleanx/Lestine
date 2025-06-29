@@ -1,0 +1,19 @@
+{
+    "name": "SupporingLibraries.Animation",
+    "rootNamespace": "",
+    "references": [
+        "GUID:b84cf0863fb105f47a726476f8d80bd8",
+        "GUID:776d03a35f1b52c4a9aed9f56d7b4229",
+        "GUID:7faefc35d9af77e41aafdf03c4913201",
+        "GUID:349821fe0c81a9b439097c29c9225824"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
