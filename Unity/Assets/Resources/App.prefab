@@ -159,9 +159,41 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 4b87e88b-d46e-42a0-abd0-44ffe022cbb0
     m_ActionName: UI/TrackedDeviceOrientation
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 3596904395682031270}
+        m_TargetAssemblyTypeName: Saba.SabaInputManager, Assembly-CSharp
+        m_MethodName: OnPointerPosition
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: a06244f0-6369-4c81-8574-70f8656efc28
+    m_ActionName: Player/MousePosition[/Mouse/position]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 3596904395682031270}
+        m_TargetAssemblyTypeName: Saba.SabaInputManager, Assembly-CSharp
+        m_MethodName: OnAttack
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 3a09616a-191f-44c3-890f-793b7531f75a
+    m_ActionName: Player/Attack[/Mouse/leftButton]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: Standard
-  m_DefaultActionMap: f85da386-9345-4693-a529-f342d8f0a67d
+  m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
 --- !u!114 &3596904395682031270
@@ -177,3 +209,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MovementInput: {fileID: 11400000, guid: 8e8a2d60f34b78d4bae92385ff599517, type: 2}
+  MouseInput: {fileID: 11400000, guid: 70ca54742e4c4e74587f99f1e699a37e, type: 2}
