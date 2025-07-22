@@ -1513,7 +1513,6 @@ MonoBehaviour:
   movementInput: {fileID: 11400000, guid: 8e8a2d60f34b78d4bae92385ff599517, type: 2}
   mouseInput: {fileID: 11400000, guid: 70ca54742e4c4e74587f99f1e699a37e, type: 2}
   mainCamera: {fileID: 1387739000}
-  speed: 8
   attacksPerMinute: 720
   bulletBatch: {fileID: 648661943}
   entity: {fileID: 0}
@@ -1533,7 +1532,7 @@ MonoBehaviour:
     MaxHealth: 10
     Attack: 1
     Defense: 0
-    MovementSpeed: 0
+    MovementSpeed: 5
   Resource:
     Health: 0
 --- !u!1001 &5913228304613131417

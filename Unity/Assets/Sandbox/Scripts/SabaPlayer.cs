@@ -14,8 +14,6 @@ namespace Saba {
         ScriptableVector2 mouseInput;
 		[SerializeField]
 		Camera mainCamera;
-		[SerializeField]
-		float speed;
         [SerializeField]
         float attacksPerMinute;
         [SerializeField]
@@ -34,6 +32,7 @@ namespace Saba {
 
             attackActionBinding = new EventBinding<AttackAction>((attack) => {
                 wantsToFire = attack.active;
+                attackCooldown = 0;
             });
 		}
 
@@ -58,11 +57,12 @@ namespace Saba {
 			Vector3 desiredMoveDirection =
 				right * movementInput.Value.x + forward * movementInput.Value.y;
 
-			transform.position += speed * Time.deltaTime * desiredMoveDirection;
+			transform.position += entity.Stats.MovementSpeed * Time.deltaTime * desiredMoveDirection;
 
-            if (wantsToFire) HandlesFiring();
-
-            attackCooldown -= Time.deltaTime;
+            if (wantsToFire) {
+                HandlesFiring();
+                attackCooldown -= Time.deltaTime;
+            }
 		}
 
         void HandlesFiring() {
@@ -82,7 +82,7 @@ namespace Saba {
             for (int _ = 0; _ < MAX_ATTACKS_PER_FRAME && attackCooldown <= 0; _++) {
                 bulletBatch.InstantiateBullet(
                     transform.position, 
-                    aimPosition, 
+                    aimPosition - transform.position, 
                     entity.Stats.Attack,
                     -attackCooldown
                 );
