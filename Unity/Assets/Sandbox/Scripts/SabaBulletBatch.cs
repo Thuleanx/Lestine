@@ -9,7 +9,9 @@ using Nikko.Perf;
 
 namespace Saba {
 	public class SabaBulletBatch : MonoBehaviour {
-		[SerializeField, MinMaxSlider(0, 10000)]
+        const int MAX_BULLETS = 10000;
+
+		[SerializeField, MinMaxSlider(0, MAX_BULLETS)]
 		Vector2Int bulletCapacity;
 
 		[SerializeField, ShowAssetPreview]
@@ -44,12 +46,12 @@ namespace Saba {
 		}
 
 		public void InstantiateBullet(
-			Vector3 source, Vector3 direction
+			Vector3 source, Vector3 direction, float damage, float timeTravelled
 		) {
             direction.Normalize();
 
 			SabaBullet bullet = pool.Get();
-			bullet.Initialize(source, speed * direction);
+			bullet.Initialize(source, speed * direction, damage, timeTravelled);
 			liveBullets.Add(bullet);
 		}
 
@@ -97,6 +99,9 @@ namespace Saba {
 
 			Assert.AreEqual(liveBullets.Count, hits.Length);
 
+            List<SabaHitResolution.Hit> unresolvedHits = new List
+                <SabaHitResolution.Hit>(hits.Length);
+
 			int lastIndex = liveBullets.Count - 1;
 			for (int i = lastIndex; i >= 0; i--) {
 				float elapsedTime = Time.time - liveBullets[i].StartTime;
@@ -117,6 +122,16 @@ namespace Saba {
                         destroyedTime = Mathf.Min(
                             destroyedTime, distanceTravelled / speed
                         );
+
+                        SabaEntity entity = 
+                            hits[i].collider.GetComponentInParent<SabaEntity>();
+                        if (entity) {
+                            unresolvedHits.Add(new SabaHitResolution.Hit() {
+                                Entity = entity,
+                                Location = hits[i].point,
+                                Damage = liveBullets[i].Damage
+                            });
+                        }
 					}
 
 					liveBullets[i].transform.position =
@@ -140,6 +155,8 @@ namespace Saba {
 				liveBullets.RemoveRange(startRemoveIndex, numToRemove);
 			}
 
+
+            SabaHitResolution.instance?.RegisterHits(unresolvedHits);
 			readyForSimulation = true;
 		}
 	}

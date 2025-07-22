@@ -6,6 +6,7 @@ using ADammy;
 using Scriptables;
 
 namespace Saba {
+    [RequireComponent(typeof(SabaEntity))]
 	public class SabaPlayer : MonoBehaviour {
 		[SerializeField]
 		ScriptableVector2 movementInput;
@@ -19,26 +20,30 @@ namespace Saba {
         float attacksPerMinute;
         [SerializeField]
         SabaBulletBatch bulletBatch;
+        [SerializeField]
+        SabaEntity entity;
 
-        bool isFiring = false;
+        bool wantsToFire = false;
         EventBinding<AttackAction> attackActionBinding;
         float attackCooldown;
 
 		void Awake() {
 			if (!mainCamera) mainCamera = Camera.main;
 
+            entity = GetComponent<SabaEntity>();
+
             attackActionBinding = new EventBinding<AttackAction>((attack) => {
-                isFiring = attack.active;
+                wantsToFire = attack.active;
             });
 		}
 
         void OnEnable() {
-            isFiring = false;
+            wantsToFire = false;
             EventBus<AttackAction>.Register(attackActionBinding);
         }
 
         void OnDisable() {
-            isFiring = false;
+            wantsToFire = false;
             EventBus<AttackAction>.Deregister(attackActionBinding);
         }
 
@@ -55,13 +60,14 @@ namespace Saba {
 
 			transform.position += speed * Time.deltaTime * desiredMoveDirection;
 
-            bool canFire = isFiring && attackCooldown <= 0;
-            if (canFire) Fire();
+            if (wantsToFire) HandlesFiring();
 
-            attackCooldown -= Mathf.Min(Time.deltaTime, attackCooldown);
+            attackCooldown -= Time.deltaTime;
 		}
 
-        void Fire() {
+        void HandlesFiring() {
+            const int MAX_ATTACKS_PER_FRAME = 30;
+
             Ray mouseRay = mainCamera.ScreenPointToRay(mouseInput.Value);
             Plane plane = new Plane(Vector3.up, transform.position);
             bool planeRayHit = plane.Raycast(mouseRay, out float mouseRayDistance);
@@ -70,10 +76,22 @@ namespace Saba {
 
             Vector3 aimPosition = mouseRayDistance * mouseRay.direction + mouseRay.origin;
 
-            bulletBatch.InstantiateBullet(transform.position, aimPosition);
-
             float SECONDS_IN_MINUTES = 60.0f;
-            attackCooldown = SECONDS_IN_MINUTES / attacksPerMinute;
+            float totalCooldownTime = SECONDS_IN_MINUTES / attacksPerMinute;
+
+            for (int _ = 0; _ < MAX_ATTACKS_PER_FRAME && attackCooldown <= 0; _++) {
+                bulletBatch.InstantiateBullet(
+                    transform.position, 
+                    aimPosition, 
+                    entity.Stats.Attack,
+                    -attackCooldown
+                );
+                attackCooldown += totalCooldownTime;
+            }
+
+            // if we somehow lag spike too long, 
+            if (attackCooldown < 0)
+                attackCooldown = 0;
         }
 	}
 }
