@@ -1,5 +1,5 @@
 [System.Serializable]
-public struct SabaStats {
+public struct SabaAttributes {
     public float MaxHealth;
     public float Attack;
     public float Defense;

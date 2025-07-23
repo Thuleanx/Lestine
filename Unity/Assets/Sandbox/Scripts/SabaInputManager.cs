@@ -24,5 +24,9 @@ namespace Saba {
             Assert.IsTrue(context.valueType.Equals(typeof(Vector2)));
             MouseInput.Value = context.ReadValue<Vector2>();
         }
+
+        public void OnExecute(InputAction.CallbackContext context) {
+            if (context.started) EventBus<ExecutionAction>.Raise();
+        }
 	}
 }

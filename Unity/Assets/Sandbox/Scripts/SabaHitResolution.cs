@@ -22,14 +22,20 @@ public class SabaHitResolution : Singleton<SabaHitResolution> {
 
     void Resolve() {
         List<SabaEntity> deadEntities = new List<SabaEntity>();
+        List<SabaEntity> damagedEntities = new List<SabaEntity>();
         for (int i = 0; i < NumUnresolvedHits; i++) {
             Hit hit = UnresolvedHits[i];
 
             hit.Entity.Resource.Health -= hit.Damage;
-            if (hit.Entity.Resource.Health < 0)
+
+            bool isEntityKilled = hit.Entity.Resource.Health < 0;
+            if (isEntityKilled)
                 deadEntities.Add(hit.Entity);
+            else
+                damagedEntities.Add(hit.Entity);
         }
 
+        SabaExecutableEntity.UpdateActiveEntities();
         SabaEntity.Kill(deadEntities);
 
         NumUnresolvedHits = 0;

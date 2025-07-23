@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 
 public class SabaEntity : MonoBehaviour {
-    public SabaStats Stats;
+    public SabaAttributes Stats;
     public SabaResource Resource;
 
     void Awake() {
