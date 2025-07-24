@@ -5,8 +5,10 @@ using ADammy;
 namespace Saba {
 	[RequireComponent(typeof(SabaEntity))]
 	public class SabaExecutionAbility : MonoBehaviour {
-		[SerializeField]
+		[SerializeField, Range(0, 10)]
 		float range;
+		[SerializeField, Range(0, 1)]
+		float healthRefund;
 
 		SabaEntity entity;
 		EventBinding<ExecutionAction> executionActionBinding;
@@ -50,6 +52,11 @@ namespace Saba {
 			if (!hasValidTarget) return;
 
 			entity.Stats.MovementSpeed += 5;
+
+			float heal = entity.Stats.MaxHealth * healthRefund;
+            heal = Mathf.Min(heal, entity.Stats.MaxHealth - entity.Resource.Health);
+			entity.Resource.Health += heal;
+
 			Destroy(closestEntity.gameObject);
 		}
 	}
