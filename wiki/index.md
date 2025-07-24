@@ -13,3 +13,6 @@ For this project, I will be conforming to:
 - [Conventional Commit Cheatsheet](https://gist.github.com/qoomon/5dfcdf8eec66a051ecd85625518cfd13)
 outlines how a standard commit should look as well as what is included in descriptions.
 Commits should be often and only encompass one feature.
+
+## Tasks
+[task_list](./task_list.md)

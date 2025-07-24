@@ -28,7 +28,6 @@ namespace Saba {
 		EventBinding<AttackAction> attackActionBinding;
 		float attackCooldown;
 
-		EventBinding<ExecutionAction> executionActionBinding;
 
 		void Awake() {
 			if (!mainCamera) mainCamera = Camera.main;
@@ -39,21 +38,16 @@ namespace Saba {
 				wantsToFire = attack.active;
 				attackCooldown = 0;
 			});
-            executionActionBinding = new EventBinding<ExecutionAction>((execution) => {
-                HandlesExecution();
-            });
 		}
 
 		void OnEnable() {
 			wantsToFire = false;
 			EventBus<AttackAction>.Register(attackActionBinding);
-            EventBus<ExecutionAction>.Register(executionActionBinding);
 		}
 
 		void OnDisable() {
 			wantsToFire = false;
 			EventBus<AttackAction>.Deregister(attackActionBinding);
-            EventBus<ExecutionAction>.Deregister(executionActionBinding);
 		}
 
 		void Update() {
@@ -108,28 +102,6 @@ namespace Saba {
 
 			// if we somehow lag spike too long,
 			if (attackCooldown < 0) attackCooldown = 0;
-		}
-
-		void HandlesExecution() {
-            SabaExecutableEntity closestEntity = null;
-            float closestSqDistance = float.MaxValue;
-
-			foreach (SabaExecutableEntity executable in
-						 SabaExecutableRuntimeGroup.instance
-							 .activeEdibleEnemies) {
-                Vector3 displacement = executable.transform.position - transform.position;
-                float sqDistance = Vector3.Dot(displacement, displacement);
-
-                if (closestSqDistance > sqDistance) {
-                    closestSqDistance = sqDistance;
-                    closestEntity = executable;
-                }
-            }
-
-            if (!closestEntity) return;
-
-            entity.Stats.MovementSpeed += 5;
-            Destroy(closestEntity.gameObject);
 		}
 	}
 }

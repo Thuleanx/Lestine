@@ -8,6 +8,6 @@ This is where Lestine's tasks are tracked.
 - [ ] Expand Upgrade system
 - [ ] Player health display
 - [ ] Enemies consumable on low health
-- [ ] Consume enemy to gain a speed boost
+- [x] Consume enemy to gain a speed boost
 - [ ] Heal on enemy consumption
 - [ ] Enemy spawning
