@@ -17,13 +17,10 @@ namespace Saba {
 		Camera mainCamera;
 		[SerializeField]
 		float attacksPerMinute;
-        [SerializeField]
-        float executionRange;
 		[SerializeField]
 		SabaBulletBatch bulletBatch;
-		[SerializeField]
-		SabaEntity entity;
 
+		SabaEntity entity;
 		bool wantsToFire = false;
 		EventBinding<AttackAction> attackActionBinding;
 		float attackCooldown;

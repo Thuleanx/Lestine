@@ -1,8 +1,11 @@
 using UnityEngine;
 using System.Collections.Generic;
 
+using NaughtyAttributes;
+
 public class SabaEntity : MonoBehaviour {
     public SabaAttributes Stats;
+    [ReadOnly]
     public SabaResource Resource;
 
     void Awake() {

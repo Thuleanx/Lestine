@@ -11,6 +11,6 @@ This is where Lestine's tasks are tracked.
 - [ ] Heal on enemy consumption
 - [ ] Enemy spawning
 - [ ] Expand UI
-- [ ] Healthbar on non-full health enemies
+- [?] Healthbar on non-full health enemies
 - [ ] Healthbar on player
 - [ ] Arrow for executable enemies
