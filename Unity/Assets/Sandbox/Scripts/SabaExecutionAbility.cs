@@ -36,7 +36,7 @@ namespace Saba {
 
 			foreach (SabaExecutableEntity executable in
 						 SabaExecutableRuntimeGroup.instance
-							 .activeEdibleEnemies) {
+							 .activeEntities) {
 				Vector3 displacement =
 					executable.transform.position - transform.position;
 				float sqDistance = Vector3.Dot(displacement, displacement);

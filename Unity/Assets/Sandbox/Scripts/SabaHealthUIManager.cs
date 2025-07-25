@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using PrettyPatterns;
 
 namespace Saba {
+    [RequireComponent(typeof(RectTransform))]
 	public class SabaHealthUIManager : Singleton<SabaHealthUIManager> {
 		const int MIN_BARS = 5;
 		const int MAX_BARS = 100;
@@ -22,6 +23,7 @@ namespace Saba {
         Vector3 offset;
 
 		ObjectPool<Slider> healthBars;
+        new Camera camera;
 
 		List<TrackedEntityData> activeEntities = new List<TrackedEntityData>();
 		Dictionary<SabaEntity, int> activeEntityIndexMap =
@@ -40,6 +42,7 @@ namespace Saba {
 				defaultCapacity: MIN_BARS,
 				maxSize: MAX_BARS
 			);
+            camera = GetComponentInParent<Canvas>().worldCamera;
 		}
 
 		void Track(IEnumerable<SabaEntity> entities) {
@@ -88,8 +91,9 @@ namespace Saba {
                 float healthValue = data.entity.Resource.Health /
                                     data.entity.Stats.MaxHealth;
                 data.healthBar.value = healthValue;
-                data.healthBar.transform.position =
-                    data.entity.transform.position + offset;
+
+                Vector3 position = data.entity.transform.position + offset;
+                data.healthBar.transform.position = RectTransformUtility.WorldToScreenPoint(camera, position);
             }
 		}
 	}
