@@ -28,7 +28,7 @@ namespace Saba {
 
 				hit.Entity.Resource.Health -= hit.Damage;
 
-				bool isEntityKilled = hit.Entity.Resource.Health < 0;
+				bool isEntityKilled = hit.Entity.Resource.Health <= 0;
 				if (isEntityKilled) deadEntities.Add(hit.Entity);
 				else damagedEntities.Add(hit.Entity);
 			}

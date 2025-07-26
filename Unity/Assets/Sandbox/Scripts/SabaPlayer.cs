@@ -3,12 +3,13 @@ using UnityEngine.Assertions;
 using System.Collections.Generic;
 
 using ADammy;
+using PrettyPatterns;
 
 using Scriptables;
 
 namespace Saba {
 	[RequireComponent(typeof(SabaEntity))]
-	public class SabaPlayer : MonoBehaviour {
+	public class SabaPlayer : Singleton<SabaPlayer> {
 		[SerializeField]
 		ScriptableVector2 movementInput;
 		[SerializeField]
@@ -25,8 +26,8 @@ namespace Saba {
 		EventBinding<AttackAction> attackActionBinding;
 		float attackCooldown;
 
-
-		void Awake() {
+		public override void Awake() {
+            base.Awake();
 			if (!mainCamera) mainCamera = Camera.main;
 
 			entity = GetComponent<SabaEntity>();
@@ -40,11 +41,16 @@ namespace Saba {
 		void OnEnable() {
 			wantsToFire = false;
 			EventBus<AttackAction>.Register(attackActionBinding);
+            SabaHealthUIManager.instance.Track(entity);
 		}
 
 		void OnDisable() {
 			wantsToFire = false;
 			EventBus<AttackAction>.Deregister(attackActionBinding);
+
+            // unloading the scene, so we shouldn't be calling functions even when it's referencing
+            if (!gameObject.scene.isLoaded) return;
+            SabaHealthUIManager.instance.Untrack(entity);
 		}
 
 		void Update() {
@@ -58,7 +64,7 @@ namespace Saba {
 			Vector3 desiredMoveDirection =
 				right * movementInput.Value.x + forward * movementInput.Value.y;
 
-			transform.position += entity.Stats.MovementSpeed * Time.deltaTime *
+			transform.position += entity.Attributes.MovementSpeed * Time.deltaTime *
 								  desiredMoveDirection;
 
 			if (wantsToFire) {
@@ -91,7 +97,7 @@ namespace Saba {
 				bulletBatch.InstantiateBullet(
 					transform.position,
 					aimPosition - transform.position,
-					entity.Stats.Attack,
+					entity.Attributes.Attack,
 					-attackCooldown
 				);
 				attackCooldown += totalCooldownTime;

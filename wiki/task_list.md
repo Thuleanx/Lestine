@@ -3,7 +3,9 @@
 This is where Lestine's tasks are tracked.
 
 ## Vertical Slice
-- [ ] Expand Enemy AI
+- [x] Enemies approach player
+- [ ] Enemies attack player if within some threshold
+- [ ] Player pushed away from the attack
 - [ ] Expand Upgrade system
 - [ ] Player health display
 - [x] Enemies consumable on low health
@@ -11,6 +13,6 @@ This is where Lestine's tasks are tracked.
 - [ ] Heal on enemy consumption
 - [ ] Enemy spawning
 - [ ] Expand UI
-- [?] Healthbar on non-full health enemies
+- [x] Healthbar on non-full health enemies
 - [ ] Healthbar on player
 - [ ] Arrow for executable enemies

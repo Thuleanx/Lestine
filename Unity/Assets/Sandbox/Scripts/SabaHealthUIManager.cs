@@ -45,6 +45,9 @@ namespace Saba {
             camera = GetComponentInParent<Canvas>().worldCamera;
 		}
 
+        public void Track(SabaEntity entity) => Track(new SabaEntity[]{entity});
+        public void Untrack(SabaEntity entity) => Untrack(new SabaEntity[]{entity});
+
 		void Track(IEnumerable<SabaEntity> entities) {
 			foreach (SabaEntity entity in entities) {
 				bool isAlreadyTracking =
@@ -89,7 +92,7 @@ namespace Saba {
 
             foreach (TrackedEntityData data in activeEntities) {
                 float healthValue = data.entity.Resource.Health /
-                                    data.entity.Stats.MaxHealth;
+                                    data.entity.Attributes.MaxHealth;
                 data.healthBar.value = healthValue;
 
                 Vector3 position = data.entity.transform.position + offset;

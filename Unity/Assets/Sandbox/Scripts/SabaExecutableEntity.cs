@@ -42,7 +42,7 @@ namespace Saba {
 				SabaEntity entity = executableEntity.entity;
 				bool shouldActivate =
 					entity.Resource.Health <
-					entity.Stats.MaxHealth * executableEntity.threshold;
+					entity.Attributes.MaxHealth * executableEntity.threshold;
 				if (shouldActivate)
 					newlyActivatedEntities.Add(executableEntity);
 			}

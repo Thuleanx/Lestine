@@ -4,12 +4,12 @@ using System.Collections.Generic;
 using NaughtyAttributes;
 
 public class SabaEntity : MonoBehaviour {
-    public SabaAttributes Stats;
+    public SabaAttributes Attributes;
     [ReadOnly]
     public SabaResource Resource;
 
     void Awake() {
-        Resource.Health = Stats.MaxHealth;
+        Resource.Health = Attributes.MaxHealth;
     }
 
     public static void Kill(IEnumerable<SabaEntity> entities) {

@@ -51,10 +51,10 @@ namespace Saba {
 				closestEntity && closestSqDistance < range * range;
 			if (!hasValidTarget) return;
 
-			entity.Stats.MovementSpeed += 5;
+			entity.Attributes.MovementSpeed += 5;
 
-			float heal = entity.Stats.MaxHealth * healthRefund;
-            heal = Mathf.Min(heal, entity.Stats.MaxHealth - entity.Resource.Health);
+			float heal = entity.Attributes.MaxHealth * healthRefund;
+            heal = Mathf.Min(heal, entity.Attributes.MaxHealth - entity.Resource.Health);
 			entity.Resource.Health += heal;
 
 			Destroy(closestEntity.gameObject);
