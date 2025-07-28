@@ -59,13 +59,13 @@ namespace Saba {
                 float maxImpulse = maxSpeed / movementComponent.AccelerationToMaxSpeedSeconds;
 				float maxAvoidanceImpulse = maxImpulse;
 
-				Vector3 totalSeparationImpulse = Vector3.zero;
+				Vector2 totalSeparationImpulse = Vector2.zero;
 
 				foreach (NPCData otherNPC in data) {
 					if (otherNPC.entity == npc.entity) continue;
 
 					// separation behavior
-					Vector3 separation =
+					Vector2 separation =
 						movementComponent.transform.position -
 						otherNPC.movementComponent.transform.position;
 
@@ -82,16 +82,14 @@ namespace Saba {
 
                 movementComponent.ApplyForce(totalSeparationImpulse * deltaTime);
 
-				Vector3 directionToPlayer =
+				Vector2 directionToPlayer =
 					player.transform.position - npc.entity.transform.position;
-				directionToPlayer.z = 0;
 				directionToPlayer.Normalize();
 
-
-				Vector3 desiredVelocity = maxSpeed * directionToPlayer;
+				Vector2 desiredVelocity = maxSpeed * directionToPlayer;
 				float frameAcceleration = maxImpulse * deltaTime;
 
-				Vector3 desiredAcceleration = Vector3.ClampMagnitude(
+				Vector2 desiredAcceleration = Vector2.ClampMagnitude(
 					desiredVelocity - movementComponent.Velocity,
 					frameAcceleration
 				);

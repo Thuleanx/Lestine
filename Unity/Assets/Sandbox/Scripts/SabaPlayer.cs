@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 using ADammy;
 using PrettyPatterns;
+using MathUtils;
 
 using Scriptables;
 
@@ -94,12 +95,18 @@ namespace Saba {
 
 			for (int _ = 0; _ < MAX_ATTACKS_PER_FRAME && attackCooldown <= 0;
 				 _++) {
-				bulletBatch.InstantiateBullet(
-					transform.position,
-					aimPosition - transform.position,
-					entity.Attributes.Attack,
-					-attackCooldown
-				);
+
+                Vector2 direction = aimPosition - transform.position;
+
+                for (int i = -3; i <= 3; i++) {
+                    Vector2 instanceDirection = Mathx.Rotate(direction, i*(Mathf.PI/8));
+                    bulletBatch.InstantiateBullet(
+                        transform.position,
+                        instanceDirection,
+                        entity.Attributes.Attack,
+                        -attackCooldown
+                    );
+                }
 				attackCooldown += totalCooldownTime;
 			}
 

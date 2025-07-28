@@ -9,7 +9,7 @@ namespace Saba {
 
 		public struct Hit {
 			public SabaEntity Entity;
-			public Vector3 Location;
+			public Vector2 Location;
 			public float Damage;
 		}
 

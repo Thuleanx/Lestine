@@ -9,15 +9,15 @@ using Nikko.Perf;
 
 namespace Saba {
 	public class SabaBulletBatch : MonoBehaviour {
-        const int MAX_BULLETS = 10000;
+		const int MAX_BULLETS = 10000;
 
 		[SerializeField, MinMaxSlider(0, MAX_BULLETS)]
 		Vector2Int bulletCapacity;
 
 		[SerializeField, ShowAssetPreview]
 		SabaBullet bulletPrefab;
-        [SerializeField]
-        float speed;
+		[SerializeField]
+		float speed;
 		[SerializeField]
 		float lifetime;
 		[SerializeField]
@@ -46,9 +46,9 @@ namespace Saba {
 		}
 
 		public void InstantiateBullet(
-			Vector3 source, Vector3 direction, float damage, float timeTravelled
+			Vector2 source, Vector2 direction, float damage, float timeTravelled
 		) {
-            direction.Normalize();
+			direction.Normalize();
 
 			SabaBullet bullet = pool.Get();
 			bullet.Initialize(source, speed * direction, damage, timeTravelled);
@@ -71,15 +71,15 @@ namespace Saba {
 
 		void Simulate() {
 			// Simulate
-			Vector3[] origins = new Vector3[liveBullets.Count];
-			Vector3[] directions = new Vector3[liveBullets.Count];
+			Vector2[] origins = new Vector2[liveBullets.Count];
+			Vector2[] directions = new Vector2[liveBullets.Count];
 
 			for (int i = 0; i < liveBullets.Count; i++) {
 				SabaBullet bullet = liveBullets[i];
 				origins[i] = bullet.PositionAt(lastSimulationTime);
 
 				float elapsedTime = (Time.time - bullet.StartTime);
-				Vector3 nextPosition =
+				Vector2 nextPosition =
 					bullet.StartVelocity * elapsedTime + bullet.StartPosition;
 
 				directions[i] = nextPosition - origins[i];
@@ -92,15 +92,15 @@ namespace Saba {
 			);
 		}
 
-		void RemoveCollidedBullets(RaycastHit[] hits) {
-            // We quit the game or this object gets disabled in the middle of 
-            // a raycast request
-            if (!enabled) return;
+		void RemoveCollidedBullets(RaycastHit2D[] hits) {
+			// We quit the game or this object gets disabled in the middle of
+			// a raycast request
+			if (!enabled) return;
 
 			Assert.AreEqual(liveBullets.Count, hits.Length);
 
-            List<SabaHitResolution.Hit> unresolvedHits = new List
-                <SabaHitResolution.Hit>(hits.Length);
+			List<SabaHitResolution.Hit> unresolvedHits =
+				new List<SabaHitResolution.Hit>(hits.Length);
 
 			int lastIndex = liveBullets.Count - 1;
 			for (int i = lastIndex; i >= 0; i--) {
@@ -112,26 +112,24 @@ namespace Saba {
 					float destroyedTime = lifetime + liveBullets[i].StartTime;
 
 					if (isHit) {
-						Vector3 hitDisplacement =
-							(hits[i].point - liveBullets[i].StartPosition);
+						Vector2 hitDisplacement =
+							((Vector2) hits[i].point - liveBullets[i].StartPosition);
 						float speed = liveBullets[i].StartVelocity.magnitude;
 						float distanceTravelled = hitDisplacement.magnitude;
 
-                        Assert.IsTrue(speed > 0);
+						Assert.IsTrue(speed > 0);
 
-                        destroyedTime = Mathf.Min(
-                            destroyedTime, distanceTravelled / speed
-                        );
+						destroyedTime =
+							Mathf.Min(destroyedTime, distanceTravelled / speed);
 
-                        SabaEntity entity = 
-                            hits[i].collider.GetComponentInParent<SabaEntity>();
-                        if (entity) {
-                            unresolvedHits.Add(new SabaHitResolution.Hit() {
-                                Entity = entity,
-                                Location = hits[i].point,
-                                Damage = liveBullets[i].Damage
-                            });
-                        }
+						SabaEntity entity =
+							hits[i].collider.GetComponentInParent<SabaEntity>();
+						if (entity) {
+							unresolvedHits.Add(new SabaHitResolution.Hit(
+							) { Entity = entity,
+								Location = hits[i].point,
+								Damage = liveBullets[i].Damage });
+						}
 					}
 
 					liveBullets[i].transform.position =
@@ -155,8 +153,7 @@ namespace Saba {
 				liveBullets.RemoveRange(startRemoveIndex, numToRemove);
 			}
 
-
-            SabaHitResolution.instance?.RegisterHits(unresolvedHits);
+			SabaHitResolution.instance?.RegisterHits(unresolvedHits);
 			readyForSimulation = true;
 		}
 	}
