@@ -6,11 +6,13 @@ namespace Saba {
 		public Vector2 StartVelocity { get; private set; }
 		public float StartTime { get; private set; }
         public float Damage {get; private set; }
+        public float Knockback { get; private set; }
 
-		public void Initialize(Vector2 position, Vector2 startVelocity, float damage, float timeTravelled) {
+		public void Initialize(Vector2 position, Vector2 startVelocity, float damage, float knockback, float timeTravelled) {
 			this.StartPosition = position;
 			this.StartVelocity = startVelocity;
 			this.StartTime = Time.time - timeTravelled;
+            this.Knockback = knockback;
             this.Damage = damage;
 		}
 

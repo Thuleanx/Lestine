@@ -99,13 +99,13 @@ namespace Saba {
                 Vector2 direction = aimPosition - transform.position;
 
                 for (int i = -3; i <= 3; i++) {
-                    Vector2 instanceDirection = Mathx.Rotate(direction, i*(Mathf.PI/8));
+                    Vector2 instanceDirection = Mathx.Rotate(direction, i*(Mathf.PI/16));
                     bulletBatch.InstantiateBullet(
                         transform.position,
                         instanceDirection,
                         entity.Attributes.Attack,
-                        -attackCooldown
-                    );
+                        0.1f,
+                        -attackCooldown);
                 }
 				attackCooldown += totalCooldownTime;
 			}

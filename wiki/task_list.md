@@ -5,7 +5,7 @@ This is where Lestine's tasks are tracked.
 ## Vertical Slice
 - [x] Enemies approach player
 - [ ] Enemies attack player if within some threshold
-- [ ] Player pushed away from the attack
+- [?] Player pushed away from the attack
 - [ ] Expand Upgrade system
 - [ ] Player health display
 - [x] Enemies consumable on low health

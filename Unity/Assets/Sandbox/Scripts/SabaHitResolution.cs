@@ -9,8 +9,11 @@ namespace Saba {
 
 		public struct Hit {
 			public SabaEntity Entity;
+            public SabaMovementComponent MovementComponent;
 			public Vector2 Location;
+            public Vector2 Direction;
 			public float Damage;
+            public float Knockback;
 		}
 
 		int NumUnresolvedHits = 0;
@@ -30,7 +33,10 @@ namespace Saba {
 
 				bool isEntityKilled = hit.Entity.Resource.Health <= 0;
 				if (isEntityKilled) deadEntities.Add(hit.Entity);
-				else damagedEntities.Add(hit.Entity);
+				else {
+                    damagedEntities.Add(hit.Entity);
+                    hit.MovementComponent.ApplyForce(hit.Direction * hit.Knockback);
+                }
 			}
 
 			SabaExecutableEntity.UpdateActiveEntities();
