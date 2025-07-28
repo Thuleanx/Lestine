@@ -84,7 +84,7 @@ namespace Saba {
 
 				Vector3 directionToPlayer =
 					player.transform.position - npc.entity.transform.position;
-				directionToPlayer.y = 0;
+				directionToPlayer.z = 0;
 				directionToPlayer.Normalize();
 
 

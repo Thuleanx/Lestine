@@ -56,8 +56,8 @@ namespace Saba {
 		void Update() {
 			Vector3 right = mainCamera.transform.right;
 			Vector3 forward = mainCamera.transform.forward;
-			right.y = 0;
-			forward.y = 0;
+			right.z = 0;
+			forward.z = 0;
 			right = right.normalized;
 			forward = forward.normalized;
 
@@ -77,7 +77,7 @@ namespace Saba {
 			const int MAX_ATTACKS_PER_FRAME = 30;
 
 			Ray mouseRay = mainCamera.ScreenPointToRay(mouseInput.Value);
-			Plane plane = new Plane(Vector3.up, transform.position);
+			Plane plane = new Plane(Vector3.forward, transform.position);
 			bool planeRayHit =
 				plane.Raycast(mouseRay, out float mouseRayDistance);
 
