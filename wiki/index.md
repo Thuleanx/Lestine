@@ -16,3 +16,8 @@ Commits should be often and only encompass one feature.
 
 ## Tasks
 [task_list](./task_list.md)
+
+## Resources
+
+### AI
+[Anticipatory Collision Avoidance](https://www.gameaipro.com/GameAIPro2/GameAIPro2_Chapter19_Guide_to_Anticipatory_Collision_Avoidance.pdf)

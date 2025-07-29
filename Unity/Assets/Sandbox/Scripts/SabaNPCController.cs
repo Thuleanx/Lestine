@@ -1,39 +1,16 @@
 using UnityEngine;
-using UnityEngine.Assertions;
 using System.Collections.Generic;
 
 using PrettyPatterns;
 
 namespace Saba {
 	public class SabaNPCController : Singleton<SabaNPCController> {
-		struct NPCData {
-			public SabaEntity entity;
-			public SabaMovementComponent movementComponent;
-			public float radius;
+		[SerializeField]
+		float separationMaxImpulse = 1;
+		[SerializeField]
+		float separationRadius = 1;
 
-			// methods
-			public bool IsValid() => entity && movementComponent;
-		};
-
-		List<NPCData> data = new List<NPCData>();
-
-        [SerializeField] float separationMaxImpulse = 1;
-        [SerializeField] float separationRadius = 1; 
-
-		public void Register(SabaNPC npc) {
-			NPCData data = new NPCData(
-			) { entity = npc.GetComponent<SabaEntity>(),
-				movementComponent = npc.GetComponent<SabaMovementComponent>(),
-				radius = npc.Radius };
-			Assert.IsTrue(data.IsValid(), "NPC " + npc + " is not valid.");
-			this.data.Add(data);
-		}
-
-		public void Deregister(SabaNPC npc) {
-			data.RemoveAll(
-				(entry) => entry.entity.gameObject == npc.gameObject
-			);
-		}
+        List<SabaNPCData> data => SabaNPCRuntimeGroup.instance.data;
 
 		public void OnEntitiesKilled(IEnumerable<SabaEntity> entities) {
 			foreach (SabaEntity entity in entities) {
@@ -48,43 +25,50 @@ namespace Saba {
 			SabaPlayer player = SabaPlayer.instance;
 			if (!player) return;
 
-            float deltaTime = Time.deltaTime;
+			float deltaTime = Time.deltaTime;
 
-			foreach (NPCData npc in data) {
+			foreach (SabaNPCData npc in data) {
 				SabaMovementComponent movementComponent = npc.movementComponent;
 
 				float speed = movementComponent.Velocity.magnitude;
 				float maxSpeed = npc.entity.Attributes.MovementSpeed;
 
-                float maxImpulse = maxSpeed / movementComponent.AccelerationToMaxSpeedSeconds;
+				float maxImpulse =
+					maxSpeed / movementComponent.AccelerationToMaxSpeedSeconds;
 				float maxAvoidanceImpulse = maxImpulse;
 
 				Vector2 totalSeparationImpulse = Vector2.zero;
 
-				foreach (NPCData otherNPC in data) {
+				// separation behavior
+				foreach (SabaNPCData otherNPC in data) {
 					if (otherNPC.entity == npc.entity) continue;
 
-					// separation behavior
 					Vector2 separation =
 						movementComponent.transform.position -
 						otherNPC.movementComponent.transform.position;
 
-                    float separationDistance = separation.magnitude;
+					float separationDistance = separation.magnitude;
 
-                    float combinedRadius = npc.radius + otherNPC.radius;
+					float combinedRadius = npc.radius + otherNPC.radius;
 
-                    float x = (separationDistance - combinedRadius) / separationRadius;
+					float x = (separationDistance - combinedRadius) /
+							  separationRadius;
 
-                    float separationStrength = (x < 1 ? (1-x) * (1-x) : 0) * separationMaxImpulse;
+					float separationStrength =
+						(x < 1 ? (1 - x) * (1 - x) : 0) * separationMaxImpulse;
 
-                    totalSeparationImpulse += separation / separationDistance * separationStrength;
+					totalSeparationImpulse +=
+						separation / separationDistance * separationStrength;
 				}
 
-                movementComponent.ApplyForce(totalSeparationImpulse * deltaTime);
+				movementComponent.ApplyForce(
+					totalSeparationImpulse * deltaTime
+				);
 
-				Vector2 directionToPlayer =
+				Vector2 displacementToPlayer =
 					player.transform.position - npc.entity.transform.position;
-				directionToPlayer.Normalize();
+				// Normalize here because distance can be 0
+				Vector2 directionToPlayer = displacementToPlayer.normalized;
 
 				Vector2 desiredVelocity = maxSpeed * directionToPlayer;
 				float frameAcceleration = maxImpulse * deltaTime;
