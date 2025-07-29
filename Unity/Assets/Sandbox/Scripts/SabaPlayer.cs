@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.Assertions;
-using System.Collections.Generic;
 
 using ADammy;
 using PrettyPatterns;
@@ -21,17 +20,24 @@ namespace Saba {
 		float attacksPerMinute;
 		[SerializeField]
 		SabaBulletBatch bulletBatch;
+		[SerializeField, Min(0.01f)]
+		float secondsToTopSpeed = 0.5f;
 
-		SabaEntity entity;
+		[System.NonSerialized]
+		public SabaEntity entity;
+		[System.NonSerialized]
+		public SabaMovementComponent movementComponent;
+
 		bool wantsToFire = false;
 		EventBinding<AttackAction> attackActionBinding;
 		float attackCooldown;
 
 		public override void Awake() {
-            base.Awake();
+			base.Awake();
 			if (!mainCamera) mainCamera = Camera.main;
 
 			entity = GetComponent<SabaEntity>();
+			movementComponent = GetComponent<SabaMovementComponent>();
 
 			attackActionBinding = new EventBinding<AttackAction>((attack) => {
 				wantsToFire = attack.active;
@@ -42,31 +48,43 @@ namespace Saba {
 		void OnEnable() {
 			wantsToFire = false;
 			EventBus<AttackAction>.Register(attackActionBinding);
-            SabaHealthUIManager.instance.Track(entity);
+			SabaHealthUIManager.instance.Track(entity);
 		}
 
 		void OnDisable() {
 			wantsToFire = false;
 			EventBus<AttackAction>.Deregister(attackActionBinding);
 
-            // unloading the scene, so we shouldn't be calling functions even when it's referencing
-            if (!gameObject.scene.isLoaded) return;
-            SabaHealthUIManager.instance.Untrack(entity);
+			// unloading the scene, so we shouldn't be calling functions even
+			// when it's referencing
+			if (!gameObject.scene.isLoaded) return;
+			SabaHealthUIManager.instance.Untrack(entity);
 		}
 
 		void Update() {
-			Vector3 right = mainCamera.transform.right;
-			Vector3 forward = mainCamera.transform.forward;
-			right.z = 0;
-			forward.z = 0;
-			right = right.normalized;
-			forward = forward.normalized;
+			Vector2 right = mainCamera.transform.right;
+			Vector2 forward = mainCamera.transform.forward;
+			// normalize right here after the z component has dropped
 
-			Vector3 desiredMoveDirection =
+			Vector2 desiredMoveDirection =
 				right * movementInput.Value.x + forward * movementInput.Value.y;
+            desiredMoveDirection = desiredMoveDirection.normalized;
 
-			transform.position += entity.Attributes.MovementSpeed * Time.deltaTime *
-								  desiredMoveDirection;
+			Vector2 desiredMoveVelocity =
+				desiredMoveDirection * entity.Attributes.MovementSpeed;
+
+			Vector2 desiredForce =
+				desiredMoveVelocity - movementComponent.Velocity;
+
+			float accelerationMax =
+				entity.Attributes.MovementSpeed / secondsToTopSpeed;
+
+			Vector2 appliedForce = Vector2.ClampMagnitude(
+				desiredForce,
+				Time.deltaTime * accelerationMax * movementComponent.Mass
+			);
+
+			movementComponent.ApplyForce(appliedForce);
 
 			if (wantsToFire) {
 				HandlesFiring();
@@ -95,18 +113,19 @@ namespace Saba {
 
 			for (int _ = 0; _ < MAX_ATTACKS_PER_FRAME && attackCooldown <= 0;
 				 _++) {
+				Vector2 direction = aimPosition - transform.position;
 
-                Vector2 direction = aimPosition - transform.position;
-
-                for (int i = -3; i <= 3; i++) {
-                    Vector2 instanceDirection = Mathx.Rotate(direction, i*(Mathf.PI/16));
-                    bulletBatch.InstantiateBullet(
-                        transform.position,
-                        instanceDirection,
-                        entity.Attributes.Attack,
-                        0.1f,
-                        -attackCooldown);
-                }
+				for (int i = -3; i <= 3; i++) {
+					Vector2 instanceDirection =
+						Mathx.Rotate(direction, i * (Mathf.PI / 16));
+					bulletBatch.InstantiateBullet(
+						transform.position,
+						instanceDirection,
+						entity.Attributes.Attack,
+						0.1f,
+						-attackCooldown
+					);
+				}
 				attackCooldown += totalCooldownTime;
 			}
 
