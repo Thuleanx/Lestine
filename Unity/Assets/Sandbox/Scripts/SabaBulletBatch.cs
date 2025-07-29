@@ -131,7 +131,7 @@ namespace Saba {
 
 					SabaEntity entity =
 						hit.collider.GetComponentInParent<SabaEntity>();
-					if (entity) {
+					if (entity && !entity.IsDead) {
 						unresolvedHits.Add(new SabaHitResolution.Hit(
 						) { Entity = entity,
 							MovementComponent =

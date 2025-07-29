@@ -39,7 +39,6 @@ namespace Saba {
                 }
 			}
 
-			SabaExecutableEntity.UpdateActiveEntities();
 			SabaHealthUIManager.instance.OnDamageTaken(damagedEntities);
 			SabaHealthUIManager.instance.OnDeath(deadEntities);
             SabaEntity.Kill(deadEntities);

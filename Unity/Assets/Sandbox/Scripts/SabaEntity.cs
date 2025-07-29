@@ -3,17 +3,30 @@ using System.Collections.Generic;
 
 using NaughtyAttributes;
 
-public class SabaEntity : MonoBehaviour {
-    public SabaAttributes Attributes;
-    [ReadOnly]
-    public SabaResource Resource;
+namespace Saba {
+	public class SabaEntity : MonoBehaviour {
+		public SabaAttributes Attributes;
+		[ReadOnly]
+		public SabaResource Resource;
 
-    void Awake() {
-        Resource.Health = Attributes.MaxHealth;
-    }
+        [SerializeField] bool isExecutable = false;
 
-    public static void Kill(IEnumerable<SabaEntity> entities) {
-        foreach (SabaEntity entity in entities)
-            Destroy(entity.gameObject);
-    }
+        public bool IsDead => Resource.Health <= 0;
+
+		void Awake() { Resource.Health = Attributes.MaxHealth; }
+
+		public static void Kill(IEnumerable<SabaEntity> entities) {
+			foreach (SabaEntity entity in entities) {
+				bool isExecutable = entity.isExecutable;
+
+				if (!isExecutable) {
+                    Destroy(entity.gameObject);
+                    return;
+                }
+
+                entity.GetComponent<SabaNPC>().enabled = false;
+                SabaExecutableRuntimeGroup.instance?.activeEntities.Add(entity);
+			}
+		}
+	}
 }

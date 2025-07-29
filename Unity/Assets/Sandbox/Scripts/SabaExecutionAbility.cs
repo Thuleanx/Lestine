@@ -31,10 +31,10 @@ namespace Saba {
 		}
 
 		public void Perform() {
-			SabaExecutableEntity closestEntity = null;
+			SabaEntity closestEntity = null;
 			float closestSqDistance = float.MaxValue;
 
-			foreach (SabaExecutableEntity executable in
+			foreach (SabaEntity executable in
 						 SabaExecutableRuntimeGroup.instance
 							 .activeEntities) {
 				Vector3 displacement =
