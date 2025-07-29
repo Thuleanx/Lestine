@@ -22,13 +22,13 @@ namespace Saba {
 		void Awake() { entity = GetComponent<SabaEntity>(); }
 
 		void OnEnable() {
-			SabaExecutableRuntimeGroup.instance.inactiveEntities.Add(this);
+			SabaExecutableRuntimeGroup.instance?.inactiveEntities.Add(this);
 		}
 
 		void OnDisable() {
-			SabaExecutableRuntimeGroup.instance.activeEntities.Remove(this
+			SabaExecutableRuntimeGroup.instance?.activeEntities.Remove(this
 			);
-			SabaExecutableRuntimeGroup.instance.inactiveEntities.Remove(
+			SabaExecutableRuntimeGroup.instance?.inactiveEntities.Remove(
 				this
 			);
 		}

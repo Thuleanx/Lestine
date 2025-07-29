@@ -1,9 +1,7 @@
 {
     "name": "Sys.Core",
     "rootNamespace": "",
-    "references": [
-        "GUID:289b73c019ad9004eba4d9a006789fc2"
-    ],
+    "references": [],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,

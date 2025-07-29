@@ -10,7 +10,8 @@ namespace Saba {
 		[SerializeField]
 		float separationRadius = 1;
 
-        List<SabaNPCData> data => SabaNPCRuntimeGroup.instance.data;
+		List<SabaNPCData> data => SabaNPCRuntimeGroup.instance.data;
+		SabaNPCTransientData transientData => SabaNPCRuntimeGroup.instance.transientData;
 
 		public void OnEntitiesKilled(IEnumerable<SabaEntity> entities) {
 			foreach (SabaEntity entity in entities) {
@@ -27,7 +28,8 @@ namespace Saba {
 
 			float deltaTime = Time.deltaTime;
 
-			foreach (SabaNPCData npc in data) {
+			for (int npcIndex = 0; npcIndex < data.Count; npcIndex++) {
+				SabaNPCData npc = data[npcIndex];
 				SabaMovementComponent movementComponent = npc.movementComponent;
 
 				float speed = movementComponent.Velocity.magnitude;
@@ -70,7 +72,9 @@ namespace Saba {
 				// Normalize here because distance can be 0
 				Vector2 directionToPlayer = displacementToPlayer.normalized;
 
-				Vector2 desiredVelocity = maxSpeed * directionToPlayer;
+				// Approach player if hasn't recently hit, otherwise go away
+				Vector2 desiredVelocity = maxSpeed * directionToPlayer *
+										  (transientData.hasHitPlayerRecently[npcIndex] ? -1 : 1);
 				float frameAcceleration = maxImpulse * deltaTime;
 
 				Vector2 desiredAcceleration = Vector2.ClampMagnitude(

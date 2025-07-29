@@ -1,5 +1,7 @@
 using UnityEngine;
 
+using Base;
+
 namespace PrettyPatterns {
 	public class Singleton<T> : MonoBehaviour where T : MonoBehaviour {
 
@@ -10,7 +12,7 @@ namespace PrettyPatterns {
 			get {
 				if (_instance == null) {
 					_instance = GameObject.FindObjectOfType<T>();
-					if (_instance == null) {
+					if (_instance == null && !App.IsQuitting) {
 						var singletonObj = new GameObject();
 						singletonObj.name = typeof(T).ToString();
 						_instance = singletonObj.AddComponent<T>();
@@ -42,8 +44,6 @@ namespace PrettyPatterns {
 
 			if (verbose)
 				Debug.Log("SingleAccessPoint instance found " + instance.GetType().Name);
-
 		}
-
 	}
 }

@@ -4,18 +4,21 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
-using PrettyPatterns;
 
 namespace Base {
-	public class App : Singleton<App> {
-		public override void Awake() {
-			base.Awake();
+	public class App : MonoBehaviour {
+        public static App instance;
+		public void Awake() {
+            instance = this;
 
 			SceneManager.sceneLoaded += (scene, loadmode) => {
 				AfterSceneLoad?.Invoke(scene, loadmode);
 			};
 			AfterSceneLoad = new UnityEvent<Scene, LoadSceneMode>();
 			BeforeSceneUnload = new UnityEvent<Scene>();
+            Application.quitting += () => {
+                IsQuitting = true;
+            };
 		}
 
 		[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
@@ -31,6 +34,7 @@ namespace Base {
 		#region App Scene Management
 		public static UnityEvent<Scene, LoadSceneMode> AfterSceneLoad;
 		public static UnityEvent<Scene> BeforeSceneUnload;
+        public static bool IsQuitting;
 		#endregion
 
 		public static Scene GetActiveScene() => SceneManager.GetActiveScene();

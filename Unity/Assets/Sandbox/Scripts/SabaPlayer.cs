@@ -48,7 +48,6 @@ namespace Saba {
 		void OnEnable() {
 			wantsToFire = false;
 			EventBus<AttackAction>.Register(attackActionBinding);
-			SabaHealthUIManager.instance.Track(entity);
 		}
 
 		void OnDisable() {
@@ -58,7 +57,6 @@ namespace Saba {
 			// unloading the scene, so we shouldn't be calling functions even
 			// when it's referencing
 			if (!gameObject.scene.isLoaded) return;
-			SabaHealthUIManager.instance.Untrack(entity);
 		}
 
 		void Update() {
