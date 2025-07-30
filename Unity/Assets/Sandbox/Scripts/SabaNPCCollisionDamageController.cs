@@ -19,17 +19,15 @@ namespace Saba {
 		};
 
 		HashSet<int> allEntitesRemembered = new HashSet<int>();
-		MemoryOfHit[] memory = new MemoryOfHit[MaxMemory];
-		int lt = 0;
-		int rt = 0;
+        Deque<MemoryOfHit> memory = new Deque<MemoryOfHit>(MaxMemory);
 
 		List<SabaNPCData> data => SabaNPCRuntimeGroup.instance.data;
         SabaNPCTransientData transientData => SabaNPCRuntimeGroup.instance.transientData;
 
 		void Forget() {
-			while (lt != rt && memory[lt].IsExpired(memorySeconds)) {
-				allEntitesRemembered.Remove(memory[lt++].entity);
-				if (lt == MaxMemory) lt = 0;
+			while (!memory.IsEmpty && memory.Peek().IsExpired(memorySeconds)) {
+				allEntitesRemembered.Remove(memory.Peek().entity);
+                memory.Pop();
 			}
 		}
 
@@ -64,17 +62,7 @@ namespace Saba {
 				transientData.hasHitPlayerRecently[npcIndex] = true;
 
 				allEntitesRemembered.Add(id);
-				memory[rt++] =
-					new MemoryOfHit() { time = Time.time, entity = id };
-
-				if (rt == MaxMemory) rt = 0;
-
-				if (rt == lt) {
-					Debug.LogError(
-						"Collision hit register exceeded capacity, silently dropping oldest entry"
-					);
-					lt++;
-				}
+                memory.Push(new MemoryOfHit() { time = Time.time, entity = id });
 
 				allHits.Add(new SabaHitResolution.Hit(
 				) { Entity = player.entity,
