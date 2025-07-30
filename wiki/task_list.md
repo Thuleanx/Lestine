@@ -22,11 +22,11 @@ This is where Lestine's tasks are tracked.
 - [ ] player knockback on shoot
 - [ ] less accuracy
 <consume>
-- [ ] eat multiple enemies at once
-- [?] temporary buff
+- [?] eat multiple enemies at once
+- [ ] temporary buff
 <enemies>
 - [ ] spawning
-- [ ] executable on 0 health, dies after a duration
+- [x] executable on 0 health, dies after a duration
 <ability>
 - [ ] abilities, inheritable
 <upgrade system>

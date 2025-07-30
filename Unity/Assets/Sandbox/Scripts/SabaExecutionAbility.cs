@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 using ADammy;
 
@@ -9,6 +10,8 @@ namespace Saba {
 		float range;
 		[SerializeField, Range(0, 1)]
 		float healthRefund;
+        [SerializeField]
+        int maxTargetsCount;
 
 		SabaEntity entity;
 		EventBinding<ExecutionAction> executionActionBinding;
@@ -31,8 +34,8 @@ namespace Saba {
 		}
 
 		public void Perform() {
-			SabaEntity closestEntity = null;
-			float closestSqDistance = float.MaxValue;
+            // We will potentially exceed the max targets count by 1
+            List<(SabaEntity, float)> bestTargets = new List<(SabaEntity, float)>(maxTargetsCount + 1);
 
 			foreach (SabaExecutableRuntimeGroup
 						 .Entry entry in SabaExecutableRuntimeGroup.instance
@@ -43,29 +46,39 @@ namespace Saba {
 				bool isTargetValid =
 					executable != null && executable.isActiveAndEnabled;
 				if (!isTargetValid) continue;
+
 				Vector3 displacement =
 					executable.transform.position - transform.position;
 				float sqDistance = Vector3.Dot(displacement, displacement);
 
-				if (closestSqDistance > sqDistance) {
-					closestSqDistance = sqDistance;
-					closestEntity = executable;
-				}
+                bool isTargetTooFar = sqDistance > range*range;
+				if (isTargetTooFar) continue;
+
+                bestTargets.Add((entry.entity, sqDistance));
+
+                if (bestTargets.Count > maxTargetsCount) {
+                    int indexOfFurthest = 0;
+                    for (int i = 1; i < bestTargets.Count; i++)
+                        if (bestTargets[i].Item2 > bestTargets[indexOfFurthest].Item2)
+                            indexOfFurthest = i;
+                    bestTargets.RemoveAt(indexOfFurthest);
+                }
 			}
 
-			bool hasValidTarget =
-				closestEntity && closestSqDistance < range * range;
+			bool hasValidTarget = bestTargets.Count > 0;
 			if (!hasValidTarget) return;
 
-			entity.Attributes.MovementSpeed += 5;
+            foreach ((SabaEntity target, float _) in bestTargets) {
+                entity.Attributes.MovementSpeed += 5;
 
-			float heal = entity.Attributes.MaxHealth * healthRefund;
-			heal = Mathf.Min(
-				heal, entity.Attributes.MaxHealth - entity.Resource.Health
-			);
-			entity.Resource.Health += heal;
+                float heal = entity.Attributes.MaxHealth * healthRefund;
+                heal = Mathf.Min(
+                    heal, entity.Attributes.MaxHealth - entity.Resource.Health
+                );
+                entity.Resource.Health += heal;
 
-			Destroy(closestEntity.gameObject);
+                Destroy(target.gameObject);
+            }
 		}
 	}
 }
