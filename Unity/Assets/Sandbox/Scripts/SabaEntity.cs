@@ -25,7 +25,7 @@ namespace Saba {
                 }
 
                 entity.GetComponent<SabaNPC>().enabled = false;
-                SabaExecutableRuntimeGroup.instance?.activeEntities.Add(entity);
+                SabaExecutableRuntimeGroup.instance?.Register(entity);
 			}
 		}
 	}

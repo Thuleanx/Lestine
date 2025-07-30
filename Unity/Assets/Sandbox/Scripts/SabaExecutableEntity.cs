@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using PrettyPatterns;
 
 namespace Saba {
-
     public class Deque<T> {
         int count;
         T[] data;
@@ -39,6 +38,14 @@ namespace Saba {
         public void Pop() {
             Assert.AreNotEqual(lt, rt, "Cannot pop from an empty collection");
             lt++;
+        }
+
+        public IEnumerable<T> Enumerate() {
+            for (int i = lt; i != rt; ) {
+                yield return data[i];
+                i++;
+                if (i == count) i = 0;
+            }
         }
     }
 
@@ -79,7 +86,7 @@ namespace Saba {
                 if (!isEntryExpired) break;
                 activeEntities.Pop();
 
-                Destroy(entry.entity);
+                Destroy(entry.entity.gameObject);
             }
         }
 	}
