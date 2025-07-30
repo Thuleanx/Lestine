@@ -86,7 +86,8 @@ namespace Saba {
                 if (!isEntryExpired) break;
                 activeEntities.Pop();
 
-                Destroy(entry.entity.gameObject);
+                if (entry.entity && entry.entity.isActiveAndEnabled)
+                    Destroy(entry.entity.gameObject);
             }
         }
 	}

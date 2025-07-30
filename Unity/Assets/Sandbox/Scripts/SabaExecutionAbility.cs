@@ -34,11 +34,15 @@ namespace Saba {
 			SabaEntity closestEntity = null;
 			float closestSqDistance = float.MaxValue;
 
-			foreach (SabaExecutableRuntimeGroup.Entry entry in
-						 SabaExecutableRuntimeGroup.instance
-							 .activeEntities.Enumerate()) {
-
-                SabaEntity executable = entry.entity;
+			foreach (SabaExecutableRuntimeGroup
+						 .Entry entry in SabaExecutableRuntimeGroup.instance
+						 .activeEntities.Enumerate()) {
+				SabaEntity executable = entry.entity;
+				// It's possible for there to be null entries in this runtime group,
+                // especially as we consume some enemies
+				bool isTargetValid =
+					executable != null && executable.isActiveAndEnabled;
+				if (!isTargetValid) continue;
 				Vector3 displacement =
 					executable.transform.position - transform.position;
 				float sqDistance = Vector3.Dot(displacement, displacement);
@@ -56,7 +60,9 @@ namespace Saba {
 			entity.Attributes.MovementSpeed += 5;
 
 			float heal = entity.Attributes.MaxHealth * healthRefund;
-            heal = Mathf.Min(heal, entity.Attributes.MaxHealth - entity.Resource.Health);
+			heal = Mathf.Min(
+				heal, entity.Attributes.MaxHealth - entity.Resource.Health
+			);
 			entity.Resource.Health += heal;
 
 			Destroy(closestEntity.gameObject);
