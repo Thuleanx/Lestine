@@ -35,7 +35,7 @@ namespace Saba {
 				if (isEntityKilled) deadEntities.Add(hit.Entity);
 				else {
                     damagedEntities.Add(hit.Entity);
-                    hit.MovementComponent.ApplyForce(hit.Direction * hit.Knockback);
+                    hit.MovementComponent.ApplyKnockback(hit.Direction * hit.Knockback);
                 }
 			}
 

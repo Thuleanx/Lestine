@@ -9,7 +9,7 @@ using Scriptables;
 
 namespace Saba {
 	[RequireComponent(typeof(SabaEntity))]
-	public class SabaPlayer : Singleton<SabaPlayer> {
+	public class SabaPlayer : SingletonNullable<SabaPlayer> {
 		[SerializeField]
 		ScriptableVector2 movementInput;
 		[SerializeField]

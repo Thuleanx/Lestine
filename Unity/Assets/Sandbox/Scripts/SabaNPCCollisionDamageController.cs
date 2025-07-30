@@ -8,6 +8,9 @@ namespace Saba {
 		[SerializeField]
 		float playerRadius = 0.2f;
 		[SerializeField]
+		float knockbackVelocityScale = 0.3f;
+
+		[SerializeField]
 		float memorySeconds;
 
 		struct MemoryOfHit {
@@ -19,15 +22,16 @@ namespace Saba {
 		};
 
 		HashSet<int> allEntitesRemembered = new HashSet<int>();
-        Deque<MemoryOfHit> memory = new Deque<MemoryOfHit>(MaxMemory);
+		Deque<MemoryOfHit> memory = new Deque<MemoryOfHit>(MaxMemory);
 
 		List<SabaNPCData> data => SabaNPCRuntimeGroup.instance.data;
-        SabaNPCTransientData transientData => SabaNPCRuntimeGroup.instance.transientData;
+		SabaNPCTransientData transientData =>
+			SabaNPCRuntimeGroup.instance.transientData;
 
 		void Forget() {
 			while (!memory.IsEmpty && memory.Peek().IsExpired(memorySeconds)) {
 				allEntitesRemembered.Remove(memory.Peek().entity);
-                memory.Pop();
+				memory.Pop();
 			}
 		}
 
@@ -62,16 +66,23 @@ namespace Saba {
 				transientData.hasHitPlayerRecently[npcIndex] = true;
 
 				allEntitesRemembered.Add(id);
-                memory.Push(new MemoryOfHit() { time = Time.time, entity = id });
+				memory.Push(new MemoryOfHit() { time = Time.time, entity = id }
+				);
+
+                Vector2 movementDirection = npc.movementComponent.Velocity.normalized;
+                float speed = npc.movementComponent.Velocity.magnitude;
+
+                float knockback = speed * knockbackVelocityScale;
+                Vector2 location = directionToPlayer * npc.radius +
+							   (Vector2)npc.entity.transform.position;
 
 				allHits.Add(new SabaHitResolution.Hit(
 				) { Entity = player.entity,
 					MovementComponent = player.movementComponent,
-					Location = directionToPlayer * npc.radius +
-							   (Vector2)npc.entity.transform.position,
-					Direction = directionToPlayer,
+					Location = location,
+					Direction = movementDirection,
 					Damage = 1,
-					Knockback = 0.5f });
+					Knockback = knockback });
 			}
 
 			SabaHitResolution.instance?.RegisterHits(allHits);
