@@ -3,7 +3,6 @@ using UnityEngine.Assertions;
 
 using ADammy;
 using PrettyPatterns;
-using MathUtils;
 
 using Scriptables;
 
@@ -19,12 +18,10 @@ namespace Saba {
 		Camera mainCamera;
 		[SerializeField]
 		float attacksPerMinute;
-		[SerializeField]
-		SabaBulletBatch bulletBatch;
 		[SerializeField, Min(0.01f)]
 		float secondsToTopSpeed = 0.5f;
         [SerializeField]
-        float gunKickbackForce;
+        SabaShootAbility shootAbility;
 
 		[System.NonSerialized]
 		public SabaEntity entity;
@@ -114,22 +111,10 @@ namespace Saba {
 
 			for (int _ = 0; _ < MAX_ATTACKS_PER_FRAME && attackCooldown <= 0;
 				 _++) {
-				Vector2 direction = aimPosition - transform.position;
 
-                movementComponent.ApplyKnockback(-direction * gunKickbackForce);
+                shootAbility.Activate(entity, (Vector2) aimPosition, attackCooldown);
 
-				for (int i = -3; i <= 3; i++) {
-					Vector2 instanceDirection =
-						Mathx.Rotate(direction, i * (Mathf.PI / 16));
-					bulletBatch.InstantiateBullet(
-						transform.position,
-						instanceDirection,
-						entity.Attributes.Attack,
-						0.1f,
-						-attackCooldown
-					);
-				}
-				attackCooldown += totalCooldownTime;
+                attackCooldown += totalCooldownTime;
 			}
 
 			// if we somehow lag spike too long,

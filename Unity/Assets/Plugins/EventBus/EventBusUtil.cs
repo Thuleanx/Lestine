@@ -75,13 +75,15 @@ namespace ADammy {
 		/// </summary>
 		public static void ClearAllBuses() {
 			Debug.Log("Clearing all buses...");
-			for (int i = 0; i < EventBusTypes.Count; i++) {
-				var busType = EventBusTypes[i];
-				var clearMethod = busType.GetMethod(
-					"Clear", BindingFlags.Static | BindingFlags.NonPublic
-				);
-				clearMethod?.Invoke(null, null);
-			}
+            if (EventBusTypes != null) {
+                for (int i = 0; i < EventBusTypes.Count; i++) {
+                    var busType = EventBusTypes[i];
+                    var clearMethod = busType.GetMethod(
+                        "Clear", BindingFlags.Static | BindingFlags.NonPublic
+                    );
+                    clearMethod?.Invoke(null, null);
+                }
+            }
 		}
 	}
 }
