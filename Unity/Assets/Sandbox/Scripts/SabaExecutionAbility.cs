@@ -5,6 +5,7 @@ using ADammy;
 
 namespace Saba {
 	[RequireComponent(typeof(SabaEntity))]
+	[RequireComponent(typeof(SabaBuffContainer))]
 	public class SabaExecutionAbility : MonoBehaviour {
 		[SerializeField, Range(0, 10)]
 		float range;
@@ -14,10 +15,12 @@ namespace Saba {
         int maxTargetsCount;
 
 		SabaEntity entity;
+        SabaBuffContainer buffContainer;
 		EventBinding<ExecutionAction> executionActionBinding;
 
 		void Awake() {
 			entity = GetComponent<SabaEntity>();
+            buffContainer = GetComponent<SabaBuffContainer>();
 
 			executionActionBinding =
 				new EventBinding<ExecutionAction>((execution) => {
@@ -76,6 +79,7 @@ namespace Saba {
                     heal, entity.Attributes.MaxHealth - entity.Resource.Health
                 );
                 entity.Resource.Health += heal;
+                buffContainer.ApplyBuff(SabaBuffData.MakeEnlarge(1.2f), 2.0f);
 
                 Destroy(target.gameObject);
             }
