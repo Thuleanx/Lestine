@@ -14,4 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bulletBatch: {fileID: 5913228304053800750, guid: 955cbdaf63fe2924897e71b354a6d167, type: 3}
   <NumBullets>k__BackingField: 3
-  <KickbackForce>k__BackingField: 0.03
+  <InaccuracyAngle>k__BackingField: 10
+  <KickbackForce>k__BackingField: 0

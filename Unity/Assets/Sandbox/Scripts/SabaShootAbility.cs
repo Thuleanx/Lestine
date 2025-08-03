@@ -5,13 +5,18 @@ using UnityEngine.Assertions;
 using MathUtils;
 
 namespace Saba {
-    [CreateAssetMenu(menuName = "Saba/Ability/Shoot")]
+	[CreateAssetMenu(menuName = "Saba/Ability/Shoot")]
 	public class SabaShootAbility : ScriptableObject, SabaAbility {
 		[SerializeField]
 		SabaBulletBatch bulletBatch;
 
 		[field:SerializeField, Min(1)]
 		public int NumBullets { get; private set; } = 1;
+
+		[field:SerializeField, Min(0)]
+		public float InaccuracyAngle {
+			get; private set;
+		} = 0;
 
 		[field:SerializeField, Min(0.0f)]
 		public float KickbackForce {
@@ -33,8 +38,9 @@ namespace Saba {
 		) {
 			if (runtimeBulletBatch == null)
 				runtimeBulletBatch = Instantiate(bulletBatch);
-            if (abilityInstances == null)
-                abilityInstances = new Dictionary<SabaEntity, SabaShootAbilityInstance>();
+			if (abilityInstances == null)
+				abilityInstances =
+					new Dictionary<SabaEntity, SabaShootAbilityInstance>();
 
 			SabaShootAbilityInstance instance;
 
@@ -82,10 +88,12 @@ namespace Saba {
 					-direction * ability.KickbackForce
 				);
 
+				float inaccuracy = Mathf.Deg2Rad * ability.InaccuracyAngle *
+								   Mathx.RandomRange(-0.5f, 0.5f);
 				float offset = -ability.NumBullets / 2.0f;
 				for (int i = 0; i < ability.NumBullets; i++) {
 					Vector2 instanceDirection =
-						Mathx.Rotate(direction, (i + offset) * (Mathf.PI / 16));
+						Mathx.Rotate(direction, (i + offset) * (Mathf.PI / 16) + inaccuracy);
 					bulletBatch.InstantiateBullet(
 						entityPosition,
 						instanceDirection,

@@ -19,8 +19,8 @@ This is where Lestine's tasks are tracked.
 <gunplay> 
 - [?] aim assist
 - [x] enemies executable
-- [?] player knockback on shoot
-- [ ] less accuracy
+- [x] player knockback on shoot
+- [x] less accuracy
 <consume>
 - [x] eat multiple enemies at once
 - [x] temporary buff
@@ -28,7 +28,8 @@ This is where Lestine's tasks are tracked.
 - [ ] spawning
 - [x] executable on 0 health, dies after a duration
 <ability>
-- [?] abilities, inheritable
+- [x] abilities
+- [ ] steal abilities on execute
 <upgrade system>
 <sfx>
 <music>
