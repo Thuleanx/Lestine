@@ -23,12 +23,12 @@ This is where Lestine's tasks are tracked.
 - [ ] less accuracy
 <consume>
 - [x] eat multiple enemies at once
-- [?] temporary buff
+- [x] temporary buff
 <enemies>
 - [ ] spawning
 - [x] executable on 0 health, dies after a duration
 <ability>
-- [ ] abilities, inheritable
+- [?] abilities, inheritable
 <upgrade system>
 <sfx>
 <music>
