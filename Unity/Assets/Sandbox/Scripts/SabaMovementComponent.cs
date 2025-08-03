@@ -9,6 +9,8 @@ namespace Saba {
 		const float VERY_SMALL_KNOCKBACK = 0.001f;
 		const float KNOCKBACK_ALPHA = 8.0f;
 
+		const float KNOCKBACK_CAP = 10.0f;
+
 		new Rigidbody2D rigidbody;
 		public float Mass => rigidbody.mass;
 
@@ -40,6 +42,12 @@ namespace Saba {
 			if (isKnockbackTooSmall) {
 				Knockback = Vector2.zero;
 			} else {
+				bool isKnockbackTooBig =
+					Knockback.sqrMagnitude > KNOCKBACK_CAP * KNOCKBACK_CAP;
+				if (isKnockbackTooBig)
+					Knockback =
+						Vector2.ClampMagnitude(Knockback, KNOCKBACK_CAP);
+
 				float frameKnockbackPercentage = Mathx.Damp(
 					Mathf.Lerp, 0.0f, 1.0f, KNOCKBACK_ALPHA, Time.fixedDeltaTime
 				);

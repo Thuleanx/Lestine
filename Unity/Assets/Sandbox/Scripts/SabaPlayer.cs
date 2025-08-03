@@ -9,6 +9,7 @@ using Scriptables;
 
 namespace Saba {
 	[RequireComponent(typeof(SabaEntity))]
+	[RequireComponent(typeof(SabaMovementComponent))]
 	public class SabaPlayer : SingletonNullable<SabaPlayer> {
 		[SerializeField]
 		ScriptableVector2 movementInput;
@@ -22,6 +23,8 @@ namespace Saba {
 		SabaBulletBatch bulletBatch;
 		[SerializeField, Min(0.01f)]
 		float secondsToTopSpeed = 0.5f;
+        [SerializeField]
+        float gunKickbackForce;
 
 		[System.NonSerialized]
 		public SabaEntity entity;
@@ -112,6 +115,8 @@ namespace Saba {
 			for (int _ = 0; _ < MAX_ATTACKS_PER_FRAME && attackCooldown <= 0;
 				 _++) {
 				Vector2 direction = aimPosition - transform.position;
+
+                movementComponent.ApplyKnockback(-direction * gunKickbackForce);
 
 				for (int i = -3; i <= 3; i++) {
 					Vector2 instanceDirection =

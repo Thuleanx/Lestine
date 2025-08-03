@@ -17,9 +17,9 @@ This is where Lestine's tasks are tracked.
 - [ ] camera lean to center of mass
 - [ ] screenshake
 <gunplay> 
-- [ ] aim assist
-- [ ] enemies executable
-- [ ] player knockback on shoot
+- [?] aim assist
+- [x] enemies executable
+- [?] player knockback on shoot
 - [ ] less accuracy
 <consume>
 - [x] eat multiple enemies at once
