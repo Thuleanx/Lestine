@@ -17,7 +17,7 @@ This is where Lestine's tasks are tracked.
 - [ ] camera lean to center of mass
 - [ ] screenshake
 <gunplay> 
-- [?] aim assist
+- [?] ~aim assist~ delayed for when supporting aiming with joystick
 - [x] enemies executable
 - [x] player knockback on shoot
 - [x] less accuracy
