@@ -10,25 +10,25 @@ This is where Lestine's tasks are tracked.
 - [x] Enemies consumable on low health
 - [x] Consume enemy to gain a speed boost
 - [x] Heal on enemy consumption
+- [x] camera asymptotic averaging
+- [x] enemies executable
+- [x] player knockback on shoot
+- [x] less accuracy
+- [x] executable on 0 health, dies after a duration
+- [x] eat multiple enemies at once
+- [x] temporary buff
+- [x] abilities
 
 <camera>
-- [ ] camera asymptotic averaging
 - [ ] camera lean to mouse
 - [ ] camera lean to center of mass
 - [ ] screenshake
 <gunplay> 
 - [?] ~aim assist~ delayed for when supporting aiming with joystick
-- [x] enemies executable
-- [x] player knockback on shoot
-- [x] less accuracy
 <consume>
-- [x] eat multiple enemies at once
-- [x] temporary buff
 <enemies>
 - [ ] spawning
-- [x] executable on 0 health, dies after a duration
 <ability>
-- [x] abilities
 - [ ] steal abilities on execute
 <upgrade system>
 <sfx>

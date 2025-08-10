@@ -33,8 +33,8 @@ namespace Saba {
 			transform.position = GetArmPosition(GetDesiredFocusPosition());
 		}
 
-		void Update() {
-			float deltaTime = Time.deltaTime;
+		void FixedUpdate () {
+			float deltaTime = Time.fixedDeltaTime;
 
 			Vector3 desiredArmPosition = GetArmPosition(GetDesiredFocusPosition());
 			Vector3 nextArmPosition = Mathx.Damp(
