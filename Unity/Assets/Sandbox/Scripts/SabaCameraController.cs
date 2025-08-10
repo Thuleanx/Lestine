@@ -34,6 +34,8 @@ namespace Saba {
 		}
 
 		void FixedUpdate () {
+            if (!SabaPlayer.instance) return;
+
 			float deltaTime = Time.fixedDeltaTime;
 
 			Vector3 desiredArmPosition = GetArmPosition(GetDesiredFocusPosition());
