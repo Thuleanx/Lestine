@@ -837,7 +837,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Velocity: {x: 0, y: 0}
-  AccelerationToMaxSpeedSeconds: 1
+  AccelerationToMaxSpeedSeconds: 0.2
 --- !u!50 &1651976474
 Rigidbody2D:
   serializedVersion: 4

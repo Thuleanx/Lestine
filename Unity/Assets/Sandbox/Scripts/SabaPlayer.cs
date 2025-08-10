@@ -18,8 +18,6 @@ namespace Saba {
 		Camera mainCamera;
 		[SerializeField]
 		float attacksPerMinute;
-		[SerializeField, Min(0.01f)]
-		float secondsToTopSpeed = 0.5f;
         [SerializeField]
         SabaShootAbility shootAbility;
 
@@ -62,10 +60,15 @@ namespace Saba {
 		void Update() {
 			Vector2 right = mainCamera.transform.right;
 			Vector2 forward = mainCamera.transform.forward;
+
+            right.Normalize();
+            forward.Normalize();
+            Vector2 inputDirection = movementInput.Value;
+            inputDirection.Normalize();
 			// normalize right here after the z component has dropped
 
 			Vector2 desiredMoveDirection =
-				right * movementInput.Value.x + forward * movementInput.Value.y;
+				right * inputDirection.x + forward * inputDirection.y;
             desiredMoveDirection = desiredMoveDirection.normalized;
 
 			Vector2 desiredMoveVelocity =
@@ -75,7 +78,7 @@ namespace Saba {
 				desiredMoveVelocity - movementComponent.Velocity;
 
 			float accelerationMax =
-				entity.Attributes.MovementSpeed / secondsToTopSpeed;
+				entity.Attributes.MovementSpeed / movementComponent.AccelerationToMaxSpeedSeconds;
 
 			Vector2 appliedForce = Vector2.ClampMagnitude(
 				desiredForce,
