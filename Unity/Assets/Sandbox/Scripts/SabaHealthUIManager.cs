@@ -58,6 +58,7 @@ namespace Saba {
 				activeEntityIndexMap[entity] = activeEntities.Count;
 				activeEntities.Add(new TrackedEntityData(
 				) { healthBar = newBar, entity = entity });
+                Reposition(activeEntities[activeEntities.Count - 1]);
 			}
 		}
 
@@ -78,6 +79,11 @@ namespace Saba {
 			}
 		}
 
+        void Reposition(TrackedEntityData data) {
+            Vector3 position = data.entity.transform.position + offset;
+            data.healthBar.transform.position = RectTransformUtility.WorldToScreenPoint(camera, position);
+        }
+
 		public void OnDamageTaken(IEnumerable<SabaEntity> damagedEntities
 		) => Track(damagedEntities);
 		public void OnDeath(IEnumerable<SabaEntity> deadEntities
@@ -94,9 +100,7 @@ namespace Saba {
                 float healthValue = data.entity.Resource.Health /
                                     data.entity.Attributes.MaxHealth;
                 data.healthBar.value = healthValue;
-
-                Vector3 position = data.entity.transform.position + offset;
-                data.healthBar.transform.position = RectTransformUtility.WorldToScreenPoint(camera, position);
+                Reposition(data);
             }
 		}
 	}
