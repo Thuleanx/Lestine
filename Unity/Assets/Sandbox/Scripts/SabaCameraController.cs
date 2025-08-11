@@ -17,7 +17,7 @@ namespace Saba {
 
 		void Start() { Refocus(); }
 
-		public Vector3 GetDesiredFocusPosition() {
+		public Vector3 GetDesiredFocusPosition(Transform focusTransform) {
 			SabaPlayer player = SabaPlayer.instance;
 
 			Vector3 desiredFocusPosition = player.transform.position;
@@ -30,15 +30,33 @@ namespace Saba {
 		) => focusPosition + camera.transform.forward * -distanceToTarget;
 
 		public void Refocus() {
-			transform.position = GetArmPosition(GetDesiredFocusPosition());
+			if (!SabaPlayer.instance) return;
+
+			transform.position = GetArmPosition(
+				GetDesiredFocusPosition(SabaPlayer.instance.transform)
+			);
 		}
 
-		void FixedUpdate () {
-            if (!SabaPlayer.instance) return;
+		void Update() {
+			if (!Application.isPlaying) {
+				Transform focusTransform =
+					FindObjectOfType<SabaPlayer>()?.transform;
+
+				if (focusTransform) {
+					transform.position =
+						GetArmPosition(GetDesiredFocusPosition(focusTransform));
+				}
+			}
+		}
+
+		void FixedUpdate() {
+			if (!SabaPlayer.instance) return;
 
 			float deltaTime = Time.fixedDeltaTime;
 
-			Vector3 desiredArmPosition = GetArmPosition(GetDesiredFocusPosition());
+			Vector3 desiredArmPosition = GetArmPosition(
+				GetDesiredFocusPosition(SabaPlayer.instance.transform)
+			);
 			Vector3 nextArmPosition = Mathx.Damp(
 				Vector3.Lerp,
 				transform.position,
@@ -47,7 +65,7 @@ namespace Saba {
 				deltaTime
 			);
 
-            transform.position = nextArmPosition;
+			transform.position = nextArmPosition;
 		}
 	}
 }
