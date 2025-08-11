@@ -60,12 +60,12 @@ namespace Saba {
 		void Update() {
 			Vector2 right = mainCamera.transform.right;
 			Vector2 forward = mainCamera.transform.forward;
-
-            right.Normalize();
+            // normalize right here after the z component has dropped
             forward.Normalize();
+            right.Normalize();
+
             Vector2 inputDirection = movementInput.Value;
             inputDirection.Normalize();
-			// normalize right here after the z component has dropped
 
 			Vector2 desiredMoveDirection =
 				right * inputDirection.x + forward * inputDirection.y;

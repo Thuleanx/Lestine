@@ -72,14 +72,13 @@ namespace Saba {
 			if (!hasValidTarget) return;
 
             foreach ((SabaEntity target, float _) in bestTargets) {
-                entity.Attributes.MovementSpeed += 5;
-
                 float heal = entity.Attributes.MaxHealth * healthRefund;
                 heal = Mathf.Min(
                     heal, entity.Attributes.MaxHealth - entity.Resource.Health
                 );
                 entity.Resource.Health += heal;
-                buffContainer.ApplyBuff(SabaBuffData.MakeEnlarge(1.2f), 2.0f);
+                buffContainer.ApplyBuff(SabaBuffData.MakeEnlarge(1.2f, true), 10.0f);
+                buffContainer.ApplyBuff(SabaBuffData.MakeSpeedup(5.0f, false), 10.0f);
 
                 Destroy(target.gameObject);
             }
