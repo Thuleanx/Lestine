@@ -6,4 +6,6 @@ namespace Saba {
     }
 
     public struct ExecutionAction : IEvent {}
+
+    public struct InteractionAction : IEvent {}
 }

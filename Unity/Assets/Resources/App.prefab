@@ -207,6 +207,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 9d2fd82e-b04d-4748-afcf-286bccf4a775
     m_ActionName: Player/Execute[/Keyboard/f]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 3596904395682031270}
+        m_TargetAssemblyTypeName: Saba.SabaInputManager, Assembly-CSharp
+        m_MethodName: OnInteract
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: c5126b82-4432-407a-8332-11e7d3803f72
+    m_ActionName: Player/Interact[/Keyboard/f]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: Standard
   m_DefaultActionMap: Player

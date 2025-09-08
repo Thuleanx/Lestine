@@ -28,5 +28,9 @@ namespace Saba {
         public void OnExecute(InputAction.CallbackContext context) {
             if (context.started) EventBus<ExecutionAction>.Raise();
         }
+
+        public void OnInteract(InputAction.CallbackContext context) {
+            if (context.started) EventBus<InteractionAction>.Raise();
+        }
 	}
 }
