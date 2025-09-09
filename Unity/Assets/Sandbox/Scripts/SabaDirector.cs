@@ -17,15 +17,13 @@ namespace Saba {
 		Vector2 spawnRange = Vector2.one;
 		[SerializeField]
 		SabaEnemyDataTable dataTable;
+
 		[SerializeField]
-		int maxSpawns;
+		int maxSpawnsPerWave = 30;
+		[SerializeField]
+		SabaEntityBudget.Bucket spawnBucket = SabaEntityBudget.Bucket.Stage;
 
 		new Camera camera;
-
-		struct SpawnParameter {
-			public Vector2 position;
-            public SabaEntity prefab;
-		};
 
 		float credits;
 		float timeNextWave;
@@ -36,30 +34,28 @@ namespace Saba {
 		}
 
 		void SpawnWave() {
-			Vector2 spawnCenter = SabaPlayer.instance
-									  ? SabaPlayer.instance.transform.position
-									  : Vector2.zero;
+			if (SabaSpawnManager.instance.IsBucketFull(spawnBucket)) return;
+			Vector2 spawnCenter = SabaPlayer.instance ? SabaPlayer.instance.transform.position : Vector2.zero;
 
 			bool canAffordAny = false;
 			float totalWeights = 0;
-            // this is initialized high so that we recompute it 
-            // on the first span pass
+			// this is initialized high so that we recompute it
+			// on the first span pass
 			float maxAffordableEntry = float.MaxValue;
 
-			List<SpawnParameter> spawnParameters =
-				new List<SpawnParameter>(maxSpawns);
+			List<SabaSpawnManager.SpawnParameter> spawnParameters =
+				new List<SabaSpawnManager.SpawnParameter>(maxSpawnsPerWave);
 
-			for (int i = 0; i < maxSpawns; i++) {
+			for (int i = 0; i < maxSpawnsPerWave; i++) {
 				if (credits < maxAffordableEntry) {
 					maxAffordableEntry = totalWeights = 0;
 					canAffordAny = false;
-					foreach (SabaEnemyDataTable.SpawnCard entry in dataTable
-								 .entries) {
+					foreach (SabaEnemyDataTable.SpawnCard entry in dataTable.entries) {
 						bool canAffordEntry = entry.cost <= credits;
 						canAffordAny |= canAffordEntry;
-                        if (!canAffordEntry) continue;
+						if (!canAffordEntry) continue;
 
-                        maxAffordableEntry = Mathf.Max(maxAffordableEntry, entry.cost);
+						maxAffordableEntry = Mathf.Max(maxAffordableEntry, entry.cost);
 						totalWeights += entry.weight;
 					}
 				}
@@ -72,32 +68,25 @@ namespace Saba {
 				float r = Mathx.RandomRange(spawnRange);
 				float theta = Mathx.RandomRange(0, 2 * Mathf.PI);
 
-				Vector2 spawnPosition =
-					new Vector2(Mathf.Sin(theta), Mathf.Cos(theta)) * r +
-					spawnCenter;
+				Vector2 spawnPosition = new Vector2(Mathf.Sin(theta), Mathf.Cos(theta)) * r + spawnCenter;
 
-
-                foreach (SabaEnemyDataTable.SpawnCard entry in dataTable
-                                .entries) {
+				foreach (SabaEnemyDataTable.SpawnCard entry in dataTable.entries) {
 					bool canAffordEntry = entry.cost < credits;
-                    if (!canAffordEntry) continue;
-                    spawnWeight -= entry.weight;
+					if (!canAffordEntry) continue;
+					spawnWeight -= entry.weight;
 
-                    bool isChosenEntry = spawnWeight <= 0;
-                    if (isChosenEntry) {
-                        spawnParameters.Add(new SpawnParameter {
-                            position = spawnPosition,
-                            prefab = entry.prefab
-                        });
-                        credits -= entry.cost;
-                        break;
-                    }
-                }
+					bool isChosenEntry = spawnWeight <= 0;
+					if (isChosenEntry) {
+						spawnParameters.Add(
+							new SabaSpawnManager.SpawnParameter { position = spawnPosition, prefab = entry.prefab }
+						);
+						credits -= entry.cost;
+						break;
+					}
+				}
 			}
 
-            foreach (SpawnParameter parameter in spawnParameters) {
-                Instantiate(parameter.prefab, parameter.position, Quaternion.identity);
-            }
+			SabaSpawnManager.instance.RequestSpawn(spawnBucket, spawnParameters);
 		}
 
 		void Update() {

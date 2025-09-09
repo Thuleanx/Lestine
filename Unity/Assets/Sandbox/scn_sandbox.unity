@@ -157,7 +157,8 @@ MonoBehaviour:
   spawnInterval: {x: 5, y: 10}
   spawnRange: {x: 5, y: 20}
   dataTable: {fileID: 11400000, guid: 2955fea9b7777d146bd6989e71f6a454, type: 2}
-  maxSpawns: 40
+  maxSpawnsPerWave: 30
+  spawnBucket: 0
 --- !u!4 &657019323
 Transform:
   m_ObjectHideFlags: 0
@@ -1045,9 +1046,10 @@ MonoBehaviour:
   creditsOnActivation: 1000
   creditMultiplier: 0
   spawnInterval: {x: 0.42237645, y: 0.8844753}
-  spawnRange: {x: 10, y: 20}
+  spawnRange: {x: 20, y: 30}
   dataTable: {fileID: 11400000, guid: 2955fea9b7777d146bd6989e71f6a454, type: 2}
-  maxSpawns: 80
+  maxSpawnsPerWave: 30
+  spawnBucket: 1
 --- !u!1 &2043996558
 GameObject:
   m_ObjectHideFlags: 0
