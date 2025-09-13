@@ -1,3 +1,5 @@
+using UnityEngine;
+
 namespace Saba {
 	public class SabaLoot : SabaInteractable {
         public SabaItemDefinition itemDefinition;
@@ -7,5 +9,8 @@ namespace Saba {
                 buffData.ApplyTo(entity);
             Destroy(gameObject);
         }
+            
+        public override string GetInteractionPrompt() => itemDefinition.displayName;
+        public override Sprite GetInteractionSprite() => itemDefinition.icon;
     }
 }

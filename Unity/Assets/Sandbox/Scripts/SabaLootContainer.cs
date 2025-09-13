@@ -46,6 +46,9 @@ namespace Saba {
 				lootContainer.Open();
                 SabaGameState.instance.Currency -= lootContainer.cost;
 			}
+
+            public override string GetInteractionPrompt() => "Buy chest";
+            public override Sprite GetInteractionSprite() => null;
 		}
 	}
 

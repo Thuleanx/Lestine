@@ -69,6 +69,9 @@ namespace Saba {
 			void Awake() { teleporter = GetComponent<SabaTeleporter>(); }
 
 			public override void Interact(SabaEntity entity) => teleporter.StartCharging();
+
+            public override string GetInteractionPrompt() => "Activate teleporter";
+            public override Sprite GetInteractionSprite() => null;
 		}
 
 		public class PortalInteractor : SabaInteractable {
@@ -79,6 +82,9 @@ namespace Saba {
 			public override void Interact(SabaEntity entity) {
                 Debug.Log("Should be teleporting to the end");
             }
+
+            public override string GetInteractionPrompt() => "Next level";
+            public override Sprite GetInteractionSprite() => null;
 		}
 	}
 

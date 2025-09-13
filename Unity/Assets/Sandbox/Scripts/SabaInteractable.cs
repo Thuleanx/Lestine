@@ -15,5 +15,8 @@ namespace Saba {
 				AllSabaInteractables.instance.AsList.Remove(this);
 		}
         public abstract void Interact(SabaEntity entity);
+
+        public abstract string GetInteractionPrompt();
+        public abstract Sprite GetInteractionSprite();
 	}
 }

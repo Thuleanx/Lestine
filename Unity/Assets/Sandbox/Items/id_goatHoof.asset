@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c82aab103e87a0c40b31463cbd3b5f60, type: 3}
   m_Name: id_goatHoof
   m_EditorClassIdentifier: 
+  displayName: Goat Hoof
+  icon: {fileID: 21300000, guid: 04a26af393c8742a3bdf84b43bed6c16, type: 3}
   buffsToApply:
   - type: 1
     stackable: 1
