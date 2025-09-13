@@ -1,17 +1,19 @@
 using System.Runtime.InteropServices;
 
 namespace Saba {
+    [System.Serializable]
 	public enum SabaBuffType : byte {
 		Enlarge,
-        Speedup,
+		Speedup,
 	}
 
+    [System.Serializable]
 	[StructLayout(LayoutKind.Explicit)]
 	public struct SabaBuffData {
 		[FieldOffset(0)]
-		public readonly SabaBuffType type;
-        [FieldOffset(1)]
-        public bool stackable;
+		public SabaBuffType type;
+		[FieldOffset(1)]
+		public bool stackable;
 		[FieldOffset(4)]
 		public float amount;
 
@@ -19,17 +21,17 @@ namespace Saba {
 
 		public static SabaBuffData MakeEnlarge(float amount, bool stackable = false) {
 			SabaBuffData data = new SabaBuffData(SabaBuffType.Enlarge);
-            data.stackable = stackable;
+			data.stackable = stackable;
 			data.amount = amount;
 			return data;
 		}
 
-        public static SabaBuffData MakeSpeedup(float amount, bool stackable = false) {
+		public static SabaBuffData MakeSpeedup(float amount, bool stackable = false) {
 			SabaBuffData data = new SabaBuffData(SabaBuffType.Speedup);
-            data.stackable = stackable;
+			data.stackable = stackable;
 			data.amount = amount;
 			return data;
-        }
+		}
 
 		public void ApplyTo(SabaEntity entity) {
 			switch (type) {
@@ -37,10 +39,10 @@ namespace Saba {
 					entity.transform.localScale *= amount;
 					break;
 				}
-                case SabaBuffType.Speedup: {
-                    entity.Attributes.MovementSpeed += amount;
-                    break;
-                }
+				case SabaBuffType.Speedup: {
+					entity.Attributes.MovementSpeed += amount;
+					break;
+				}
 			}
 		}
 
@@ -50,10 +52,10 @@ namespace Saba {
 					entity.transform.localScale /= amount;
 					break;
 				}
-                case SabaBuffType.Speedup: {
-                    entity.Attributes.MovementSpeed -= amount;
-                    break;
-                }
+				case SabaBuffType.Speedup: {
+					entity.Attributes.MovementSpeed -= amount;
+					break;
+				}
 			}
 		}
 	}

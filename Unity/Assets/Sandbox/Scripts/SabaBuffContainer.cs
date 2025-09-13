@@ -18,10 +18,7 @@ namespace Saba {
 
 		public void ApplyBuff(SabaBuffData buffData, float durationSeconds) {
 			if (buffCount == MAX_BUFFS) {
-				Debug.Log(
-					"Cannot add additional buffs, currently has " + MAX_BUFFS +
-					" active"
-				);
+				Debug.Log("Cannot add additional buffs, currently has " + MAX_BUFFS + " active");
 				return;
 			}
 
@@ -36,25 +33,19 @@ namespace Saba {
 
 				if (index != -1) {
 					// found another instance
-					bool shouldOverride =
-						data[index].buffData.amount < buffData.amount;
+					bool shouldOverride = data[index].buffData.amount < buffData.amount;
 					if (shouldOverride) {
 						data[index].buffData.RemoveFrom(entity);
 						buffData.ApplyTo(entity);
 
-						data[index] = new Data {
-							expireTime = Time.time + durationSeconds,
-							buffData = buffData
-						};
+						data[index] = new Data { expireTime = Time.time + durationSeconds, buffData = buffData };
 
 					} else return;
 				}
 			}
 
 			buffData.ApplyTo(entity);
-			data[buffCount++] = new Data {
-				expireTime = Time.time + durationSeconds, buffData = buffData
-			};
+			data[buffCount++] = new Data { expireTime = Time.time + durationSeconds, buffData = buffData };
 		}
 
 		void Update() {

@@ -1,8 +1,8 @@
 [System.Serializable]
 public struct SabaAttributes {
     public float MaxHealth;
-    public float Attack;
     public float Defense;
+    public float DamageReduction;
     public float MovementSpeed;
 }
 

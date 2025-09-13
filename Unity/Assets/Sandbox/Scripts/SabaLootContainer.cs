@@ -4,9 +4,12 @@ namespace Saba {
 	public class SabaLootContainer : MonoBehaviour {
 		[SerializeField]
 		float cost;
+        [SerializeField]
+        SabaLoot lootPrefab;
+        [SerializeField]
+        SabaItemDefinition item;
 
 		enum State { Unopened, Opened }
-		;
 		State currentState;
 		Interaction interaction;
 
@@ -16,13 +19,17 @@ namespace Saba {
 		}
 
 		void OnEnable() {
-			interaction.enabled = false;
 			currentState = State.Unopened;
+			interaction.enabled = true;
 		}
 
 		void Open() {
 			currentState = State.Opened;
 			interaction.enabled = false;
+            Debug.Log("Opening chest");
+            SabaLoot loot = Instantiate(lootPrefab, transform.position, transform.rotation);
+            loot.itemDefinition = item;
+            Destroy(gameObject);
 		}
 
 		public class Interaction : SabaInteractable {
@@ -33,10 +40,11 @@ namespace Saba {
 			public override void Interact(SabaEntity entity) {
 				if (!SabaGameState.instance) return;
 
-				bool isAffordable = lootContainer.cost < SabaGameState.instance.Currency;
+				bool isAffordable = lootContainer.cost <= SabaGameState.instance.Currency;
 				if (!isAffordable) return;
 
 				lootContainer.Open();
+                SabaGameState.instance.Currency -= lootContainer.cost;
 			}
 		}
 	}
