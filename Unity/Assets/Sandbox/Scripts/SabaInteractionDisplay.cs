@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Assertions;
 using UnityEngine.UI;
 using TMPro;
 
@@ -23,6 +24,7 @@ namespace Saba {
 
 		RectTransform rectTransform;
 		Canvas canvas;
+		Vector3 trackingPosition;
 
 		public override void Awake() {
 			base.Awake();
@@ -30,22 +32,25 @@ namespace Saba {
 			canvas = GetComponentInParent<Canvas>();
 		}
 
-        void Start() {
-            Hide();
-        }
+		void Start() { Hide(); }
 
 		public void UpdateData(InteractionDisplay data) {
 			image.sprite = data.sprite;
 			prompt.text = data.prompt;
-			Vector2 viewportPosition = canvas.worldCamera.WorldToViewportPoint(data.location);
-			Vector2 screenPosition = new Vector2(
-				((viewportPosition.x * rectTransform.sizeDelta.x) - (rectTransform.sizeDelta.x * 0.5f)),
-				((viewportPosition.y * rectTransform.sizeDelta.y) - (rectTransform.sizeDelta.y * 0.5f))
-			);
-            rectTransform.anchoredPosition = screenPosition + offset * Vector2.up;
+			trackingPosition = data.location;
+			Reposition();
+
 			gameObject.SetActive(true);
 		}
 
 		public void Hide() { gameObject.SetActive(false); }
+
+		void Reposition() {
+			Vector2 viewportPos =
+				canvas.worldCamera.WorldToViewportPoint(trackingPosition + offset * canvas.worldCamera.transform.up);
+			rectTransform.anchoredPosition = canvas.GetComponent<CanvasScaler>().referenceResolution * viewportPos;
+		}
+
+		void Update() => Reposition();
 	}
 }
