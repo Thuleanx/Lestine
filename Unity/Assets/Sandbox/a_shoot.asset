@@ -16,3 +16,6 @@ MonoBehaviour:
   <NumBullets>k__BackingField: 3
   <InaccuracyAngle>k__BackingField: 10
   <KickbackForce>k__BackingField: 0
+  attackDefinition:
+    BaseDamage: 1
+    Knockback: 3

@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d75fea6af68119642949c4c087a9d63a, type: 3}
+  m_Name: dt_regularChestItems
+  m_EditorClassIdentifier: 
+  items:
+  - item: {fileID: 11400000, guid: bccd4d0782c60c14b95ac4f3c57352ea, type: 2}
+    weight: 1
