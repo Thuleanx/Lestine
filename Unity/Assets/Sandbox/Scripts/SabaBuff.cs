@@ -40,10 +40,11 @@ namespace Saba {
 					break;
 				}
 				case SabaBuffType.Speedup: {
-					entity.Attributes.MovementSpeed += amount;
+					entity.AttributesScaling.MovementSpeed.Increase += amount;
 					break;
 				}
 			}
+            entity.ComputeAttributes();
 		}
 
 		public void RemoveFrom(SabaEntity entity) {
@@ -53,10 +54,11 @@ namespace Saba {
 					break;
 				}
 				case SabaBuffType.Speedup: {
-					entity.Attributes.MovementSpeed -= amount;
+					entity.AttributesScaling.MovementSpeed.Increase -= amount;
 					break;
 				}
 			}
+            entity.ComputeAttributes();
 		}
 	}
 }

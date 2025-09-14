@@ -17,4 +17,4 @@ MonoBehaviour:
   buffsToApply:
   - type: 1
     stackable: 1
-    amount: 10
+    amount: 0.2

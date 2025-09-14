@@ -5,16 +5,39 @@ using NaughtyAttributes;
 
 namespace Saba {
 	public class SabaEntity : MonoBehaviour {
+		[ReadOnly]
 		public SabaAttributes Attributes;
 		[ReadOnly]
 		public SabaResource Resource;
+
+		public SabaAttributes AttributesBase;
+
+		// There's currently no default struct initialization in c#9 so we'll have to do it this way
+		public SabaAttributeScaling AttributesScaling = new SabaAttributeScaling() {
+			MaxHealth = new SabaAttributeCoefficients { More = 1.0f },
+			Defense = new SabaAttributeCoefficients { More = 1.0f },
+			DamageReduction = new SabaAttributeCoefficients { More = 1.0f },
+			MovementSpeed = new SabaAttributeCoefficients { More = 1.0f },
+		};
 
 		[SerializeField]
 		bool isExecutable = false;
 
 		public bool IsDead => Resource.Health <= 0;
 
-		void Awake() { Resource.Health = Attributes.MaxHealth; }
+		void OnEnable() {
+			InitializeResources();
+			ComputeAttributes();
+		}
+
+		void InitializeResources() { Resource.Health = Attributes.MaxHealth; }
+
+		public void ComputeAttributes() {
+			Attributes.MaxHealth = AttributesScaling.MaxHealth.Apply(AttributesBase.MaxHealth);
+			Attributes.Defense = AttributesScaling.Defense.Apply(AttributesBase.Defense);
+			Attributes.DamageReduction = AttributesScaling.DamageReduction.Apply(AttributesBase.DamageReduction);
+			Attributes.MovementSpeed = AttributesScaling.MovementSpeed.Apply(AttributesBase.MovementSpeed);
+		}
 
 		public static void Kill(IEnumerable<SabaEntity> entities) {
 			foreach (SabaEntity entity in entities) {

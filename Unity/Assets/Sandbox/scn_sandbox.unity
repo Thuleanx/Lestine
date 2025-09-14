@@ -1122,6 +1122,28 @@ MonoBehaviour:
     MovementSpeed: 6
   Resource:
     Health: 0
+  AttributesBase:
+    MaxHealth: 10
+    Defense: 0
+    DamageReduction: 0
+    MovementSpeed: 6
+  AttributesScaling:
+    MaxHealth:
+      Added: 0
+      Increase: 0
+      More: 1
+    Defense:
+      Added: 0
+      Increase: 0
+      More: 1
+    DamageReduction:
+      Added: 0
+      Increase: 0
+      More: 1
+    MovementSpeed:
+      Added: 0
+      Increase: 0
+      More: 1
   isExecutable: 0
 --- !u!114 &1651976470
 MonoBehaviour:
@@ -1711,7 +1733,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: -0.000061035156, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 150, y: 180}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &2090737153
