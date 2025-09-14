@@ -39,6 +39,7 @@ namespace Saba {
 		void StartCharging() {
 			CurrentState = State.Charging;
 			director.enabled = true;
+            interactor.enabled = false;
             enabled = true;
 		}
 
