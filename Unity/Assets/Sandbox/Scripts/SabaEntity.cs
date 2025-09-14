@@ -9,9 +9,10 @@ namespace Saba {
 		[ReadOnly]
 		public SabaResource Resource;
 
-        [SerializeField] bool isExecutable = false;
+		[SerializeField]
+		bool isExecutable = false;
 
-        public bool IsDead => Resource.Health <= 0;
+		public bool IsDead => Resource.Health <= 0;
 
 		void Awake() { Resource.Health = Attributes.MaxHealth; }
 
@@ -20,13 +21,13 @@ namespace Saba {
 				bool isExecutable = entity.isExecutable;
 
 				if (!isExecutable) {
-                    Destroy(entity.gameObject);
-                    return;
-                }
+					Destroy(entity.gameObject);
+					return;
+				}
 
-                entity.GetComponent<SabaNPC>().enabled = false;
-                entity.GetComponent<SabaMovementComponent>()?.Stop();
-                SabaExecutableRuntimeGroup.instance?.Register(entity);
+				entity.GetComponent<SabaNPC>().enabled = false;
+				entity.GetComponent<SabaMovementComponent>()?.Stop();
+				SabaExecutableRuntimeGroup.instance?.Register(entity);
 			}
 		}
 	}

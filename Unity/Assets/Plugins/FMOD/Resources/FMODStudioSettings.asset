@@ -316,8 +316,8 @@ MonoBehaviour:
   switchSettingsMigration: 1
   HasSourceProject: 1
   HasPlatforms: 1
-  sourceProjectPath: 
-  sourceBankPath: C:/Users/Neuthal/Documents/GitHub/Lestine/BaseProjectFMOD/Build/Desktop
+  sourceProjectPath: ../FMOD/Lestine.fspro
+  sourceBankPath: ../FMOD/Build
   sourceBankPathUnformatted: 
   BankRefreshCooldown: 5
   ShowBankRefreshWindow: 1
