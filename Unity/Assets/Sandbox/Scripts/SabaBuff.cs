@@ -4,7 +4,8 @@ namespace Saba {
     [System.Serializable]
 	public enum SabaBuffType : byte {
 		Enlarge,
-		Speedup,
+		SpeedIncrease,
+        MaxHealthFlat,
 	}
 
     [System.Serializable]
@@ -19,19 +20,13 @@ namespace Saba {
 
 		public SabaBuffData(SabaBuffType type) : this() { this.type = type; }
 
-		public static SabaBuffData MakeEnlarge(float amount, bool stackable = false) {
-			SabaBuffData data = new SabaBuffData(SabaBuffType.Enlarge);
-			data.stackable = stackable;
-			data.amount = amount;
-			return data;
-		}
-
-		public static SabaBuffData MakeSpeedup(float amount, bool stackable = false) {
-			SabaBuffData data = new SabaBuffData(SabaBuffType.Speedup);
-			data.stackable = stackable;
-			data.amount = amount;
-			return data;
-		}
+        public static SabaBuffData Make(SabaBuffType type, float amount, bool stackable = false) {
+            return new SabaBuffData() {
+                type = type,
+                stackable = stackable,
+                amount = amount
+            };
+        }
 
 		public void ApplyTo(SabaEntity entity) {
 			switch (type) {
@@ -39,10 +34,14 @@ namespace Saba {
 					entity.transform.localScale *= amount;
 					break;
 				}
-				case SabaBuffType.Speedup: {
+				case SabaBuffType.SpeedIncrease: {
 					entity.AttributesScaling.MovementSpeed.Increase += amount;
 					break;
 				}
+                case SabaBuffType.MaxHealthFlat: {
+                    entity.AttributesScaling.MaxHealth.Added += amount;
+                    break;
+                }
 			}
             entity.ComputeAttributes();
 		}
@@ -53,10 +52,14 @@ namespace Saba {
 					entity.transform.localScale /= amount;
 					break;
 				}
-				case SabaBuffType.Speedup: {
+				case SabaBuffType.SpeedIncrease: {
 					entity.AttributesScaling.MovementSpeed.Increase -= amount;
 					break;
 				}
+                case SabaBuffType.MaxHealthFlat: {
+                    entity.AttributesScaling.MaxHealth.Added -= amount;
+                    break;
+                }
 			}
             entity.ComputeAttributes();
 		}

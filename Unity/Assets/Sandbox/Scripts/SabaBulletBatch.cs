@@ -22,6 +22,8 @@ namespace Saba {
 		float lifetime;
 		[SerializeField]
 		LayerMask layerMask;
+		[SerializeField]
+		SabaAttack attack;
 
 		ObjectPool<SabaBullet> pool;
 		List<SabaBullet> liveBullets;
@@ -46,18 +48,12 @@ namespace Saba {
 		}
 
 		public void InstantiateBullet(
-			Vector2 source,
-			Vector2 direction,
-			float damage,
-			float knockback,
-			float timeTravelled
+			SabaEntity owner, Vector2 source, Vector2 direction, float timeTravelled
 		) {
 			direction.Normalize();
 
 			SabaBullet bullet = pool.Get();
-			bullet.Initialize(
-				source, speed * direction, damage, knockback, timeTravelled
-			);
+			bullet.Initialize(owner, source, speed * direction, timeTravelled);
 			liveBullets.Add(bullet);
 		}
 
@@ -71,8 +67,7 @@ namespace Saba {
 		}
 
 		void LateUpdate() {
-			foreach (SabaBullet bullet in liveBullets)
-				bullet.transform.position = bullet.PositionAt(Time.time);
+			foreach (SabaBullet bullet in liveBullets) bullet.transform.position = bullet.PositionAt(Time.time);
 		}
 
 		void Simulate() {
@@ -85,17 +80,14 @@ namespace Saba {
 				origins[i] = bullet.PositionAt(lastSimulationTime);
 
 				float elapsedTime = (Time.time - bullet.StartTime);
-				Vector2 nextPosition =
-					bullet.StartVelocity * elapsedTime + bullet.StartPosition;
+				Vector2 nextPosition = bullet.StartVelocity * elapsedTime + bullet.StartPosition;
 
 				directions[i] = nextPosition - origins[i];
 			}
 
 			lastSimulationTime = Time.time;
 			readyForSimulation = false;
-			BatchRaycaster.PerformRaycasts(
-				origins, directions, layerMask, RemoveCollidedBullets
-			);
+			BatchRaycaster.PerformRaycasts(origins, directions, layerMask, RemoveCollidedBullets);
 		}
 
 		void RemoveCollidedBullets(RaycastHit2D[] hits) {
@@ -105,8 +97,7 @@ namespace Saba {
 
 			Assert.AreEqual(liveBullets.Count, hits.Length);
 
-			List<SabaHitResolution.Hit> unresolvedHits =
-				new List<SabaHitResolution.Hit>(hits.Length);
+			List<Hit> unresolvedHits = new List<Hit>(hits.Length);
 
 			int lastIndex = liveBullets.Count - 1;
 			for (int i = lastIndex; i >= 0; i--) {
@@ -122,24 +113,19 @@ namespace Saba {
 				float destroyedTime = lifetime + bullet.StartTime;
 
 				if (isHit) {
-					Vector2 hitDisplacement =
-						(Vector2)hit.point - bullet.StartPosition;
+					Vector2 hitDisplacement = (Vector2)hit.point - bullet.StartPosition;
 					float speed = bullet.StartVelocity.magnitude;
 					float distanceTravelled = hitDisplacement.magnitude;
-					destroyedTime =
-						Mathf.Min(destroyedTime, distanceTravelled / speed);
+					destroyedTime = Mathf.Min(destroyedTime, distanceTravelled / speed);
 
-					SabaEntity entity =
-						hit.collider.GetComponentInParent<SabaEntity>();
+					SabaEntity entity = hit.collider.GetComponentInParent<SabaEntity>();
 					if (entity && !entity.IsDead) {
-						unresolvedHits.Add(new SabaHitResolution.Hit(
-						) { Entity = entity,
-							MovementComponent =
-								entity.GetComponent<SabaMovementComponent>(),
-							Location = hit.point,
-							Direction = bullet.StartVelocity.normalized,
-							Damage = bullet.Damage,
-							Knockback = bullet.Knockback });
+						unresolvedHits.Add(new Hit(
+						) { target = entity,
+							attacker = bullet.Owner,
+							attack = attack,
+							impactLocation = hit.point,
+							impactDirection = bullet.StartVelocity.normalized });
 					}
 				}
 

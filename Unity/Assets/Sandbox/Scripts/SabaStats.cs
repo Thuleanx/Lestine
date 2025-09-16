@@ -4,6 +4,7 @@ public struct SabaAttributes {
 	public float Defense;
 	public float DamageReduction;
 	public float MovementSpeed;
+    public SabaAttributeCoefficients DamageScaling;
 }
 
 [System.Serializable]
@@ -12,6 +13,7 @@ public struct SabaAttributeScaling {
     public SabaAttributeCoefficients Defense;
     public SabaAttributeCoefficients DamageReduction;
     public SabaAttributeCoefficients MovementSpeed;
+    public SabaAttributeCoefficients Damage;
 }
 
 [System.Serializable]

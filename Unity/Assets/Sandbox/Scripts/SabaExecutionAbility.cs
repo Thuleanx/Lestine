@@ -77,8 +77,8 @@ namespace Saba {
                     heal, entity.Attributes.MaxHealth - entity.Resource.Health
                 );
                 entity.Resource.Health += heal;
-                buffContainer.ApplyBuff(SabaBuffData.MakeEnlarge(1.2f, true), 10.0f);
-                buffContainer.ApplyBuff(SabaBuffData.MakeSpeedup(5.0f, false), 10.0f);
+                buffContainer.ApplyBuff(SabaBuffData.Make(SabaBuffType.Enlarge, 1.2f, true), 10.0f);
+                buffContainer.ApplyBuff(SabaBuffData.Make(SabaBuffType.SpeedIncrease, 5.0f, false), 10.0f);
 
                 Destroy(target.gameObject);
             }

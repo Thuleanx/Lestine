@@ -6,11 +6,13 @@ using NaughtyAttributes;
 namespace Saba {
 	public class SabaEntity : MonoBehaviour {
 		[ReadOnly]
-		public SabaAttributes Attributes;
+		public SabaAttributes Attributes =
+			new SabaAttributes() { DamageScaling = new SabaAttributeCoefficients() { More = 1 } };
 		[ReadOnly]
 		public SabaResource Resource;
-
-		public SabaAttributes AttributesBase;
+		public SabaAttributes AttributesBase =
+			new SabaAttributes() { DamageScaling = new SabaAttributeCoefficients() { More = 1 } };
+		public SabaMovementComponent MovementComponent { get; private set; }
 
 		// There's currently no default struct initialization in c#9 so we'll have to do it this way
 		public SabaAttributeScaling AttributesScaling = new SabaAttributeScaling() {
@@ -18,12 +20,15 @@ namespace Saba {
 			Defense = new SabaAttributeCoefficients { More = 1.0f },
 			DamageReduction = new SabaAttributeCoefficients { More = 1.0f },
 			MovementSpeed = new SabaAttributeCoefficients { More = 1.0f },
+			Damage = new SabaAttributeCoefficients { More = 1.0f },
 		};
 
 		[SerializeField]
 		bool isExecutable = false;
 
 		public bool IsDead => Resource.Health <= 0;
+
+		void Awake() { MovementComponent = GetComponent<SabaMovementComponent>(); }
 
 		void OnEnable() {
 			InitializeResources();
@@ -37,6 +42,7 @@ namespace Saba {
 			Attributes.Defense = AttributesScaling.Defense.Apply(AttributesBase.Defense);
 			Attributes.DamageReduction = AttributesScaling.DamageReduction.Apply(AttributesBase.DamageReduction);
 			Attributes.MovementSpeed = AttributesScaling.MovementSpeed.Apply(AttributesBase.MovementSpeed);
+			Attributes.DamageScaling = AttributesScaling.Damage + AttributesBase.DamageScaling;
 		}
 
 		public static void Kill(IEnumerable<SabaEntity> entities) {

@@ -51,3 +51,6 @@ MonoBehaviour:
   layerMask:
     serializedVersion: 2
     m_Bits: 1
+  attack:
+    BaseDamage: 2
+    Knockback: 0.5

@@ -102,11 +102,41 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Attributes:
     MaxHealth: 20
-    Attack: 0
     Defense: 0
+    DamageReduction: 0
     MovementSpeed: 4
+    DamageScaling:
+      Added: 0
+      Increase: 0
+      More: 0
   Resource:
     Health: 0
+  AttributesBase:
+    MaxHealth: 20
+    Defense: 0
+    DamageReduction: 0
+    MovementSpeed: 4
+    DamageScaling:
+      Added: 0
+      Increase: 0
+      More: 1
+  AttributesScaling:
+    MaxHealth:
+      Added: 0
+      Increase: 0
+      More: 1
+    Defense:
+      Added: 0
+      Increase: 0
+      More: 1
+    DamageReduction:
+      Added: 0
+      Increase: 0
+      More: 1
+    MovementSpeed:
+      Added: 0
+      Increase: 0
+      More: 1
   isExecutable: 1
 --- !u!114 &3266395386367013321
 MonoBehaviour:

@@ -27,9 +27,6 @@ namespace Saba {
 		[System.NonSerialized]
 		Dictionary<SabaEntity, SabaShootAbilityInstance> abilityInstances;
 
-        [SerializeField]
-        SabaAttack attackDefinition;
-
 		public void Activate(SabaEntity entity, SabaAbility.Target target) =>
 			Activate(entity, target, 0);
 
@@ -98,10 +95,9 @@ namespace Saba {
 					Vector2 instanceDirection =
 						Mathx.Rotate(direction, (i + offset) * (Mathf.PI / 16) + inaccuracy);
 					bulletBatch.InstantiateBullet(
+                        entity,
 						entityPosition,
 						instanceDirection,
-						ability.attackDefinition.BaseDamage,
-						ability.attackDefinition.Knockback,
 						-elapsedTime
 					);
 				}

@@ -7,15 +7,6 @@ namespace Saba {
 	public class SabaHitResolution : Singleton<SabaHitResolution> {
 		const int MAX_HIT = 100000;
 
-		public struct Hit {
-			public SabaEntity Entity;
-            public SabaMovementComponent MovementComponent;
-			public Vector2 Location;
-            public Vector2 Direction;
-			public float Damage;
-            public float Knockback;
-		}
-
 		int NumUnresolvedHits = 0;
 		Hit[] UnresolvedHits = new Hit[MAX_HIT];
 
@@ -24,24 +15,33 @@ namespace Saba {
 		}
 
 		void Resolve() {
-			List<SabaEntity> deadEntities = new List<SabaEntity>();
-			List<SabaEntity> damagedEntities = new List<SabaEntity>();
+			if (NumUnresolvedHits == 0) return;
+
+			HitResult[] results =
+				SabaDamagePipeline.CalculateHit(new System.Span<Hit>(UnresolvedHits, 0, NumUnresolvedHits));
+
+			List<SabaEntity> deadEntities = new List<SabaEntity>(NumUnresolvedHits);
+			List<SabaEntity> damagedEntities = new List<SabaEntity>(NumUnresolvedHits);
+
 			for (int i = 0; i < NumUnresolvedHits; i++) {
 				Hit hit = UnresolvedHits[i];
+				HitResult result = results[i];
 
-				hit.Entity.Resource.Health -= hit.Damage;
+				if (result.type == HitResultType.Hit) {
+					hit.target.Resource.Health -= result.damagePostMitigation;
 
-				bool isEntityKilled = hit.Entity.Resource.Health <= 0;
-				if (isEntityKilled) deadEntities.Add(hit.Entity);
-				else {
-                    damagedEntities.Add(hit.Entity);
-                    hit.MovementComponent.ApplyKnockback(hit.Direction * hit.Knockback);
-                }
+					bool isEntityKilled = hit.target.Resource.Health <= 0;
+					if (isEntityKilled) deadEntities.Add(hit.target);
+					else {
+						damagedEntities.Add(hit.target);
+						hit.target.MovementComponent?.ApplyKnockback(hit.impactDirection * result.impulse);
+					}
+				}
 			}
 
 			SabaHealthUIManager.instance.OnDamageTaken(damagedEntities);
 			SabaHealthUIManager.instance.OnDeath(deadEntities);
-            SabaEntity.Kill(deadEntities);
+			SabaEntity.Kill(deadEntities);
 
 			NumUnresolvedHits = 0;
 		}

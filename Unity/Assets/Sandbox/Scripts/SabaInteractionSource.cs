@@ -25,17 +25,19 @@ namespace Saba {
 		void Update() {
 			SabaInteractable closestInteractable =
 				Utils.GetClosest(AllSabaInteractables.instance.AsList, transform.position);
-			Vector2 displacement = closestInteractable.transform.position - transform.position;
-			bool isInteractableClose = displacement.sqrMagnitude < range * range;
-			if (!isInteractableClose) closestInteractable = null;
+			if (closestInteractable) {
+				Vector2 displacement = closestInteractable.transform.position - transform.position;
+				bool isInteractableClose = displacement.sqrMagnitude < range * range;
+				if (!isInteractableClose) closestInteractable = null;
 
-			if (lastClosestInteractable != closestInteractable) {
-				if (closestInteractable == null) SabaInteractionDisplay.instance?.Hide();
-				else
-					SabaInteractionDisplay.instance.UpdateData(new InteractionDisplay(
-					) { sprite = closestInteractable.GetInteractionSprite(),
-						prompt = closestInteractable.GetInteractionPrompt(),
-						location = closestInteractable.transform.position });
+				if (lastClosestInteractable != closestInteractable) {
+					if (closestInteractable == null) SabaInteractionDisplay.instance?.Hide();
+					else
+						SabaInteractionDisplay.instance.UpdateData(new InteractionDisplay(
+						) { sprite = closestInteractable.GetInteractionSprite(),
+							prompt = closestInteractable.GetInteractionPrompt(),
+							location = closestInteractable.transform.position });
+				}
 			}
 
 			lastClosestInteractable = closestInteractable;

@@ -13,6 +13,9 @@ namespace Saba {
 		[SerializeField]
 		float memorySeconds;
 
+		[SerializeField]
+		SabaAttack meleeAttack;
+
 		struct MemoryOfHit {
 			public float time;
 			public int entity;
@@ -39,7 +42,7 @@ namespace Saba {
 			SabaPlayer player = SabaPlayer.instance;
 			if (!player) return;
 
-			List<SabaHitResolution.Hit> allHits = new List<SabaHitResolution.Hit>();
+			List<Hit> allHits = new List<Hit>();
 
 			for (int npcIndex = 0; npcIndex < data.Count; npcIndex++) {
 				SabaNPCData npc = data[npcIndex];
@@ -69,13 +72,12 @@ namespace Saba {
 				float knockback = speed * knockbackVelocityScale;
 				Vector2 location = directionToPlayer * npc.radius + (Vector2)npc.entity.transform.position;
 
-				allHits.Add(new SabaHitResolution.Hit(
-				) { Entity = player.entity,
-					MovementComponent = player.movementComponent,
-					Location = location,
-					Direction = movementDirection,
-					Damage = 1,
-					Knockback = knockback });
+				allHits.Add(new Hit(
+				) { target = player.entity,
+					attacker = npc.entity,
+					attack = meleeAttack,
+					impactLocation = location,
+					impactDirection = movementDirection });
 			}
 
 			SabaHitResolution.instance?.RegisterHits(allHits);

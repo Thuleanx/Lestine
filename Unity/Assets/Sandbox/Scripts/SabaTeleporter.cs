@@ -4,7 +4,6 @@ namespace Saba {
 	[RequireComponent(typeof(SabaDirector))]
 	public class SabaTeleporter : MonoBehaviour {
 		public enum State { Active, Charging, PendingTeleport }
-		;
 
 		public State CurrentState { get; private set; } = State.Active;
 

@@ -1120,6 +1120,10 @@ MonoBehaviour:
     Defense: 0
     DamageReduction: 0
     MovementSpeed: 6
+    DamageScaling:
+      Added: 0
+      Increase: 0
+      More: 0
   Resource:
     Health: 0
   AttributesBase:
@@ -1127,6 +1131,10 @@ MonoBehaviour:
     Defense: 0
     DamageReduction: 0
     MovementSpeed: 6
+    DamageScaling:
+      Added: 0
+      Increase: 0
+      More: 1
   AttributesScaling:
     MaxHealth:
       Added: 0
@@ -1560,6 +1568,9 @@ MonoBehaviour:
   playerRadius: 0.5
   knockbackVelocityScale: 0.3
   memorySeconds: 1
+  meleeAttack:
+    BaseDamage: 1
+    Knockback: 4
 --- !u!1 &2057084425
 GameObject:
   m_ObjectHideFlags: 0
