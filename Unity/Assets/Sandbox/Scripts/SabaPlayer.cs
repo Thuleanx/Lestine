@@ -18,8 +18,8 @@ namespace Saba {
 		Camera mainCamera;
 		[SerializeField]
 		float attacksPerMinute;
-        [SerializeField]
-        SabaShootAbility shootAbility;
+		[SerializeField]
+		SabaShootAbility shootAbility;
 
 		[System.NonSerialized]
 		public SabaEntity entity;
@@ -60,30 +60,26 @@ namespace Saba {
 		void Update() {
 			Vector2 right = mainCamera.transform.right;
 			Vector2 forward = mainCamera.transform.forward;
-            // normalize right here after the z component has dropped
-            forward.Normalize();
-            right.Normalize();
+			// normalize right here after the z component has dropped
+			forward.Normalize();
+			right.Normalize();
 
-            Vector2 inputDirection = movementInput.Value;
-            inputDirection.Normalize();
+			Vector2 inputDirection = movementInput.Value;
+			inputDirection.Normalize();
 
-			Vector2 desiredMoveDirection =
-				right * inputDirection.x + forward * inputDirection.y;
-            desiredMoveDirection = desiredMoveDirection.normalized;
+			Vector2 desiredMoveDirection = right * inputDirection.x + forward * inputDirection.y;
+			desiredMoveDirection = desiredMoveDirection.normalized;
 
-			Vector2 desiredMoveVelocity =
-				desiredMoveDirection * entity.Attributes.MovementSpeed;
+			float movementSpeed = SabaAliases.movementSpeed[entity.Attributes];
 
-			Vector2 desiredForce =
-				desiredMoveVelocity - movementComponent.Velocity;
+			Vector2 desiredMoveVelocity = desiredMoveDirection * movementSpeed;
 
-			float accelerationMax =
-				entity.Attributes.MovementSpeed / movementComponent.AccelerationToMaxSpeedSeconds;
+			Vector2 desiredForce = desiredMoveVelocity - movementComponent.Velocity;
 
-			Vector2 appliedForce = Vector2.ClampMagnitude(
-				desiredForce,
-				Time.deltaTime * accelerationMax * movementComponent.Mass
-			);
+			float accelerationMax = movementSpeed / movementComponent.AccelerationToMaxSpeedSeconds;
+
+			Vector2 appliedForce =
+				Vector2.ClampMagnitude(desiredForce, Time.deltaTime * accelerationMax * movementComponent.Mass);
 
 			movementComponent.ApplyForce(appliedForce);
 
@@ -98,26 +94,22 @@ namespace Saba {
 
 			Ray mouseRay = mainCamera.ScreenPointToRay(mouseInput.Value);
 			Plane plane = new Plane(Vector3.forward, transform.position);
-			bool planeRayHit =
-				plane.Raycast(mouseRay, out float mouseRayDistance);
+			bool planeRayHit = plane.Raycast(mouseRay, out float mouseRayDistance);
 
 			Assert.IsTrue(
 				planeRayHit,
 				"Unless our perspective / camera is incorrectly set up, we'll always point to a valid location on the plane"
 			);
 
-			Vector3 aimPosition =
-				mouseRayDistance * mouseRay.direction + mouseRay.origin;
+			Vector3 aimPosition = mouseRayDistance * mouseRay.direction + mouseRay.origin;
 
 			float SECONDS_IN_MINUTES = 60.0f;
 			float totalCooldownTime = SECONDS_IN_MINUTES / attacksPerMinute;
 
-			for (int _ = 0; _ < MAX_ATTACKS_PER_FRAME && attackCooldown <= 0;
-				 _++) {
+			for (int _ = 0; _ < MAX_ATTACKS_PER_FRAME && attackCooldown <= 0; _++) {
+				shootAbility.Activate(entity, (Vector2)aimPosition, attackCooldown);
 
-                shootAbility.Activate(entity, (Vector2) aimPosition, attackCooldown);
-
-                attackCooldown += totalCooldownTime;
+				attackCooldown += totalCooldownTime;
 			}
 
 			// if we somehow lag spike too long,

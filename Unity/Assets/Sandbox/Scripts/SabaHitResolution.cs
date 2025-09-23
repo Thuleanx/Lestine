@@ -28,11 +28,15 @@ namespace Saba {
 				HitResult result = results[i];
 
 				if (result.type == HitResultType.Hit) {
-					hit.target.Resource.Health -= result.damagePostMitigation;
+					SabaAliases.health[hit.target.Attributes] -= result.damagePostMitigation;
+                    Debug.Log(hit.target + " takes " + result.damagePostMitigation + " damage");
 
-					bool isEntityKilled = hit.target.Resource.Health <= 0;
-					if (isEntityKilled) deadEntities.Add(hit.target);
-					else {
+					if (hit.target.IsDead) {
+						hit.attacker.EffectDispatch?.LazyDispatch(
+							new SabaGameplayEvents.Kill[] { new SabaGameplayEvents.Kill() }
+						);
+						deadEntities.Add(hit.target);
+					} else {
 						damagedEntities.Add(hit.target);
 						hit.target.MovementComponent?.ApplyKnockback(hit.impactDirection * result.impulse);
 					}

@@ -14,6 +14,14 @@ namespace Saba {
             // Determines how much this character will cost to spawn, in credits
             [Min(0.0f)]
             public float cost;
+            [Min(1.0f)]
+            public float maxHealth;
+            [Min(0.0f)]
+            public float defense;
+            [Min(0.0f)]
+            public float damageReduction;
+            [Min(0.0f)]
+            public float movementSpeed;
         };
 
         [field:SerializeField, ReorderableList]

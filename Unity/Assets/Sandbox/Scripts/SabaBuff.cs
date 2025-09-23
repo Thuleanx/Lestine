@@ -1,3 +1,4 @@
+using UnityEngine;
 using System.Runtime.InteropServices;
 
 namespace Saba {
@@ -29,39 +30,46 @@ namespace Saba {
         }
 
 		public void ApplyTo(SabaEntity entity) {
+            bool needCreateNewScalingEntry = !entity.AttributesScaling.IsValid;
+            if (needCreateNewScalingEntry) entity.RequestNewAttributesAndBase();
+            Debug.Log("Applying " + this + " to " + entity);
+
 			switch (type) {
 				case SabaBuffType.Enlarge: {
 					entity.transform.localScale *= amount;
 					break;
 				}
 				case SabaBuffType.SpeedIncrease: {
-					entity.AttributesScaling.MovementSpeed.Increase += amount;
+					SabaAliases.movementSpeedScaling[entity.AttributesScaling.Value].increase += amount;
 					break;
 				}
                 case SabaBuffType.MaxHealthFlat: {
-                    entity.AttributesScaling.MaxHealth.Added += amount;
+					SabaAliases.maxHealthScaling[entity.AttributesScaling.Value].added += amount;
                     break;
                 }
 			}
-            entity.ComputeAttributes();
+            entity.RecomputeStats();
 		}
 
 		public void RemoveFrom(SabaEntity entity) {
+            bool needCreateNewScalingEntry = !entity.AttributesScaling.IsValid;
+            if (needCreateNewScalingEntry) entity.RequestNewAttributesAndBase();
+
 			switch (type) {
 				case SabaBuffType.Enlarge: {
 					entity.transform.localScale /= amount;
 					break;
 				}
 				case SabaBuffType.SpeedIncrease: {
-					entity.AttributesScaling.MovementSpeed.Increase -= amount;
+					SabaAliases.movementSpeedScaling[entity.AttributesScaling.Value].increase -= amount;
 					break;
 				}
                 case SabaBuffType.MaxHealthFlat: {
-                    entity.AttributesScaling.MaxHealth.Added -= amount;
+					SabaAliases.maxHealthScaling[entity.AttributesScaling.Value].added -= amount;
                     break;
                 }
 			}
-            entity.ComputeAttributes();
+            entity.RecomputeStats();
 		}
 	}
 }

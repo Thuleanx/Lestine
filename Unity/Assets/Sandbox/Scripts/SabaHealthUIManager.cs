@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using PrettyPatterns;
 
 namespace Saba {
-    [RequireComponent(typeof(RectTransform))]
+	[RequireComponent(typeof(RectTransform))]
 	public class SabaHealthUIManager : Singleton<SabaHealthUIManager> {
 		const int MIN_BARS = 5;
 		const int MAX_BARS = 100;
@@ -19,15 +19,14 @@ namespace Saba {
 
 		[SerializeField]
 		Slider uiPrefab;
-        [SerializeField]
-        Vector3 offset;
+		[SerializeField]
+		Vector3 offset;
 
 		ObjectPool<Slider> healthBars;
-        new Camera camera;
+		new Camera camera;
 
 		List<TrackedEntityData> activeEntities = new List<TrackedEntityData>();
-		Dictionary<SabaEntity, int> activeEntityIndexMap =
-			new Dictionary<SabaEntity, int>();
+		Dictionary<SabaEntity, int> activeEntityIndexMap = new Dictionary<SabaEntity, int>();
 
 		public override void Awake() {
 			base.Awake();
@@ -35,30 +34,27 @@ namespace Saba {
 			healthBars = new ObjectPool<Slider>(
 				createFunc: () => Instantiate(uiPrefab, transform),
 				actionOnGet: healthBar => healthBar.gameObject.SetActive(true),
-				actionOnRelease: healthBar =>
-					healthBar.gameObject.SetActive(false),
+				actionOnRelease: healthBar => healthBar.gameObject.SetActive(false),
 				actionOnDestroy: healthBar => Destroy(healthBar.gameObject),
 				collectionCheck: false,
 				defaultCapacity: MIN_BARS,
 				maxSize: MAX_BARS
 			);
-            camera = GetComponentInParent<Canvas>().worldCamera;
+			camera = GetComponentInParent<Canvas>().worldCamera;
 		}
 
-        public void Track(SabaEntity entity) => Track(new SabaEntity[]{entity});
-        public void Untrack(SabaEntity entity) => Untrack(new SabaEntity[]{entity});
+		public void Track(SabaEntity entity) => Track(new SabaEntity[] { entity });
+		public void Untrack(SabaEntity entity) => Untrack(new SabaEntity[] { entity });
 
 		void Track(IEnumerable<SabaEntity> entities) {
 			foreach (SabaEntity entity in entities) {
-				bool isAlreadyTracking =
-					activeEntityIndexMap.ContainsKey(entity);
+				bool isAlreadyTracking = activeEntityIndexMap.ContainsKey(entity);
 				if (isAlreadyTracking) continue;
 				Slider newBar = healthBars.Get();
 
 				activeEntityIndexMap[entity] = activeEntities.Count;
-				activeEntities.Add(new TrackedEntityData(
-				) { healthBar = newBar, entity = entity });
-                Reposition(activeEntities[activeEntities.Count - 1]);
+				activeEntities.Add(new TrackedEntityData() { healthBar = newBar, entity = entity });
+				Reposition(activeEntities[activeEntities.Count - 1]);
 			}
 		}
 
@@ -79,15 +75,13 @@ namespace Saba {
 			}
 		}
 
-        void Reposition(TrackedEntityData data) {
-            Vector3 position = data.entity.transform.position + offset;
-            data.healthBar.transform.position = RectTransformUtility.WorldToScreenPoint(camera, position);
-        }
+		void Reposition(TrackedEntityData data) {
+			Vector3 position = data.entity.transform.position + offset;
+			data.healthBar.transform.position = RectTransformUtility.WorldToScreenPoint(camera, position);
+		}
 
-		public void OnDamageTaken(IEnumerable<SabaEntity> damagedEntities
-		) => Track(damagedEntities);
-		public void OnDeath(IEnumerable<SabaEntity> deadEntities
-		) => Untrack(deadEntities);
+		public void OnDamageTaken(IEnumerable<SabaEntity> damagedEntities) => Track(damagedEntities);
+		public void OnDeath(IEnumerable<SabaEntity> deadEntities) => Untrack(deadEntities);
 
 		void LateUpdate() {
 			Assert.AreEqual(
@@ -96,12 +90,12 @@ namespace Saba {
 				"Expect number of entites to match number of active health bars"
 			);
 
-            foreach (TrackedEntityData data in activeEntities) {
-                float healthValue = data.entity.Resource.Health /
-                                    data.entity.Attributes.MaxHealth;
-                data.healthBar.value = healthValue;
-                Reposition(data);
-            }
+			foreach (TrackedEntityData data in activeEntities) {
+				float healthValue =
+					SabaAliases.health[data.entity.Resource] / SabaAliases.maxHealth[data.entity.Attributes];
+				data.healthBar.value = healthValue;
+				Reposition(data);
+			}
 		}
 	}
 }

@@ -1,48 +1,79 @@
 using UnityEngine;
+using UnityEngine.Assertions;
 using System.Collections.Generic;
 
 using NaughtyAttributes;
+using PrettyPatterns;
 
 namespace Saba {
+    // We need this because 
+    public class SabaStatsModule : Stats.Module<SabaEntity, SabaStatsModule> {}
+
+	public static partial class SabaAliases {
+		public static Stats.Module<SabaEntity, SabaStatsModule> allStats => SabaStatsModule.instance;
+
+		public static Stats.CoreStats<SabaEntity> coreStats => allStats.coreStats;
+		public static Stats.CoreStats<SabaEntity> coreStatsBase => allStats.coreStatsBase;
+		public static Stats.CoreStatsScaling<SabaEntity> coreStatsScaling => allStats.coreStatsScaling;
+		public static Stats.CoreResource<SabaEntity> coreResource => allStats.coreResource;
+
+		public static float[] health => coreResource.health;
+
+		public static float[] maxHealth => coreStats.maxHealth;
+		public static float[] defense => coreStats.defense;
+		public static float[] damageReduction => coreStats.damageReduction;
+		public static float[] movementSpeed => coreStats.movementSpeed;
+		public static Stats.Scaling[] damage => coreStats.damage;
+
+		public static Stats.Scaling[] movementSpeedScaling => coreStatsScaling.movementSpeed;
+		public static Stats.Scaling[] maxHealthScaling => coreStatsScaling.maxHealth;
+	}
+
 	public class SabaEntity : MonoBehaviour {
+		public int Attributes;
 		[ReadOnly]
-		public SabaAttributes Attributes =
-			new SabaAttributes() { DamageScaling = new SabaAttributeCoefficients() { More = 1 } };
+		public Optional<int> AttributesBase;
 		[ReadOnly]
-		public SabaResource Resource;
-		public SabaAttributes AttributesBase =
-			new SabaAttributes() { DamageScaling = new SabaAttributeCoefficients() { More = 1 } };
+		public Optional<int> AttributesScaling;
+		[ReadOnly]
+		public int Resource;
+
 		public SabaMovementComponent MovementComponent { get; private set; }
+		public SabaEffectDispatch EffectDispatch { get; private set; }
 
-		// There's currently no default struct initialization in c#9 so we'll have to do it this way
-		public SabaAttributeScaling AttributesScaling = new SabaAttributeScaling() {
-			MaxHealth = new SabaAttributeCoefficients { More = 1.0f },
-			Defense = new SabaAttributeCoefficients { More = 1.0f },
-			DamageReduction = new SabaAttributeCoefficients { More = 1.0f },
-			MovementSpeed = new SabaAttributeCoefficients { More = 1.0f },
-			Damage = new SabaAttributeCoefficients { More = 1.0f },
-		};
+		[SerializeField] bool isExecutable = false;
 
-		[SerializeField]
-		bool isExecutable = false;
-
-		public bool IsDead => Resource.Health <= 0;
-
-		void Awake() { MovementComponent = GetComponent<SabaMovementComponent>(); }
-
-		void OnEnable() {
-			InitializeResources();
-			ComputeAttributes();
+		public bool IsDead {
+			get {
+				int resourceIndex = Resource;
+				return SabaAliases.health[resourceIndex] <= 0;
+			}
 		}
 
-		void InitializeResources() { Resource.Health = Attributes.MaxHealth; }
+		void Awake() {
+			MovementComponent = GetComponent<SabaMovementComponent>();
+			EffectDispatch = GetComponent<SabaEffectDispatch>();
+		}
 
-		public void ComputeAttributes() {
-			Attributes.MaxHealth = AttributesScaling.MaxHealth.Apply(AttributesBase.MaxHealth);
-			Attributes.Defense = AttributesScaling.Defense.Apply(AttributesBase.Defense);
-			Attributes.DamageReduction = AttributesScaling.DamageReduction.Apply(AttributesBase.DamageReduction);
-			Attributes.MovementSpeed = AttributesScaling.MovementSpeed.Apply(AttributesBase.MovementSpeed);
-			Attributes.DamageScaling = AttributesScaling.Damage + AttributesBase.DamageScaling;
+		public void RequestNewAttributesAndBase() {
+			Assert.IsTrue(!AttributesBase.IsValid);
+			Assert.IsTrue(!AttributesScaling.IsValid);
+
+			// boxing, cry.
+			// technically isn't needed if I just repeat the same method in multiple places.
+			// C# kinda sucks
+			AttributesBase = (SabaAliases.allStats.coreStatsBase as Stats.Table).Allocate(1);
+			AttributesScaling = (SabaAliases.allStats.coreStatsScaling as Stats.Table).Allocate(1);
+
+			SabaAliases.coreStatsBase.Copy(AttributesBase.Value, SabaAliases.coreStats, Attributes);
+			SabaAliases.coreStatsScaling.ResetSingle(AttributesScaling.Value);
+			SabaAliases.coreStatsScaling.entities[AttributesScaling.Value] = this;
+		}
+
+		public void RecomputeStats() {
+			bool canRecompute = AttributesBase.IsValid && AttributesScaling.IsValid;
+			Assert.IsTrue(canRecompute);
+			SabaAliases.allStats.RecomputeStats(Attributes, AttributesBase.Value, AttributesScaling.Value);
 		}
 
 		public static void Kill(IEnumerable<SabaEntity> entities) {

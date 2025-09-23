@@ -9,5 +9,6 @@ namespace Saba {
         [ShowAssetPreview]
         public Sprite icon;
         public SabaBuffData[] buffsToApply;
+        public SabaBuffData[] buffsOnKill;
     }
 }

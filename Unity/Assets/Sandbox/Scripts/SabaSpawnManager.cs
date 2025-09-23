@@ -9,6 +9,10 @@ namespace Saba {
 		public struct SpawnParameter {
 			public Vector2 position;
 			public SabaEntity prefab;
+			public float maxHealth;
+			public float defense;
+			public float damageReduction;
+			public float movementSpeed;
 		}
 
 		public class Bucket {
@@ -48,6 +52,10 @@ namespace Saba {
 			float frameBudgetMilliseconds = SabaSettings.Get().frameBudget.spawnMiliseconds;
 
 			float currentTime = Time.unscaledTime;
+
+			List<SabaEntity> allSpawned = new List<SabaEntity>(pendingSpawns.Count);
+			List<SpawnParameter> allSpawnedParameters = new List<SpawnParameter>(pendingSpawns.Count);
+
 			while (pendingSpawns.Count > 0) {
 				int index = pendingSpawns.Count - 1;
 				SabaEntityBudget.Bucket pendingBucket = pendingSpawnBuckets[index];
@@ -55,9 +63,14 @@ namespace Saba {
 
 				Bucket bucket = buckets[(int)pendingBucket];
 
-				bucket.entities[bucket.currentNumber++] =
+				SabaEntity spawnedEntity =
 					Instantiate(pendingParameter.prefab, pendingParameter.position, Quaternion.identity);
+
+				bucket.entities[bucket.currentNumber++] = spawnedEntity;
 				bucket.pendingNumber--;
+
+				allSpawned.Add(spawnedEntity);
+				allSpawnedParameters.Add(pendingParameter);
 
 				pendingSpawns.RemoveAt(index);
 				pendingSpawnBuckets.RemoveAt(index);
@@ -67,6 +80,23 @@ namespace Saba {
 
 				bool isOverTimeBudget = (timeAfterSpawn - currentTime) * SECONDS_TO_MILI > frameBudgetMilliseconds;
 				if (isOverTimeBudget) break;
+			}
+
+			int numSpawned = allSpawned.Count;
+
+			if (numSpawned > 0) {
+				int attributeBegin = (SabaAliases.coreStats as Stats.Table).Allocate(numSpawned);
+				int resourceBegin = (SabaAliases.coreResource as Stats.Table).Allocate(numSpawned);
+				for (int i = 0; i < numSpawned; i++) {
+					allSpawned[i].Attributes = i + attributeBegin;
+					allSpawned[i].Resource = i + resourceBegin;
+					SabaAliases.maxHealth[attributeBegin + i] = allSpawnedParameters[i].maxHealth;
+					SabaAliases.defense[attributeBegin + i] = allSpawnedParameters[i].defense;
+					SabaAliases.damageReduction[attributeBegin + i] = allSpawnedParameters[i].damageReduction;
+					SabaAliases.movementSpeed[attributeBegin + i] = allSpawnedParameters[i].movementSpeed;
+					SabaAliases.health[attributeBegin + i] = SabaAliases.maxHealth[resourceBegin + i];
+					SabaAliases.coreStats.entities[attributeBegin + i] = allSpawned[i];
+				}
 			}
 		}
 

@@ -33,7 +33,7 @@ namespace Saba {
 				SabaMovementComponent movementComponent = npc.movementComponent;
 
 				float speed = movementComponent.Velocity.magnitude;
-				float maxSpeed = npc.entity.Attributes.MovementSpeed;
+				float maxSpeed = SabaAliases.movementSpeed[npc.entity.Attributes];
 
 				float maxImpulse =
 					maxSpeed / movementComponent.AccelerationToMaxSpeedSeconds;

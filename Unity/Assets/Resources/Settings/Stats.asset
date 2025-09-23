@@ -9,12 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a69dcc0bd7f5299489942f5ce4fcbe02, type: 3}
-  m_Name: SabaSettings
+  m_Script: {fileID: 11500000, guid: 58bc06705f9f2d54a99d1cddfc15c221, type: 3}
+  m_Name: Stats
   m_EditorClassIdentifier: 
-  frameBudget:
-    spawnMiliseconds: 0
-  entityBudget:
-    StageCount: 40
-    TeleporterCount: 50
-    TotalCount: 200
+  NumCoreStats: 101
+  NumBaseStats: 101
+  NumCoreScaling: 101

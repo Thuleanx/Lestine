@@ -1063,6 +1063,8 @@ GameObject:
   - component: {fileID: 1651976473}
   - component: {fileID: 1651976475}
   - component: {fileID: 1651976476}
+  - component: {fileID: 1651976477}
+  - component: {fileID: 1651976478}
   m_Layer: 6
   m_Name: player
   m_TagString: Player
@@ -1115,43 +1117,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5851b7784a0926545a41566b6db8fd5e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Attributes:
-    MaxHealth: 10
-    Defense: 0
-    DamageReduction: 0
-    MovementSpeed: 6
-    DamageScaling:
-      Added: 0
-      Increase: 0
-      More: 0
-  Resource:
-    Health: 0
+  Attributes: 0
   AttributesBase:
-    MaxHealth: 10
-    Defense: 0
-    DamageReduction: 0
-    MovementSpeed: 6
-    DamageScaling:
-      Added: 0
-      Increase: 0
-      More: 1
+    enabled: 0
+    value: 0
   AttributesScaling:
-    MaxHealth:
-      Added: 0
-      Increase: 0
-      More: 1
-    Defense:
-      Added: 0
-      Increase: 0
-      More: 1
-    DamageReduction:
-      Added: 0
-      Increase: 0
-      More: 1
-    MovementSpeed:
-      Added: 0
-      Increase: 0
-      More: 1
+    enabled: 0
+    value: 0
+  Resource: 0
   isExecutable: 0
 --- !u!114 &1651976470
 MonoBehaviour:
@@ -1244,6 +1217,34 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   range: 3
+--- !u!114 &1651976477
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1651976466}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64b65a3eb37475b4690cc0727166e583, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1651976478
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1651976466}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14e115c0ae57da94a899ebe8ef40c66e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 100
+  defense: 0
+  damageReduction: 0
+  movementSpeed: 6
 --- !u!1 &1735237585
 GameObject:
   m_ObjectHideFlags: 0

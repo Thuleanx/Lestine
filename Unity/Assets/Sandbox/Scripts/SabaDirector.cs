@@ -77,9 +77,14 @@ namespace Saba {
 
 					bool isChosenEntry = spawnWeight <= 0;
 					if (isChosenEntry) {
-						spawnParameters.Add(
-							new SabaSpawnManager.SpawnParameter { position = spawnPosition, prefab = entry.prefab }
-						);
+						spawnParameters.Add(new SabaSpawnManager.SpawnParameter {
+							position = spawnPosition,
+							prefab = entry.prefab,
+							maxHealth = entry.maxHealth,
+							defense = entry.defense,
+							damageReduction = entry.damageReduction,
+							movementSpeed = entry.movementSpeed
+						});
 						credits -= entry.cost;
 						break;
 					}

@@ -19,7 +19,7 @@ namespace Saba {
 	public struct HitResult {
 		public HitResultType type;
 		public float damagePostMitigation;
-        public float impulse;
+		public float impulse;
 	}
 
 	public static class SabaDamagePipeline {
@@ -32,25 +32,28 @@ namespace Saba {
 
 			for (int i = 0; i < numHits; i++) {
 				Hit hit = hits[i];
-				SabaAttributes targetAttribute = hit.target.Attributes;
-				SabaAttributeCoefficients damageScaling = hit.attacker.Attributes.DamageScaling;
+				int targetAttributes = hit.target.Attributes;
+				int attackerAttributes = hit.attacker.Attributes;
 
-				float rawDamage = damageScaling.Apply(hit.attack.BaseDamage);
+				float rawDamage = SabaAliases.damage[attackerAttributes].ApplyToBase(hit.attack.BaseDamage);
 
-				float damageReductionFromDefense =
-					targetAttribute.Defense / (targetAttribute.Defense + DEFENSE_EFFECTIVENESS_COEF * rawDamage);
-				float rawDamageReduction = Mathf.Min(targetAttribute.DamageReduction, MAX_DAMAGE_REDUCTION);
+				float targetDefense = SabaAliases.defense[targetAttributes];
+				float rawDamageReduction = SabaAliases.defense[targetAttributes];
+				float rawDefense = SabaAliases.defense[targetAttributes];
+
+				float damageReductionFromDefense = rawDefense / (rawDefense + DEFENSE_EFFECTIVENESS_COEF * rawDamage);
+				float damageReduction = Mathf.Min(rawDamageReduction, MAX_DAMAGE_REDUCTION);
 				Assert.IsTrue(
-					rawDamageReduction >= 0, "Damage reduction " + rawDamageReduction + " stat appears to be negative"
+					damageReduction >= 0, "Damage reduction " + damageReduction + " stat appears to be negative"
 				);
 
 				float damagePostMitigation =
-					rawDamage > 0 ? rawDamage * (1 - damageReductionFromDefense) * (1 - rawDamageReduction) : rawDamage;
+					rawDamage > 0 ? rawDamage * (1 - damageReductionFromDefense) * (1 - damageReduction) : rawDamage;
 
 				result[i] = new HitResult() {
 					type = HitResultType.Hit,
 					damagePostMitigation = damagePostMitigation,
-                    impulse = 1,
+					impulse = 1,
 				};
 			}
 

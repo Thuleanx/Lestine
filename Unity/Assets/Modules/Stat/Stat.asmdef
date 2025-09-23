@@ -1,0 +1,18 @@
+{
+    "name": "Stat",
+    "rootNamespace": "",
+    "references": [
+        "GUID:776d03a35f1b52c4a9aed9f56d7b4229",
+        "GUID:289b73c019ad9004eba4d9a006789fc2",
+        "GUID:30baebe4294cbaa439880aac157df2b8"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

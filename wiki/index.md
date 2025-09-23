@@ -101,44 +101,56 @@ Unlike items, enemy buffs should generally stack multiplicatively or introduce n
 
 ## Items
 This should follow Risk of Rain 2:
-- Armor-Piercing round | Deals an additional 20% damage to elites
+
+Simple stat increase:
 - Bison Steak | Flat max health increase
-- Bustling Fungus | Heal increases after standing still
-- Crowbar | Increase initial damage when enemy is full health
 - Enemy Drink | Additive movement speed
-- Focus Crystal | Increase damage with enemies close to you
 - Lens-Maker's Glass | Crit chance
-- Consuming enemies grants movespeed and attackspeed
-- Repulsion armor | Flat damage reduction
 - Soldier's Syringe | Flat attack speed
-- Topaz | Temp barrier on kill
+- Repulsion armor | Flat damage reduction
 - Tougher Times | Chance to block damage
-
-- Atk Missile | Chance to fire homing spears
-- Chronobauble | Slow enemies on hit
-- Harvester's Scyth | Crit heals
-- Flat armor on consuming enemies
-- Leeching Seed | Damage heals you
-- Old Guillotine | Culling strike
-- Fear nearby enemies when falling below certain health threshold, long cooldown
-- Predatory instincts | Crits increase attack speed
-- Razorwire | Dot around self
-- Boost your movement speed until you get hit
 - Ignition tank | Increase burn damage
-- Boxing Gloves | Chance to knock enemies back on hit
+- Boxing Gloves | Knock enemies back on hit
+- Old Guillotine | Culling strike
 - Hit stun chance
-
 - Reduce all cooldowns
-- Aegis | Healing past full grants a temp barrier
 - Leaf Clover | Luck + 1, advantage on all throws
-- Brilliant Behemoth
-- Plasma Chain | Group hit enemies together
 - Collosal Knurl | Max health, regen, armor
-- Infusion | Increase max health on consume
-- Happiest mask | Consumed enemies are now summoned as spectral allies
-- N'kuhana's Opinion | Healing is stored as damage and released as projectiles
+
+Event-based stat increase:
+- Rose Buckler | Defense while moving
+- Bustling Fungus | Heal increases after standing still
+- Consuming enemies grants movespeed and attackspeed
+- Medkit | Heal after 2 seconds of not taking damage
+- Movespeed on kill
+- Topaz | Temp barrier on kill
+- Flat armor on consuming enemies
+- Predatory instincts | Crits increase attack speed
+- Boost your movement speed until you get hit
 - Laser Scope | Crits deal additional damage
 - Increase effect duration
+- Infusion | Increase max health on consume
+
+Event-based effect:
+- Harvester's Scyth | Crit heals
+- Brilliant Behemoth
+- Atk Missile | Chance to fire homing spears
+- Leeching Seed | Damage heals you
+- Happiest mask | Consumed enemies are now summoned as spectral allies
+- Aegis | Healing past full grants a temp barrier
+- Fear nearby enemies when falling below certain health threshold, long cooldown
+
+Targetted stat change:
+- Chronobauble | Slow enemies on hit
+
+Novel effects:
+- Razorwire | Dot around self
+- Plasma Chain | Group hit enemies together
+- Focus Crystal | Increase damage with enemies close to you
+- Armor-Piercing round | Deals an additional 20% damage to elites
+- Crowbar | Increase initial damage when enemy is full health
+
+- N'kuhana's Opinion | Healing is stored as damage and released as projectiles
 
 ## Gears
 Character-specific upgrade to their equipment / weapon, similar to potentials in BlazeBlue Entropy Effect

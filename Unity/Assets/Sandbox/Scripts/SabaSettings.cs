@@ -6,7 +6,6 @@ using UnityEditor;
 #endif
 
 namespace Saba {
-
 	public class SabaSettings : ScriptableObject {
 		public const string settingsPath = "Assets/Resources/SabaSettings.asset";
 		public const string settingsPathNoDirectory = "SabaSettings";
