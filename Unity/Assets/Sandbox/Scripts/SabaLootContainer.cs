@@ -26,7 +26,6 @@ namespace Saba {
 		void Open() {
 			currentState = State.Opened;
 			interaction.enabled = false;
-            Debug.Log("Opening chest");
             SabaLoot loot = Instantiate(lootPrefab, transform.position, transform.rotation);
             loot.itemDefinition = item;
             Destroy(gameObject);

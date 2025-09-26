@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 using PrettyPatterns;
 
@@ -31,31 +32,31 @@ namespace Stats {
 			return current;
 		}
 
-		public Dictionary<int, int> Remove(Span<int> indices, Table table) {
+		public static void Remove(Table table, ReadOnlySpan<int> indices, Action<int, int> onMove) {
 			// we need to update stat table references of certain entities when
 			// we kill some and remap the indices
 			Dictionary<int, int> remapping = new Dictionary<int, int>();
 
-			for (int i = 0; i < indices.Length; i--) {
-				int lastIndex = GetCurrentNum() - 1;
 
-				int indexToRemove = indices[i];
+            foreach (int index in indices) {
+				int lastIndex = table.GetCurrentNum() - 1;
 
-				bool previouslyMoved = remapping.ContainsKey(indices[i]);
+				int indexToRemove = index;
+
+				bool previouslyMoved = remapping.ContainsKey(index);
 				if (previouslyMoved) {
-					indexToRemove = remapping[indices[i]];
-					remapping.Remove(indices[i]);
+					indexToRemove = remapping[index];
+					remapping.Remove(index);
 				}
 
 				if (lastIndex != indexToRemove) {
 					remapping[lastIndex] = indexToRemove;
 					table.Set(indexToRemove, lastIndex);
+                    if (onMove != null) onMove(indexToRemove, lastIndex);
 				}
 
-				SetCurrentNum(lastIndex);
+				table.SetCurrentNum(lastIndex);
 			}
-
-			return remapping;
 		}
 	}
 

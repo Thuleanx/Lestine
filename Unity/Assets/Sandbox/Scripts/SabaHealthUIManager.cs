@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.UI;
 using UnityEngine.Pool;
+using System;
 using System.Collections.Generic;
 
 using PrettyPatterns;
@@ -46,7 +47,7 @@ namespace Saba {
 		public void Track(SabaEntity entity) => Track(new SabaEntity[] { entity });
 		public void Untrack(SabaEntity entity) => Untrack(new SabaEntity[] { entity });
 
-		void Track(IEnumerable<SabaEntity> entities) {
+		void Track(ReadOnlySpan<SabaEntity> entities) {
 			foreach (SabaEntity entity in entities) {
 				bool isAlreadyTracking = activeEntityIndexMap.ContainsKey(entity);
 				if (isAlreadyTracking) continue;
@@ -58,7 +59,7 @@ namespace Saba {
 			}
 		}
 
-		void Untrack(IEnumerable<SabaEntity> entities) {
+		void Untrack(ReadOnlySpan<SabaEntity> entities) {
 			foreach (SabaEntity entity in entities) {
 				if (!activeEntityIndexMap.ContainsKey(entity)) continue;
 				int index = activeEntityIndexMap[entity];
@@ -80,8 +81,8 @@ namespace Saba {
 			data.healthBar.transform.position = RectTransformUtility.WorldToScreenPoint(camera, position);
 		}
 
-		public void OnDamageTaken(IEnumerable<SabaEntity> damagedEntities) => Track(damagedEntities);
-		public void OnDeath(IEnumerable<SabaEntity> deadEntities) => Untrack(deadEntities);
+		public void OnDamageTaken(ReadOnlySpan<SabaEntity> damagedEntities) => Track(damagedEntities);
+		public void OnDeath(ReadOnlySpan<SabaEntity> deadEntities) => Untrack(deadEntities);
 
 		void LateUpdate() {
 			Assert.AreEqual(

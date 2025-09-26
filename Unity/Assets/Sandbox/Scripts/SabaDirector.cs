@@ -62,6 +62,7 @@ namespace Saba {
 
 				if (!canAffordAny) break;
 
+
 				float spawnWeight = Mathx.RandomRange(0.0f, totalWeights);
 
 				// choose spawn point
@@ -71,7 +72,7 @@ namespace Saba {
 				Vector2 spawnPosition = new Vector2(Mathf.Sin(theta), Mathf.Cos(theta)) * r + spawnCenter;
 
 				foreach (SabaEnemyDataTable.SpawnCard entry in dataTable.entries) {
-					bool canAffordEntry = entry.cost < credits;
+					bool canAffordEntry = entry.cost <= credits;
 					if (!canAffordEntry) continue;
 					spawnWeight -= entry.weight;
 

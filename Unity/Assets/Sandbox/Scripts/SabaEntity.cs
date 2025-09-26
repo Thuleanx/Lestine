@@ -1,13 +1,13 @@
 using UnityEngine;
 using UnityEngine.Assertions;
-using System.Collections.Generic;
+using System;
 
 using NaughtyAttributes;
 using PrettyPatterns;
 
 namespace Saba {
-    // We need this because 
-    public class SabaStatsModule : Stats.Module<SabaEntity, SabaStatsModule> {}
+	// We need this because
+	public class SabaStatsModule : Stats.Module<SabaEntity, SabaStatsModule> {}
 
 	public static partial class SabaAliases {
 		public static Stats.Module<SabaEntity, SabaStatsModule> allStats => SabaStatsModule.instance;
@@ -76,18 +76,53 @@ namespace Saba {
 			SabaAliases.allStats.RecomputeStats(Attributes, AttributesBase.Value, AttributesScaling.Value);
 		}
 
-		public static void Kill(IEnumerable<SabaEntity> entities) {
+		public static void Kill(ReadOnlySpan<SabaEntity> entities) {
+			int[] attribute = new int[entities.Length];
+
+			int attributeBaseLength = 0;
+			int[] attributeBase = new int[entities.Length];
+
+			int attributeScalingLength = 0;
+			int[] attributeScaling = new int[entities.Length];
+
+			int i = 0;
 			foreach (SabaEntity entity in entities) {
+				attribute[i++] = entity.Attributes;
+				if (entity.AttributesBase.IsValid) attributeBase[attributeBaseLength++] = entity.AttributesBase.Value;
+				if (entity.AttributesScaling.IsValid)
+					attributeScaling[attributeScalingLength++] = entity.AttributesScaling.Value;
+
+                entity.GetComponent<SabaNPC>().enabled = false;
+                entity.GetComponent<SabaMovementComponent>()?.Stop();
+                // disable collider so we don't get hit again
+                entity.GetComponent<Collider2D>().enabled = false;
+
 				bool isExecutable = entity.isExecutable;
+				if (isExecutable) {
+                    SabaExecutableRuntimeGroup.instance?.Register(entity);
+                } else {
+                    Destroy(entity.gameObject);
+                }
+			}
 
-				if (!isExecutable) {
-					Destroy(entity.gameObject);
-					return;
-				}
-
-				entity.GetComponent<SabaNPC>().enabled = false;
-				entity.GetComponent<SabaMovementComponent>()?.Stop();
-				SabaExecutableRuntimeGroup.instance?.Register(entity);
+			Stats.Table.Remove(SabaAliases.coreStats, new ReadOnlySpan<int>(attribute), (int i, int j) => {
+				SabaAliases.coreStats.entities[i].Attributes = i;
+				SabaAliases.coreStats.entities[i].Resource = i;
+			});
+			Stats.Table.Remove(SabaAliases.coreResource, new ReadOnlySpan<int>(attribute), null);
+			if (attributeBaseLength > 0) {
+				Stats.Table.Remove(
+					SabaAliases.coreStatsBase,
+					new ReadOnlySpan<int>(attributeBase, 0, attributeBaseLength),
+					(int i, int j) => { SabaAliases.coreStatsBase.entities[i].AttributesBase = i; }
+				);
+			}
+			if (attributeScalingLength > 0) {
+				Stats.Table.Remove(
+					SabaAliases.coreStatsScaling,
+					new ReadOnlySpan<int>(attributeBase, 0, attributeScalingLength),
+					(int i, int j) => { SabaAliases.coreStatsScaling.entities[i].AttributesScaling = i; }
+				);
 			}
 		}
 	}

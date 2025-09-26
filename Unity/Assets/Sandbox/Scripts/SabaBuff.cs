@@ -32,7 +32,6 @@ namespace Saba {
 		public void ApplyTo(SabaEntity entity) {
             bool needCreateNewScalingEntry = !entity.AttributesScaling.IsValid;
             if (needCreateNewScalingEntry) entity.RequestNewAttributesAndBase();
-            Debug.Log("Applying " + this + " to " + entity);
 
 			switch (type) {
 				case SabaBuffType.Enlarge: {
