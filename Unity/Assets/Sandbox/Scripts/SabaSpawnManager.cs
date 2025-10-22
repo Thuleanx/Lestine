@@ -85,8 +85,8 @@ namespace Saba {
 			int numSpawned = allSpawned.Count;
 
 			if (numSpawned > 0) {
-				int attributeBegin = (SabaAliases.coreStats as Stats.Table).Allocate(numSpawned);
-				int resourceBegin = (SabaAliases.coreResource as Stats.Table).Allocate(numSpawned);
+				int attributeBegin = (SabaAliases.coreStats as RemovableSpanList).Allocate(numSpawned);
+				int resourceBegin = (SabaAliases.coreResource as RemovableSpanList).Allocate(numSpawned);
 				for (int i = 0; i < numSpawned; i++) {
 					allSpawned[i].Attributes = i + attributeBegin;
 					allSpawned[i].Resource = i + resourceBegin;

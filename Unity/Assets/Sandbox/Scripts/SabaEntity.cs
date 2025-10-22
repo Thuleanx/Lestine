@@ -37,6 +37,8 @@ namespace Saba {
 		public Optional<int> AttributesScaling;
 		[ReadOnly]
 		public int Resource;
+		[ReadOnly]
+        public Optional<int> StatusEffectContainer;
 
 		public SabaMovementComponent MovementComponent { get; private set; }
 		public SabaEffectDispatch EffectDispatch { get; private set; }
@@ -62,8 +64,8 @@ namespace Saba {
 			// boxing, cry.
 			// technically isn't needed if I just repeat the same method in multiple places.
 			// C# kinda sucks
-			AttributesBase = (SabaAliases.allStats.coreStatsBase as Stats.Table).Allocate(1);
-			AttributesScaling = (SabaAliases.allStats.coreStatsScaling as Stats.Table).Allocate(1);
+			AttributesBase = (SabaAliases.allStats.coreStatsBase as RemovableSpanList).Allocate(1);
+			AttributesScaling = (SabaAliases.allStats.coreStatsScaling as RemovableSpanList).Allocate(1);
 
 			SabaAliases.coreStatsBase.Copy(AttributesBase.Value, SabaAliases.coreStats, Attributes);
 			SabaAliases.coreStatsScaling.ResetSingle(AttributesScaling.Value);
@@ -105,20 +107,20 @@ namespace Saba {
                 }
 			}
 
-			Stats.Table.Remove(SabaAliases.coreStats, new ReadOnlySpan<int>(attribute), (int i, int j) => {
+			RemovableSpanList.Remove(SabaAliases.coreStats, new ReadOnlySpan<int>(attribute), (int i, int j) => {
 				SabaAliases.coreStats.entities[i].Attributes = i;
 				SabaAliases.coreStats.entities[i].Resource = i;
 			});
-			Stats.Table.Remove(SabaAliases.coreResource, new ReadOnlySpan<int>(attribute), null);
+			RemovableSpanList.Remove(SabaAliases.coreResource, new ReadOnlySpan<int>(attribute), null);
 			if (attributeBaseLength > 0) {
-				Stats.Table.Remove(
+				RemovableSpanList.Remove(
 					SabaAliases.coreStatsBase,
 					new ReadOnlySpan<int>(attributeBase, 0, attributeBaseLength),
 					(int i, int j) => { SabaAliases.coreStatsBase.entities[i].AttributesBase = i; }
 				);
 			}
 			if (attributeScalingLength > 0) {
-				Stats.Table.Remove(
+				RemovableSpanList.Remove(
 					SabaAliases.coreStatsScaling,
 					new ReadOnlySpan<int>(attributeBase, 0, attributeScalingLength),
 					(int i, int j) => { SabaAliases.coreStatsScaling.entities[i].AttributesScaling = i; }

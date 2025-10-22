@@ -19,49 +19,8 @@ namespace Stats {
 		};
 	}
 
-	public interface Table {
-		public int GetCapacity();
-		public int GetCurrentNum();
-		public void SetCurrentNum(int num);
-		public void Set(int i, int j);
-		public void ResetSingle(int i);
-
-		public int Allocate(int number) {
-			int current = GetCurrentNum();
-			SetCurrentNum(current + number);
-			return current;
-		}
-
-		public static void Remove(Table table, ReadOnlySpan<int> indices, Action<int, int> onMove) {
-			// we need to update stat table references of certain entities when
-			// we kill some and remap the indices
-			Dictionary<int, int> remapping = new Dictionary<int, int>();
-
-
-            foreach (int index in indices) {
-				int lastIndex = table.GetCurrentNum() - 1;
-
-				int indexToRemove = index;
-
-				bool previouslyMoved = remapping.ContainsKey(index);
-				if (previouslyMoved) {
-					indexToRemove = remapping[index];
-					remapping.Remove(index);
-				}
-
-				if (lastIndex != indexToRemove) {
-					remapping[lastIndex] = indexToRemove;
-					table.Set(indexToRemove, lastIndex);
-                    if (onMove != null) onMove(indexToRemove, lastIndex);
-				}
-
-				table.SetCurrentNum(lastIndex);
-			}
-		}
-	}
-
 	[System.Serializable]
-	public class CoreStats<T> : Table {
+	public class CoreStats<T> : RemovableSpanList {
 		public int currentNum;
 		public float[] maxHealth;
 		public float[] defense;
@@ -88,13 +47,13 @@ namespace Stats {
 			return stats;
 		}
 
-		public void Copy(int tableIndex, CoreStats<T> otherTable, int otherTableIndex) {
-			maxHealth[tableIndex] = otherTable.maxHealth[otherTableIndex];
-			defense[tableIndex] = otherTable.defense[otherTableIndex];
-			damageReduction[tableIndex] = otherTable.damageReduction[otherTableIndex];
-			movementSpeed[tableIndex] = otherTable.movementSpeed[otherTableIndex];
-			damage[tableIndex] = otherTable.damage[otherTableIndex];
-			entities[tableIndex] = otherTable.entities[otherTableIndex];
+		public void Copy(int tableIndex, CoreStats<T> otherRemovableSpanList, int otherTableIndex) {
+			maxHealth[tableIndex] = otherRemovableSpanList.maxHealth[otherTableIndex];
+			defense[tableIndex] = otherRemovableSpanList.defense[otherTableIndex];
+			damageReduction[tableIndex] = otherRemovableSpanList.damageReduction[otherTableIndex];
+			movementSpeed[tableIndex] = otherRemovableSpanList.movementSpeed[otherTableIndex];
+			damage[tableIndex] = otherRemovableSpanList.damage[otherTableIndex];
+			entities[tableIndex] = otherRemovableSpanList.entities[otherTableIndex];
 		}
 
 		public void ResetSingle(int i) {
@@ -121,7 +80,7 @@ namespace Stats {
 	}
 
 	[System.Serializable]
-	public class CoreStatsScaling<T> : Table {
+	public class CoreStatsScaling<T> : RemovableSpanList {
 		public int currentNum;
 		public Scaling[] maxHealth;
 		public Scaling[] defense;
@@ -167,7 +126,7 @@ namespace Stats {
 	}
 
 	[System.Serializable]
-	public class CoreResource<T> : Table {
+	public class CoreResource<T> : RemovableSpanList {
 		public int currentNum;
 		public float[] health;
 

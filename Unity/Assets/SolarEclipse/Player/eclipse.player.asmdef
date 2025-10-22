@@ -1,0 +1,20 @@
+{
+    "name": "eclipse.player",
+    "rootNamespace": "eclipse.player",
+    "references": [
+        "GUID:2b34ab6349a392e4bba946a4e27d021e",
+        "GUID:0898c0a1f5dc05540bcb765fa900aa7e",
+        "GUID:818a2f5f26f6174499d646d10b5b08f0",
+        "GUID:289b73c019ad9004eba4d9a006789fc2",
+        "GUID:d528ed9c8a18a2943acb9ac4e9362d01"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

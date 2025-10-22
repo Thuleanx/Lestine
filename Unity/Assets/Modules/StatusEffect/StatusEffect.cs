@@ -8,13 +8,14 @@ namespace StatusEffects {
         Ignore
     }
 
-	public abstract class StatusEffect : ScriptableObject {
+	public abstract class StatusEffect<T> : ScriptableObject {
         public float durationSeconds;
         public EMultipleApplicationsMode multiApplicationMode;
 
-        public abstract void OnGranted();
-        public abstract void OnRemoved();
+        public abstract void OnGranted(T entity, float intensity);
+        public abstract void OnRemoved(T entity, float intensity);
 
         public abstract bool IsTickable();
+        public abstract void Tick(T entity);
 	}
 }

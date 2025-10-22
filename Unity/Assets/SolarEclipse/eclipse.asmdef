@@ -1,0 +1,18 @@
+{
+    "name": "eclipse",
+    "rootNamespace": "eclipse",
+    "references": [
+        "GUID:776d03a35f1b52c4a9aed9f56d7b4229",
+        "GUID:0898c0a1f5dc05540bcb765fa900aa7e",
+        "GUID:289b73c019ad9004eba4d9a006789fc2"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

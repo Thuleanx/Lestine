@@ -1,6 +1,8 @@
 using UnityEngine;
 using UnityEngine.Assertions;
 
+using PrettyPatterns;
+
 namespace Saba {
 	[RequireComponent(typeof(SabaEntity))]
 	public class SabaEntityStatsInitializer : MonoBehaviour {
@@ -16,8 +18,8 @@ namespace Saba {
 		void OnEnable() {
 			SabaEntity entity = GetComponent<SabaEntity>();
 
-			entity.Attributes = (SabaAliases.allStats.coreStats as Stats.Table).Allocate(1);
-			entity.Resource = (SabaAliases.allStats.coreResource as Stats.Table).Allocate(1);
+			entity.Attributes = (SabaAliases.allStats.coreStats as RemovableSpanList).Allocate(1);
+			entity.Resource = (SabaAliases.allStats.coreResource as RemovableSpanList).Allocate(1);
 			Assert.IsTrue(entity.Attributes == entity.Resource);
 
 			SabaAliases.maxHealth[entity.Attributes] = maxHealth;
