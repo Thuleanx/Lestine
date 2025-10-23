@@ -258,8 +258,9 @@ MonoBehaviour:
   maxHealth: 6
   defense: 6
   damageReduction: 6
-  movementSpeed: 6
-  accelerationToMaxSpeed: 0.5
+  movementSpeed: 10
+  accelerationToMaxSpeed: 0.4
+  deccelerationToZero: 0.2
 --- !u!114 &731288848
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -301,7 +302,7 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 731288844}
-  m_BodyType: 0
+  m_BodyType: 1
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
@@ -312,7 +313,7 @@ Rigidbody2D:
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 0
 --- !u!58 &731288851
 CircleCollider2D:

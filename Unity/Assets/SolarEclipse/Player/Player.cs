@@ -44,6 +44,8 @@ namespace eclipse.player {
 		[Header("Movement")]
 		[SerializeField]
 		float accelerationToMaxSpeed = 0.5f;
+        [SerializeField]
+        float deccelerationToZero = 0.5f;
 
 		void UpdateMovement() {
 			Vector2 right = mainCamera.transform.right;
@@ -55,10 +57,17 @@ namespace eclipse.player {
 			float movementSpeed = Alias.movementSpeed[entity.stats];
 			Vector2 desiredVelocity = desiredDirection * movementSpeed;
 
-			Vector2 desiredForce = desiredVelocity - movementComponent.velocity;
-			float accelerationClamp = movementSpeed / accelerationToMaxSpeed;
+            float accelMax = 0;
+            bool isDeccelerating = desiredVelocity.sqrMagnitude <= 0.01f;
+            if (isDeccelerating) {
+                accelMax =  movementSpeed / deccelerationToZero;
+            } else {
+                accelMax = movementSpeed / accelerationToMaxSpeed;
+            }
 
-			Vector2 appliedForce = Vector2.ClampMagnitude(desiredForce, accelerationClamp);
+			Vector2 desiredForce = desiredVelocity - movementComponent.velocity;
+
+			Vector2 appliedForce = Vector2.ClampMagnitude(desiredForce, accelMax * Time.deltaTime);
             movementComponent.ApplyForce(appliedForce);
 		}
 	}
