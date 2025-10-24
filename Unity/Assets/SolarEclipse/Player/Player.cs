@@ -4,6 +4,10 @@ using PrettyPatterns;
 using eclipse.movement;
 
 namespace eclipse.player {
+    public static class PlayerTransform {
+        public static Transform Value;
+    }
+
 	[RequireComponent(typeof(Entity))]
 	[RequireComponent(typeof(MovementComponent))]
 	public class Player : MonoBehaviour {
@@ -37,6 +41,7 @@ namespace eclipse.player {
 			Alias.stats.InitializeResource(entity.stats, entity.resource);
 
 			mainCamera = Camera.main;
+            PlayerTransform.Value = transform;
 		}
 
 		void Update() { UpdateMovement(); }

@@ -8,7 +8,7 @@ namespace eclipse.movement {
 		new Rigidbody2D rigidbody;
 
 		[field:SerializeField, ReadOnly]
-		public Vector2 velocity {get; private set;}
+		public Vector2 velocity {get; set;}
 
 		void Awake() { rigidbody = GetComponent<Rigidbody2D>(); }
 
