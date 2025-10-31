@@ -1,12 +1,12 @@
 {
-    "name": "NaughtyAttributes.Editor",
-    "rootNamespace": "",
+    "name": "eclipse.spawning",
+    "rootNamespace": "eclipse.spawning",
     "references": [
-        "NaughtyAttributes.Core"
+        "GUID:289b73c019ad9004eba4d9a006789fc2",
+        "GUID:818a2f5f26f6174499d646d10b5b08f0",
+        "GUID:0898c0a1f5dc05540bcb765fa900aa7e"
     ],
-    "includePlatforms": [
-        "Editor"
-    ],
+    "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,

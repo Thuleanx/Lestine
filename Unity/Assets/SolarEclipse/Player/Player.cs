@@ -1,7 +1,9 @@
 using UnityEngine;
+using UnityEngine.Assertions;
 
-using PrettyPatterns;
 using eclipse.movement;
+using PrettyPatterns;
+using ADammy;
 
 namespace eclipse.player {
     public static class PlayerTransform {
@@ -21,9 +23,18 @@ namespace eclipse.player {
 		[SerializeField]
 		float movementSpeed;
 
+        [SerializeField]
+        float attacksPerMinute;
+
 		Camera mainCamera;
 		Entity entity;
 		MovementComponent movementComponent;
+
+        [SerializeField]
+        projectile.ProjectilePool bulletPool;
+		bool wantsToFire = false;
+		EventBinding<eclipse.input.AttackAction> attackActionBinding;
+		float attackCooldown;
 
 		void Awake() {
 			entity = GetComponent<Entity>();
@@ -42,9 +53,34 @@ namespace eclipse.player {
 
 			mainCamera = Camera.main;
             PlayerTransform.Value = transform;
+
+			attackActionBinding = new EventBinding<eclipse.input.AttackAction>((attack) => {
+				wantsToFire = attack.active;
+				attackCooldown = 0;
+			});
 		}
 
-		void Update() { UpdateMovement(); }
+		void OnEnable() {
+			wantsToFire = false;
+            attackActionBinding.Bind();
+		}
+
+		void OnDisable() {
+			wantsToFire = false;
+            attackActionBinding.Unbind();
+
+			// unloading the scene, so we shouldn't be calling functions even
+			// when it's referencing
+			if (!gameObject.scene.isLoaded) return;
+		}
+
+		void Update() { 
+            UpdateMovement(); 
+            if (wantsToFire) {
+                UpdateFiring();
+				attackCooldown -= Time.deltaTime;
+            }
+        }
 
 		[Header("Movement")]
 		[SerializeField]
@@ -75,5 +111,34 @@ namespace eclipse.player {
 			Vector2 appliedForce = Vector2.ClampMagnitude(desiredForce, accelMax * Time.deltaTime);
             movementComponent.ApplyForce(appliedForce);
 		}
+
+        void UpdateFiring() {
+			const int MAX_ATTACKS_PER_FRAME = 30;
+
+			Ray mouseRay = mainCamera.ScreenPointToRay(eclipse.input.PointerPosition.Value);
+			Plane plane = new Plane(Vector3.forward, transform.position);
+			bool planeRayHit = plane.Raycast(mouseRay, out float mouseRayDistance);
+
+			Assert.IsTrue(
+				planeRayHit,
+				"Unless our perspective / camera is incorrectly set up, we'll always point to a valid location on the plane"
+			);
+
+			Vector3 aimPosition = mouseRayDistance * mouseRay.direction + mouseRay.origin;
+
+			float SECONDS_IN_MINUTES = 60.0f;
+			float totalCooldownTime = SECONDS_IN_MINUTES / attacksPerMinute;
+
+			for (int _ = 0; _ < MAX_ATTACKS_PER_FRAME && attackCooldown <= 0; _++) {
+                Vector2 direction = aimPosition - entity.transform.position;
+                direction.Normalize();
+                bulletPool.InstantiateBullet(entity, entity.transform.position, direction, attackCooldown);
+
+				attackCooldown += totalCooldownTime;
+			}
+
+			// if we somehow lag spike too long,
+			if (attackCooldown < 0) attackCooldown = 0;
+        }
 	}
 }

@@ -1,12 +1,11 @@
 {
-    "name": "NaughtyAttributes.Editor",
+    "name": "eclipse.ui",
     "rootNamespace": "",
     "references": [
-        "NaughtyAttributes.Core"
+        "GUID:289b73c019ad9004eba4d9a006789fc2",
+        "GUID:818a2f5f26f6174499d646d10b5b08f0"
     ],
-    "includePlatforms": [
-        "Editor"
-    ],
+    "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,

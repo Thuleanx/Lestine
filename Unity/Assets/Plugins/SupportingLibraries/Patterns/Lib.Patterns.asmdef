@@ -2,7 +2,8 @@
     "name": "Lib.Patterns",
     "rootNamespace": "",
     "references": [
-        "GUID:a8eaab85a05b9f546bccb0a8018d4ecc"
+        "GUID:a8eaab85a05b9f546bccb0a8018d4ecc",
+        "GUID:776d03a35f1b52c4a9aed9f56d7b4229"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

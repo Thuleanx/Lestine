@@ -53,6 +53,32 @@ namespace Nikko.Perf {
 			}
 		}
 
+		public static void PerformRaycasts(
+			Vector2[] origins,
+			Vector2[] directions,
+			int[] layerMask,
+			Action<RaycastHit2D[]> callback
+		) {
+			int rayCount = Mathf.Min(origins.Length, maxRaycastsPerJob);
+
+		    NativeArray<RaycastCommand2D> rayCommands;
+			using (
+				rayCommands =
+					new NativeArray<RaycastCommand2D>(rayCount, Allocator.TempJob)
+			) {
+				for (int i = 0; i < rayCount; i++) {
+					rayCommands[i] = new RaycastCommand2D() {
+                        origin = origins[i], 
+                        direction = directions[i], 
+                        maxDistance = directions[i].magnitude, 
+                        layerMask = layerMask[i]
+                    };
+				}
+
+				ExecuteRaycasts(rayCommands, callback);
+			}
+		}
+
 		static void ExecuteRaycasts(
 			NativeArray<RaycastCommand2D> raycastCommands,
 			Action<RaycastHit2D[]> callback

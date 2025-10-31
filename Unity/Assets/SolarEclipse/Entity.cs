@@ -30,4 +30,8 @@ namespace eclipse {
         [ReadOnly]
 		public Optional<int> statBase;
 	}
+
+    public static class EntityStatics {
+        public static bool IsDead(Entity entity) => Alias.health[entity.resource] <= 0;
+    }
 }

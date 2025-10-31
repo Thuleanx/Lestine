@@ -1,14 +1,12 @@
 {
-    "name": "eclipse.player",
-    "rootNamespace": "eclipse.player",
+    "name": "eclipse.projectile",
+    "rootNamespace": "eclipse.projectile",
     "references": [
-        "GUID:2b34ab6349a392e4bba946a4e27d021e",
-        "GUID:0898c0a1f5dc05540bcb765fa900aa7e",
         "GUID:818a2f5f26f6174499d646d10b5b08f0",
+        "GUID:776d03a35f1b52c4a9aed9f56d7b4229",
+        "GUID:72715220fa36bf044a285bdf04cde779",
         "GUID:289b73c019ad9004eba4d9a006789fc2",
-        "GUID:d528ed9c8a18a2943acb9ac4e9362d01",
-        "GUID:71ce2b2baee668c44b0485c3dd505050",
-        "GUID:80017f08696c45345892a6f08b99aced"
+        "GUID:a3085e0468d683443ad34bf746eb1119"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

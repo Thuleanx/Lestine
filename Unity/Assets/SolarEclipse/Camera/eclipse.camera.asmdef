@@ -3,7 +3,8 @@
     "rootNamespace": "eclipse.camera",
     "references": [
         "GUID:405384a2679bde94ab58a973c8758941",
-        "GUID:d528ed9c8a18a2943acb9ac4e9362d01"
+        "GUID:d528ed9c8a18a2943acb9ac4e9362d01",
+        "GUID:7faefc35d9af77e41aafdf03c4913201"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

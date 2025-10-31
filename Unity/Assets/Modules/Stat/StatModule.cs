@@ -1,10 +1,21 @@
-using System;
-using System.Collections.Generic;
 using UnityEngine;
 
 using PrettyPatterns;
 
 namespace Stats {
+    [System.Serializable]
+    public struct SingleCoreStatsEntry {
+        [Min(0.0f)]
+        public float maxHealth;
+        [Min(0.0f)]
+        public float defense;
+        [Min(0.0f)]
+        public float damageReduction;
+        [Min(0.0f)]
+        public float movementSpeed;
+        public Scaling damage;
+    }
+
 	[System.Serializable]
 	public struct Scaling {
 		public float added;

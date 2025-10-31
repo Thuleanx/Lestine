@@ -1,6 +1,7 @@
 using UnityEngine;
 
 using eclipse.player;
+using MathUtils;
 
 namespace eclipse.camera {
 	[ExecuteAlways]
@@ -18,6 +19,9 @@ namespace eclipse.camera {
 
 		[SerializeField, Range(0, 0.99f)]
 		float maxRatio;
+
+        [SerializeField]
+        float smoothing;
 
 		void Awake() { cameraCached = GetComponent<Camera>(); }
 
@@ -62,7 +66,10 @@ namespace eclipse.camera {
 			Ray toPlayerRay = cameraCached.ViewportPointToRay(playerViewportPosition);
 
 			Ray playerToCameraRay = new Ray(playerPosition, -toPlayerRay.direction);
-			transform.position = playerToCameraRay.GetPoint(distanceToPlayerPlane);
+
+            Vector3 desiredPosition = playerToCameraRay.GetPoint(distanceToPlayerPlane);
+            Vector3 nextPosition = Mathx.Damp(Vector3.Lerp, transform.position, desiredPosition, smoothing, Time.deltaTime);
+			transform.position = nextPosition;
 		}
 	}
 }
