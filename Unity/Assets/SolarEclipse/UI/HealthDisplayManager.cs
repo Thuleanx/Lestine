@@ -9,6 +9,7 @@ using System.Runtime.CompilerServices;
 using PrettyPatterns;
 
 namespace eclipse.ui {
+	[RequireComponent(typeof(RectTransform))]
 	public class HealthDisplayManager : Singleton<HealthDisplayManager> {
 		const int MAX_BARS = 100;
 
@@ -47,12 +48,15 @@ namespace eclipse.ui {
 				defaultCapacity: 10,
 				maxSize: MAX_BARS
 			);
-			camera = GetComponentInParent<Canvas>().worldCamera;
+			Canvas parentCanvas = GetComponentInParent<Canvas>();
+			Assert.IsNotNull(parentCanvas, "Expect this to be parented under a canvas");
+			camera = parentCanvas.worldCamera;
 		}
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		void UpdatePosition(int i) {
-			Vector3 position = data.entities[i].transform.position + offset;
+			Vector3 position = data.entities[i].transform.position + offset.x * camera.transform.right +
+							   offset.y * camera.transform.up + offset.z * camera.transform.forward;
 			data.sliders[i].transform.position = RectTransformUtility.WorldToScreenPoint(camera, position);
 		}
 
@@ -92,10 +96,11 @@ namespace eclipse.ui {
 				data.sliders[index] = data.sliders[lastIndex];
 				data.entities[index] = data.entities[lastIndex];
 
-                data.sliders[lastIndex] = null;
-                data.entities[lastIndex] = null;
-
 				indexMap[data.entities[index]] = index;
+
+				data.sliders[lastIndex] = null;
+				data.entities[lastIndex] = null;
+
 				indexMap.Remove(entity);
 				data.num--;
 			}
@@ -104,7 +109,7 @@ namespace eclipse.ui {
 		public void OnDamageTaken(ReadOnlySpan<Entity> damaged) => Track(damaged);
 		public void OnDeath(ReadOnlySpan<Entity> dead) => Untrack(dead);
 
-		void LateUpdate() {
+		public void Run() {
 			Assert.AreEqual(
 				data.num, indexMap.Count, "Expect number of entities to match number of active health bars"
 			);

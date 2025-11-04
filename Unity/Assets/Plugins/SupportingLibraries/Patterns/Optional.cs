@@ -29,5 +29,10 @@ namespace PrettyPatterns {
         public IEnumerable<T> Iter() {
             if (enabled) yield return value;
         }
+
+        public T GetWithDefault(T @default) {
+            if (IsValid) return value;
+            return @default;
+        }
     }
 }

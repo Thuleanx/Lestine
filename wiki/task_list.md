@@ -3,9 +3,23 @@
 This is where Lestine's tasks are tracked.
 
 ## Vertical Slice
-- [x] Enemies approach player
-- [x] Enemies attack player if within some threshold
-- [x] Player pushed away from the attack
+
+- [ ] Interaction system
+- [ ] Item system
+- [ ] Buff system
+- [ ] Ability system
+- [ ] Knockback
+- [ ] Accuracy
+- [ ] Weapons
+- [ ] Camera shake
+- [ ] Pause / sleep on kills
+- [ ] UI HUD
+- [ ] Inventory UI
+
+
+- [ ] Enemies approach player
+- [ ] Enemies attack player if within some threshold
+- [ ] Player pushed away from the attack
 - [x] Healthbar on non-full health enemies
 - [x] Enemies consumable on low health
 - [x] Consume enemy to gain a speed boost

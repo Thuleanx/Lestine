@@ -110,7 +110,6 @@ namespace eclipse.projectile {
 				if (!isHit && !isExpired) continue;
 
 				if (isHit) {
-                    Debug.Log("Something is hit");
 					Vector2 hitDisplacement = (Vector2)hit.point - data.startPosition[i];
 					float speed = data.startVelocity[i].magnitude;
 					float distanceTravelled = hitDisplacement.magnitude;

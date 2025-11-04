@@ -2,13 +2,15 @@
     "name": "eclipse.player",
     "rootNamespace": "eclipse.player",
     "references": [
-        "GUID:2b34ab6349a392e4bba946a4e27d021e",
+        "GUID:80017f08696c45345892a6f08b99aced",
         "GUID:0898c0a1f5dc05540bcb765fa900aa7e",
         "GUID:818a2f5f26f6174499d646d10b5b08f0",
         "GUID:289b73c019ad9004eba4d9a006789fc2",
+        "GUID:2b34ab6349a392e4bba946a4e27d021e",
         "GUID:d528ed9c8a18a2943acb9ac4e9362d01",
         "GUID:71ce2b2baee668c44b0485c3dd505050",
-        "GUID:80017f08696c45345892a6f08b99aced"
+        "GUID:969a5ad8deb10f546b0f5ad17ee2d27c",
+        "GUID:bc0666fc11fee254f89d851cca5e6819"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

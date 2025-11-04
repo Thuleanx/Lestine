@@ -1,10 +1,8 @@
 {
-    "name": "eclipse.input",
-    "rootNamespace": "eclipse.input",
+    "name": "eclipse.events",
+    "rootNamespace": "eclipse.events",
     "references": [
-        "GUID:80017f08696c45345892a6f08b99aced",
-        "GUID:75469ad4d38634e559750d17036d5f7c",
-        "GUID:bc0666fc11fee254f89d851cca5e6819"
+        "GUID:80017f08696c45345892a6f08b99aced"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

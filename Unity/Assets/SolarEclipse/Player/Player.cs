@@ -2,6 +2,8 @@ using UnityEngine;
 using UnityEngine.Assertions;
 
 using eclipse.movement;
+using eclipse.interactable;
+using eclipse.ui;
 using PrettyPatterns;
 using ADammy;
 
@@ -12,6 +14,7 @@ namespace eclipse.player {
 
 	[RequireComponent(typeof(Entity))]
 	[RequireComponent(typeof(MovementComponent))]
+    [RequireComponent(typeof(InteractionSource))]
 	public class Player : MonoBehaviour {
 		[Header("Stats")]
 		[SerializeField]
@@ -29,16 +32,19 @@ namespace eclipse.player {
 		Camera mainCamera;
 		Entity entity;
 		MovementComponent movementComponent;
+        InteractionSource interactComponent;
 
         [SerializeField]
         projectile.ProjectilePool bulletPool;
 		bool wantsToFire = false;
 		EventBinding<eclipse.input.AttackAction> attackActionBinding;
+        EventBinding<eclipse.input.InteractionAction> interactActionBinding;
 		float attackCooldown;
 
 		void Awake() {
 			entity = GetComponent<Entity>();
             movementComponent = GetComponent<MovementComponent>();
+            interactComponent = GetComponent<InteractionSource>();
 
 			entity.stats = (Alias.coreStats as RemovableSpanList).Allocate(1);
 			entity.resource = (Alias.coreResource as RemovableSpanList).Allocate(1);
@@ -58,16 +64,23 @@ namespace eclipse.player {
 				wantsToFire = attack.active;
 				attackCooldown = 0;
 			});
+            interactActionBinding = new EventBinding<eclipse.input.InteractionAction>((_event) => {
+                interactComponent.TryInteract();
+            });
 		}
 
 		void OnEnable() {
 			wantsToFire = false;
             attackActionBinding.Bind();
+
+            interactComponent.OnInteractableChange.AddListener(OnInteractableChanged);
 		}
 
 		void OnDisable() {
 			wantsToFire = false;
             attackActionBinding.Unbind();
+
+            interactComponent.OnInteractableChange.RemoveListener(OnInteractableChanged);
 
 			// unloading the scene, so we shouldn't be calling functions even
 			// when it's referencing
@@ -139,6 +152,18 @@ namespace eclipse.player {
 
 			// if we somehow lag spike too long,
 			if (attackCooldown < 0) attackCooldown = 0;
+        }
+
+        void OnInteractableChanged(Interactable from, Interactable to) {
+            if (to == null)
+                EventBus<FocusInteractableDrop>.Raise();
+            else {
+                EventBus<FocusInteractableChange>.Raise(new FocusInteractableChange() {
+                    sprite = to.GetInteractionSprite(),
+                    prompt = to.GetInteractionPrompt(),
+                    location = to.transform.position
+                });
+            }
         }
 	}
 }

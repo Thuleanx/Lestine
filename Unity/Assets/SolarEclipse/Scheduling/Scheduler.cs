@@ -17,6 +17,18 @@ namespace eclipse.scheduling {
 				  : ReadOnlySpan<Entity>.Empty;
 
 			HealthDisplayManager.instance.OnDamageTaken(damaged);
+
+            ReadOnlySpan<Entity> dead = result.numDead > 0
+                ? new ReadOnlySpan<Entity>(result.entities, 0, result.numDead) :
+                ReadOnlySpan<Entity>.Empty;
+            if (dead.Length > 0) {
+                HealthDisplayManager.instance.OnDeath(dead);
+                EntityStatics.CleanupDead(dead);
+            }
 		}
+
+        void LateUpdate() {
+            HealthDisplayManager.instance.Run();
+        }
 	}
 }

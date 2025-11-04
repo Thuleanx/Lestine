@@ -23,10 +23,10 @@ namespace Saba {
 		public static float[] defense => coreStats.defense;
 		public static float[] damageReduction => coreStats.damageReduction;
 		public static float[] movementSpeed => coreStats.movementSpeed;
-		public static Stats.Scaling[] damage => coreStats.damage;
+		public static Stats.Modifiers[] damage => coreStats.damage;
 
-		public static Stats.Scaling[] movementSpeedScaling => coreStatsScaling.movementSpeed;
-		public static Stats.Scaling[] maxHealthScaling => coreStatsScaling.maxHealth;
+		public static Stats.Modifiers[] movementSpeedScaling => coreStatsScaling.movementSpeed;
+		public static Stats.Modifiers[] maxHealthScaling => coreStatsScaling.maxHealth;
 	}
 
 	public class SabaEntity : MonoBehaviour {

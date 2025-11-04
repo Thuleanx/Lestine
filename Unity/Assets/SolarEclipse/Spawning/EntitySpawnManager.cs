@@ -63,9 +63,7 @@ namespace eclipse.spawning {
 			for (; i < MAX_SPAWNS_PER_TICK && pending.num > i; i++) {
 				int index = (pending.current + i) % SpawnParameters.MAX_SPAWNS;
 
-				Entity spawnedEntity = Instantiate(pending.prefab[index], pending.position[index], Quaternion.identity);
-
-				spawnedEntities[i] = spawnedEntity;
+				spawnedEntities[i] = Instantiate(pending.prefab[index], pending.position[index], Quaternion.identity);
 			}
 
 			if (i == 0) return;
@@ -83,7 +81,7 @@ namespace eclipse.spawning {
 				Alias.defense[stats + j] = pending.defense[pendingIndex];
 				Alias.damageReduction[stats + j] = pending.damageReduction[pendingIndex];
 				Alias.movementSpeed[stats + j] = pending.movementSpeed[pendingIndex];
-				Alias.coreStats.entities[stats + j] = spawnedEntities[j];
+                Alias.coreStats.entities[stats + j] = spawnedEntities[j];
 			}
 
 			pending.current = (pending.current + i) % SpawnParameters.MAX_SPAWNS;

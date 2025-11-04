@@ -13,22 +13,8 @@ namespace Stats {
         public float damageReduction;
         [Min(0.0f)]
         public float movementSpeed;
-        public Scaling damage;
+        public Modifiers damage;
     }
-
-	[System.Serializable]
-	public struct Scaling {
-		public float added;
-		public float increase;
-		public float more;
-
-		public static Scaling Create() { return new Scaling { more = 1.0f }; }
-		public float ApplyToBase(float @base) => (@base + added) * (1.0f + increase) * more;
-
-		public static Scaling operator +(Scaling a, Scaling b) => new Scaling() {
-			added = a.added + b.added, increase = a.increase + b.increase, more = a.more * b.more
-		};
-	}
 
 	[System.Serializable]
 	public class CoreStats<T> : RemovableSpanList {
@@ -37,7 +23,7 @@ namespace Stats {
 		public float[] defense;
 		public float[] damageReduction;
 		public float[] movementSpeed;
-		public Scaling[] damage;
+		public Modifiers[] damage;
 		public T[] entities;
 
 		public int GetCapacity() => maxHealth.Length;
@@ -51,7 +37,7 @@ namespace Stats {
 				defense = new float[num],
 				damageReduction = new float[num],
 				movementSpeed = new float[num],
-				damage = new Scaling[num],
+				damage = new Modifiers[num],
 				entities = new T[num]
 			};
 			stats.Reset();
@@ -69,13 +55,13 @@ namespace Stats {
 
 		public void ResetSingle(int i) {
 			maxHealth[i] = defense[i] = damageReduction[i] = movementSpeed[i] = 0.0f;
-			damage[i] = Scaling.Create();
+			damage[i] = Modifiers.Create();
 		}
 
 		internal void Reset() {
 			for (int i = 0; i < GetCapacity(); i++) {
 				maxHealth[i] = defense[i] = damageReduction[i] = movementSpeed[i] = 0.0f;
-				damage[i] = Scaling.Create();
+				damage[i] = Modifiers.Create();
 			}
 		}
 
@@ -86,18 +72,17 @@ namespace Stats {
 			movementSpeed[i] = movementSpeed[j];
 			damage[i] = damage[j];
 			entities[i] = entities[j];
-			entities[j] = default;	// invalidate reference
 		}
 	}
 
 	[System.Serializable]
 	public class CoreStatsScaling<T> : RemovableSpanList {
 		public int currentNum;
-		public Scaling[] maxHealth;
-		public Scaling[] defense;
-		public Scaling[] damageReduction;
-		public Scaling[] movementSpeed;
-		public Scaling[] damage;
+		public Modifiers[] maxHealth;
+		public Modifiers[] defense;
+		public Modifiers[] damageReduction;
+		public Modifiers[] movementSpeed;
+		public Modifiers[] damage;
 		public T[] entities;
 
 		public int GetCapacity() => maxHealth.Length;
@@ -107,11 +92,11 @@ namespace Stats {
 		public static CoreStatsScaling<T> Create(int num) {
 			CoreStatsScaling<T> stats = new CoreStatsScaling<T> {
 				currentNum = 0,
-				maxHealth = new Scaling[num],
-				defense = new Scaling[num],
-				damageReduction = new Scaling[num],
-				movementSpeed = new Scaling[num],
-				damage = new Scaling[num],
+				maxHealth = new Modifiers[num],
+				defense = new Modifiers[num],
+				damageReduction = new Modifiers[num],
+				movementSpeed = new Modifiers[num],
+				damage = new Modifiers[num],
 				entities = new T[num]
 			};
 			stats.Reset();
@@ -119,10 +104,10 @@ namespace Stats {
 		}
 
 		public void ResetSingle(int i
-		) => maxHealth[i] = defense[i] = damageReduction[i] = movementSpeed[i] = damage[i] = Scaling.Create();
+		) => maxHealth[i] = defense[i] = damageReduction[i] = movementSpeed[i] = damage[i] = Modifiers.Create();
 		internal void Reset() {
 			for (int i = 0; i < GetCapacity(); i++)
-				maxHealth[i] = defense[i] = damageReduction[i] = movementSpeed[i] = damage[i] = Scaling.Create();
+				maxHealth[i] = defense[i] = damageReduction[i] = movementSpeed[i] = damage[i] = Modifiers.Create();
 		}
 
 		public void Set(int i, int j) {
@@ -132,7 +117,6 @@ namespace Stats {
 			movementSpeed[i] = movementSpeed[j];
 			damage[i] = damage[j];
 			entities[i] = entities[j];
-			entities[j] = default;
 		}
 	}
 
