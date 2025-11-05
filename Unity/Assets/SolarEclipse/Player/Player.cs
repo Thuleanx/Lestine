@@ -72,6 +72,7 @@ namespace eclipse.player {
 		void OnEnable() {
 			wantsToFire = false;
             attackActionBinding.Bind();
+            interactActionBinding.Bind();
 
             interactComponent.OnInteractableChange.AddListener(OnInteractableChanged);
 		}
@@ -79,6 +80,7 @@ namespace eclipse.player {
 		void OnDisable() {
 			wantsToFire = false;
             attackActionBinding.Unbind();
+            interactActionBinding.Unbind();
 
             interactComponent.OnInteractableChange.RemoveListener(OnInteractableChanged);
 

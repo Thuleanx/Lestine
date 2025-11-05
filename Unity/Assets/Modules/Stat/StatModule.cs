@@ -1,5 +1,6 @@
 using UnityEngine;
 
+using System.Runtime.CompilerServices;
 using PrettyPatterns;
 
 namespace Stats {
@@ -103,8 +104,10 @@ namespace Stats {
 			return stats;
 		}
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public void ResetSingle(int i
 		) => maxHealth[i] = defense[i] = damageReduction[i] = movementSpeed[i] = damage[i] = Modifiers.Create();
+
 		internal void Reset() {
 			for (int i = 0; i < GetCapacity(); i++)
 				maxHealth[i] = defense[i] = damageReduction[i] = movementSpeed[i] = damage[i] = Modifiers.Create();
@@ -118,6 +121,27 @@ namespace Stats {
 			damage[i] = damage[j];
 			entities[i] = entities[j];
 		}
+
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void Apply(int i, ModifierEntry entry, Modifiers modifiers) {
+            switch (entry) {
+                case ModifierEntry.eMaxHealth:
+                    maxHealth[i] += modifiers;
+                    break;
+                case ModifierEntry.eDefense:
+                    defense[i] += modifiers;
+                    break;
+                case ModifierEntry.eDamageReduction:
+                    damageReduction[i] += modifiers;
+                    break;
+                case ModifierEntry.eMovementSpeed:
+                    movementSpeed[i] += modifiers;
+                    break;
+                case ModifierEntry.eDamage:
+                    damage[i] += modifiers;
+                    break;
+            }
+        }
 	}
 
 	[System.Serializable]

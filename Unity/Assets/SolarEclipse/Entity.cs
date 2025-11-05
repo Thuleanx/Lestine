@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Assertions;
 using System;
 
 using PrettyPatterns;
@@ -22,14 +23,17 @@ namespace eclipse {
 	}
 
 	public class Entity : MonoBehaviour {
+		public struct ExtraIndices {
+			public int scaling;
+			public int @base;
+		}
+
 		[ReadOnly]
 		public int stats;
 		[ReadOnly]
 		public int resource;
 		[ReadOnly]
-		public Optional<int> statScaling;
-		[ReadOnly]
-		public Optional<int> statBase;
+		public Optional<ExtraIndices> extra;
 	}
 
 	public static class EntityStatics {
@@ -46,8 +50,6 @@ namespace eclipse {
 			}
 
 			RemovableSpanList.Remove(Alias.coreStats, new ReadOnlySpan<int>(statsToRemove), (int i, int j) => {
-                Debug.Log(i + " <- " + j);
-                Debug.Log(Alias.coreStats.entities[i] + " " + Alias.coreStats.entities[j]);
 				Alias.coreStats.entities[j].stats = i;
 				Alias.coreStats.entities[j].resource = i;
 			});
@@ -56,5 +58,25 @@ namespace eclipse {
 
 			foreach (Entity entity in entities) UnityEngine.Object.Destroy(entity.gameObject);
 		}
+
+		public static void GenerateScaling(Span<Entity> entities) {
+			int baseStats = (Alias.coreStatsBase as RemovableSpanList).Allocate(entities.Length);
+			int scalingStats = (Alias.coreStats as RemovableSpanList).Allocate(entities.Length);
+
+			int p = 0;
+			foreach (Entity entity in entities) {
+                Assert.IsTrue(!entity.extra.IsValid, "Requesting generate scaling on entity that already has it");
+				entity.extra = new Entity.ExtraIndices { scaling = scalingStats + p, @base = baseStats + p };
+
+				Alias.coreStatsBase.Copy(entity.extra.Value.@base, Alias.coreStats, entity.stats);
+				Alias.coreStatsScaling.ResetSingle(entity.extra.Value.scaling);
+
+				p++;
+			}
+		}
+
+        public static void RecomputeStats(Entity entity) {
+
+        }
 	}
 }

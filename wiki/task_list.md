@@ -4,8 +4,9 @@ This is where Lestine's tasks are tracked.
 
 ## Vertical Slice
 
-- [ ] Interaction system
-- [ ] Item system
+- [x] Interaction system
+- [x] Item system
+- [ ] Trinkets
 - [ ] Buff system
 - [ ] Ability system
 - [ ] Knockback

@@ -1,0 +1,12 @@
+using eclipse.items;
+
+namespace eclipse.trinket {
+	public class TrinketContainer : MonoBehaviour {
+        const int MAX_TRINKETS = 100;
+
+        public class Data {
+        };
+        ItemReference[] itemReferences;
+        int[] itemCount;
+	}
+}

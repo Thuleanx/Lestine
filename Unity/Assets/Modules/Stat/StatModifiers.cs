@@ -1,7 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 namespace Stats {
 	[System.Serializable]
 	public struct Modifiers {
@@ -15,6 +11,15 @@ namespace Stats {
 		public static Modifiers operator +(Modifiers a, Modifiers b) => new Modifiers() {
 			added = a.added + b.added, increase = a.increase + b.increase, more = a.more * b.more
 		};
+
+		public static Modifiers operator -(Modifiers a) => new Modifiers() {
+			added = -a.added,
+			increase = -a.increase,
+			more = 1.0f / a.more,
+		};
 	}
+
+	[System.Serializable]
+	public enum ModifierEntry { eMaxHealth, eDefense, eDamageReduction, eMovementSpeed, eDamage }
 
 }

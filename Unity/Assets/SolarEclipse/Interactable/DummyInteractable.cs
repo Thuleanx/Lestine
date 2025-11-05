@@ -9,5 +9,9 @@ namespace eclipse.interactable {
 
         public override string GetInteractionPrompt() => "Dummy";
         public override Sprite GetInteractionSprite() => sprite;
+
+        public override void Interact(InteractionSource source) {
+            Debug.Log("Interact with " + source);
+        }
     }
 }

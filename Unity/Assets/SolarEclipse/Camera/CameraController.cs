@@ -25,9 +25,9 @@ namespace eclipse.camera {
 
 		void Awake() { cameraCached = GetComponent<Camera>(); }
 
-		void LateUpdate() { UpdateCameraPosition(); }
+		void FixedUpdate() { UpdateCameraPosition(Time.fixedDeltaTime); }
 
-		void UpdateCameraPosition() {
+		void UpdateCameraPosition(float deltaTime) {
 			Vector2 viewportMiddle = Vector2.one / 2.0f;
 
 			Vector2 playerPosition;
@@ -68,7 +68,7 @@ namespace eclipse.camera {
 			Ray playerToCameraRay = new Ray(playerPosition, -toPlayerRay.direction);
 
             Vector3 desiredPosition = playerToCameraRay.GetPoint(distanceToPlayerPlane);
-            Vector3 nextPosition = Mathx.Damp(Vector3.Lerp, transform.position, desiredPosition, smoothing, Time.deltaTime);
+            Vector3 nextPosition = Mathx.Damp(Vector3.Lerp, transform.position, desiredPosition, smoothing, deltaTime);
 			transform.position = nextPosition;
 		}
 	}

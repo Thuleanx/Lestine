@@ -1,10 +1,12 @@
 {
-    "name": "eclipse.items",
-    "rootNamespace": "eclipse.items",
+    "name": "eclipse.trinket",
+    "rootNamespace": "eclipse.trinket",
     "references": [
         "GUID:818a2f5f26f6174499d646d10b5b08f0",
-        "GUID:0898c0a1f5dc05540bcb765fa900aa7e",
-        "GUID:289b73c019ad9004eba4d9a006789fc2"
+        "GUID:8caf1c55ba721c04cb3db7fc7b9ace04",
+        "GUID:289b73c019ad9004eba4d9a006789fc2",
+        "GUID:776d03a35f1b52c4a9aed9f56d7b4229",
+        "GUID:969a5ad8deb10f546b0f5ad17ee2d27c"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
