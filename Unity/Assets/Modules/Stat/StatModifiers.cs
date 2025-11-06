@@ -5,17 +5,16 @@ namespace Stats {
 		public float increase;
 		public float more;
 
-		public static Modifiers Create() { return new Modifiers { more = 1.0f }; }
-		public float ApplyToBase(float @base) => (@base + added) * (1.0f + increase) * more;
+		public float ApplyToBase(float @base) => (@base + added) * (1.0f + increase) * (1.0f + more);
 
 		public static Modifiers operator +(Modifiers a, Modifiers b) => new Modifiers() {
-			added = a.added + b.added, increase = a.increase + b.increase, more = a.more * b.more
+			added = a.added + b.added, increase = a.increase + b.increase, more = (1.0f + a.more) * (1.0f + b.more) - 1.0f
 		};
 
 		public static Modifiers operator -(Modifiers a) => new Modifiers() {
 			added = -a.added,
 			increase = -a.increase,
-			more = 1.0f / a.more,
+			more = (1.0f / (1.0f + a.more)) - 1.0f,
 		};
 	}
 

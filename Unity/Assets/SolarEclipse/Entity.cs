@@ -23,6 +23,7 @@ namespace eclipse {
 	}
 
 	public class Entity : MonoBehaviour {
+		[System.Serializable]
 		public struct ExtraIndices {
 			public int scaling;
 			public int @base;
@@ -49,12 +50,11 @@ namespace eclipse {
 				p++;
 			}
 
-			RemovableSpanList.Remove(Alias.coreStats, new ReadOnlySpan<int>(statsToRemove), (int i, int j) => {
+			RemovableSpanList.Remove(Alias.coreResource, resourcesToRemove, null);
+			RemovableSpanList.Remove(Alias.coreStats, statsToRemove, (int i, int j) => {
 				Alias.coreStats.entities[j].stats = i;
 				Alias.coreStats.entities[j].resource = i;
 			});
-
-			RemovableSpanList.Remove(Alias.coreResource, new ReadOnlySpan<int>(resourcesToRemove), null);
 
 			foreach (Entity entity in entities) UnityEngine.Object.Destroy(entity.gameObject);
 		}
@@ -65,7 +65,7 @@ namespace eclipse {
 
 			int p = 0;
 			foreach (Entity entity in entities) {
-                Assert.IsTrue(!entity.extra.IsValid, "Requesting generate scaling on entity that already has it");
+				Assert.IsTrue(!entity.extra.IsValid, "Requesting generate scaling on entity that already has it");
 				entity.extra = new Entity.ExtraIndices { scaling = scalingStats + p, @base = baseStats + p };
 
 				Alias.coreStatsBase.Copy(entity.extra.Value.@base, Alias.coreStats, entity.stats);
@@ -75,8 +75,9 @@ namespace eclipse {
 			}
 		}
 
-        public static void RecomputeStats(Entity entity) {
-
-        }
+		public static void RecomputeStats(Entity entity) {
+			Assert.IsTrue(entity.extra.IsValid, "Recomputing stats for entity, but no extras field.");
+			Alias.stats.RecomputeStats(entity.stats, entity.extra.Value.@base, entity.extra.Value.scaling);
+		}
 	}
 }

@@ -30,6 +30,7 @@ namespace eclipse.items {
 		}
 
 		void EnsureModExist(Entity entity) {
+            Debug.Log("Ensure mod exist");
 			if (entity.extra.IsValid) return;
 			EntityStatics.GenerateScaling(new Span<Entity>(new Entity[] { entity }));
 		}

@@ -56,13 +56,13 @@ namespace Stats {
 
 		public void ResetSingle(int i) {
 			maxHealth[i] = defense[i] = damageReduction[i] = movementSpeed[i] = 0.0f;
-			damage[i] = Modifiers.Create();
+			damage[i] = default;
 		}
 
 		internal void Reset() {
 			for (int i = 0; i < GetCapacity(); i++) {
 				maxHealth[i] = defense[i] = damageReduction[i] = movementSpeed[i] = 0.0f;
-				damage[i] = Modifiers.Create();
+				damage[i] = default;
 			}
 		}
 
@@ -106,11 +106,11 @@ namespace Stats {
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public void ResetSingle(int i
-		) => maxHealth[i] = defense[i] = damageReduction[i] = movementSpeed[i] = damage[i] = Modifiers.Create();
+		) => maxHealth[i] = defense[i] = damageReduction[i] = movementSpeed[i] = damage[i] = default;
 
 		internal void Reset() {
 			for (int i = 0; i < GetCapacity(); i++)
-				maxHealth[i] = defense[i] = damageReduction[i] = movementSpeed[i] = damage[i] = Modifiers.Create();
+				maxHealth[i] = defense[i] = damageReduction[i] = movementSpeed[i] = damage[i] = default;
 		}
 
 		public void Set(int i, int j) {
