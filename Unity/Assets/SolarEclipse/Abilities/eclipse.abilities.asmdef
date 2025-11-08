@@ -1,0 +1,16 @@
+{
+    "name": "eclipse.abilities",
+    "rootNamespace": "eclipse.abilities",
+    "references": [
+        "GUID:818a2f5f26f6174499d646d10b5b08f0"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

@@ -6,8 +6,8 @@ This is where Lestine's tasks are tracked.
 
 - [x] Interaction system
 - [x] Item system
-- [ ] Trinkets
-- [ ] Buff system
+- [x] Trinkets
+- [?] Buff system
 - [ ] Ability system
 - [ ] Knockback
 - [ ] Accuracy
