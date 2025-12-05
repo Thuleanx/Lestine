@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.Assertions;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
 using ADammy;
@@ -25,7 +26,8 @@ namespace eclipse.input {
 		}
 
 		public void OnAttack(InputAction.CallbackContext ctx) {
-			if (ctx.started) EventBus<AttackAction>.Raise(new AttackAction() { active = true });
+			if (ctx.started && !EventSystem.current.IsPointerOverGameObject())
+				EventBus<AttackAction>.Raise(new AttackAction() { active = true });
 			if (ctx.canceled) EventBus<AttackAction>.Raise(new AttackAction() { active = false });
 		}
 

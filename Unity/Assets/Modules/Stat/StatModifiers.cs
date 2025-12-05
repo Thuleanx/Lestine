@@ -21,4 +21,10 @@ namespace Stats {
 	[System.Serializable]
 	public enum ModifierEntry { eMaxHealth, eDefense, eDamageReduction, eMovementSpeed, eDamage }
 
+    [System.Serializable]
+    public struct Modifier {
+        public ModifierEntry entry;
+        public Modifiers mod;
+    };
+
 }

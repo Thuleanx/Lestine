@@ -1,38 +1,24 @@
 using UnityEngine;
-using System;
 
-using Stats;
+using NaughtyAttributes;
 
 namespace eclipse.items {
-	public class Item : ScriptableObject {
-        [System.Serializable]
-        public struct Modifier {
-            public ModifierEntry entry;
-            public Modifiers mod;
-        };
+    [System.Serializable]
+    public struct ItemDescription {
+        [field:SerializeField]
+        public string cDisplayName { get; private set; }
+        [field:SerializeField, ShowAssetPreview]
+        public Sprite cSprite {get; private set;}
+    }
 
-        public Modifier[] mods;
+    [System.Serializable]
+    public abstract class ItemBlueprint : ScriptableObject {
+        [field:SerializeField]
+        public ItemDescription cDescription {get; private set;}
+    }
 
-		public void OnAdd(Entity entity) {
-			if (mods.Length <= 0) return;
-			EnsureModExist(entity);
-			foreach (Item.Modifier mod in mods) {
-				Alias.coreStatsScaling.Apply(entity.extra.Value.scaling, mod.entry, mod.mod);
-			}
-		}
-
-		public void OnRemove(Entity entity) {
-			if (mods.Length <= 0) return;
-			EnsureModExist(entity);
-			foreach (Item.Modifier mod in mods) {
-				Alias.coreStatsScaling.Apply(entity.extra.Value.scaling, mod.entry, -mod.mod);
-			}
-		}
-
-		void EnsureModExist(Entity entity) {
-            Debug.Log("Ensure mod exist");
-			if (entity.extra.IsValid) return;
-			EntityStatics.GenerateScaling(new Span<Entity>(new Entity[] { entity }));
-		}
+    [System.Serializable]
+	public struct Item {
+        public ItemBlueprint blueprint;
 	}
 }

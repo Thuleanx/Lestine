@@ -47,7 +47,7 @@ namespace eclipse.trinket {
 
         public void Acquire(Trinket trinket) {
             Debug.Log("On acquire");
-            trinket.OnAdd(entity);
+            trinket.OnApply(entity);
             EntityStatics.RecomputeStats(entity);
 
             for (int i = 0; i < data.num; i++) {
