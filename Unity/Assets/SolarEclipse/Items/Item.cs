@@ -7,6 +7,8 @@ namespace eclipse.items {
     public struct ItemDescription {
         [field:SerializeField]
         public string cDisplayName { get; private set; }
+        [field:SerializeField, TextArea]
+        public string cDescriptionText { get; private set; }
         [field:SerializeField, ShowAssetPreview]
         public Sprite cSprite {get; private set;}
     }

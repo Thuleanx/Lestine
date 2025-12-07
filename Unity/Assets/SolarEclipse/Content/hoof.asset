@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <cDescription>k__BackingField:
     <cDisplayName>k__BackingField: Hoof
+    <cDescriptionText>k__BackingField: Makes you run a little faster
     <cSprite>k__BackingField: {fileID: 21300000, guid: 005888ede18a58e4db8d069cfa3007cb, type: 3}
   mods:
   - entry: 3

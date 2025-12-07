@@ -14,6 +14,7 @@ namespace eclipse.ui {
 			this.item = item;
 			bool doesSlotHaveItem = item.blueprint != null;
 			cItem.cSprite.sprite = doesSlotHaveItem ? item.blueprint.cDescription.cSprite : null;
+            cItem.cSprite.enabled = doesSlotHaveItem;
 		}
 
 		void Awake() { cItem = GetComponentInChildren<InventorySlotItem>(); }
