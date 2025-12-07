@@ -90,6 +90,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <cDraggingColor>k__BackingField: {r: 1, g: 1, b: 1, a: 0.31764707}
+  <cTooltipAppearDelaySeconds>k__BackingField: {x: 0.563204, y: 0.738423}
 --- !u!1 &581676690855774924
 GameObject:
   m_ObjectHideFlags: 0
